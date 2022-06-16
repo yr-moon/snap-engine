@@ -47,18 +47,18 @@ public class CollocateOpTest {
 
         CollocateOp op = new CollocateOp();
         op.setParameterDefaultValues();
-        op.setSlaveComponentPattern("${ORIGINAL_NAME}_S");
+        op.setDependentComponentPattern("${ORIGINAL_NAME}_S");
 
         // test default settings
         assertEquals("COLLOCATED", op.getTargetProductType());
         assertEquals(true, op.getRenameMasterComponents());
-        assertEquals(true, op.getRenameSlaveComponents());
+        assertEquals(true, op.getRenameDependentComponents());
         assertEquals("${ORIGINAL_NAME}_M", op.getMasterComponentPattern());
-        assertEquals("${ORIGINAL_NAME}_S", op.getSlaveComponentPattern());
+        assertEquals("${ORIGINAL_NAME}_S", op.getDependentComponentPattern());
         assertEquals(ResamplingType.NEAREST_NEIGHBOUR, op.getResamplingType());
 
         op.setMasterProduct(masterProduct);
-        op.setSlaveProduct(slaveProduct);
+        op.setDependentProduct(slaveProduct);
 
         Product targetProduct = op.getTargetProduct();
 
@@ -87,9 +87,9 @@ public class CollocateOpTest {
         assertEquals("!l1_flags_M.INVALID && radiance_1_M > 10", targetProduct.getBandAt(1).getValidMaskExpression());
 
         assertEquals("!l1_flags_S.INVALID && radiance_1_S > 10",
-                     targetProduct.getBandAt(16 + 1).getValidMaskExpression());
+                targetProduct.getBandAt(16 + 1).getValidMaskExpression());
         assertEquals("!l1_flags_S.INVALID && radiance_1_S > 10",
-                     targetProduct.getBandAt(16 + 2).getValidMaskExpression());
+                targetProduct.getBandAt(16 + 2).getValidMaskExpression());
 
         assertEquals(4, targetProduct.getMaskGroup().getNodeCount());
         Mask mask1 = targetProduct.getMaskGroup().get(0);
@@ -139,18 +139,18 @@ public class CollocateOpTest {
 
         CollocateOp op = new CollocateOp();
         op.setParameterDefaultValues();
-        op.setSlaveComponentPattern("${ORIGINAL_NAME}_S");
+        op.setDependentComponentPattern("${ORIGINAL_NAME}_S");
 
         // test default settings
         assertEquals("COLLOCATED", op.getTargetProductType());
         assertEquals(true, op.getRenameMasterComponents());
-        assertEquals(true, op.getRenameSlaveComponents());
+        assertEquals(true, op.getRenameDependentComponents());
         assertEquals("${ORIGINAL_NAME}_M", op.getMasterComponentPattern());
-        assertEquals("${ORIGINAL_NAME}_S", op.getSlaveComponentPattern());
+        assertEquals("${ORIGINAL_NAME}_S", op.getDependentComponentPattern());
         assertEquals(ResamplingType.NEAREST_NEIGHBOUR, op.getResamplingType());
 
         op.setMasterProduct(masterProduct);
-        op.setSlaveProduct(slaveProduct);
+        op.setDependentProduct(slaveProduct);
 
         Product targetProduct = op.getTargetProduct();
 
@@ -179,9 +179,9 @@ public class CollocateOpTest {
         assertEquals("!l1_flags_M.INVALID && radiance_1_M > 10", targetProduct.getBandAt(1).getValidMaskExpression());
 
         assertEquals("!l2_flags_S.INVALID && reflec_1_S > 0.1",
-                     targetProduct.getBandAt(16 + 1).getValidMaskExpression());
+                targetProduct.getBandAt(16 + 1).getValidMaskExpression());
         assertEquals("!l2_flags_S.INVALID && reflec_1_S > 0.1",
-                     targetProduct.getBandAt(16 + 2).getValidMaskExpression());
+                targetProduct.getBandAt(16 + 2).getValidMaskExpression());
 
         assertEquals(3, targetProduct.getMaskGroup().getNodeCount());
         Mask mask1 = targetProduct.getMaskGroup().get(0);
@@ -225,10 +225,10 @@ public class CollocateOpTest {
 
         CollocateOp op = new CollocateOp();
         op.setParameterDefaultValues();
-        op.setSlaveComponentPattern("${ORIGINAL_NAME}_S");
+        op.setDependentComponentPattern("${ORIGINAL_NAME}_S");
 
         op.setMasterProduct(masterProduct);
-        op.setSlaveProduct(slaveProduct);
+        op.setDependentProduct(slaveProduct);
 
         Product targetProduct = op.getTargetProduct();
         Product.AutoGrouping autoGrouping = targetProduct.getAutoGrouping();
@@ -246,18 +246,18 @@ public class CollocateOpTest {
 
         CollocateOp op = new CollocateOp();
         op.setParameterDefaultValues();
-        op.setRenameSlaveComponents(false);
-        op.setSlaveComponentPattern("");
+        op.setRenameDependentComponents(false);
+        op.setDependentComponentPattern("");
 
         op.setMasterProduct(masterProduct);
-        op.setSlaveProduct(slaveProduct);
+        op.setDependentProduct(slaveProduct);
 
         try {
             op.getTargetProduct();
             fail("Exception expected");
         } catch (OperatorException oe) {
             assertEquals("Target product already contains a raster data node with name 'latitude'. " +
-                    "Parameter slaveComponentPattern must be set.",
+                            "Parameter slaveComponentPattern must be set.",
                     oe.getMessage());
         }
     }
