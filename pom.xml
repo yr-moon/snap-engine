@@ -93,7 +93,8 @@
         <module>snap-pconvert</module>
         <module>snap-pgx-reader</module>
         <module>snap-pixel-extraction</module>
-        <module>snap-python</module>
+        <module>snap-esa-snappy</module>
+<!--        <module>snap-python</module>-->
         <module>snap-raster</module>
         <module>snap-rtp-codec</module>
         <module>snap-smart-configurator</module>

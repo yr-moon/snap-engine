@@ -166,6 +166,11 @@
         </dependency>
         <dependency>
             <groupId>org.esa.snap</groupId>
+            <artifactId>snap-esa-snappy</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
             <artifactId>snap-geotiff</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -219,11 +224,11 @@
             <artifactId>snap-pixel-extraction</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.esa.snap</groupId>
-            <artifactId>snap-python</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.esa.snap</groupId>-->
+<!--            <artifactId>snap-python</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.esa.snap</groupId>
             <artifactId>snap-raster</artifactId>
