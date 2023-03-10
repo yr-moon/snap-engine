@@ -18,4 +18,4 @@
  * The ESA SNAP Python 'snappy' bridge which exposes the SNAP Java API to (C)Python.
  *
  */
-package org.esa.snap.snappy;
+package org.esa.snap.esasnappy;

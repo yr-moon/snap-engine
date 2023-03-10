@@ -22,7 +22,7 @@
         <snappy.devVersionId>.dev1</snappy.devVersionId>
         <netbeans.version>RELEASE82</netbeans.version>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.esa.snap</groupId>
@@ -57,7 +57,6 @@
             <version>${snap.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-sendopts</artifactId>
@@ -72,13 +71,13 @@
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
                     <publicPackages>
-                        <publicPackage>org.esa.snap.gpf.python</publicPackage>
-                        <publicPackage>org.esa.snap.python</publicPackage>
+                        <publicPackage>org.esa.snap.esasnappy.gpf</publicPackage>
+                        <publicPackage>org.esa.snap.esasnappy.*</publicPackage>
                         <publicPackage>org.jpy.*</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -98,7 +97,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -117,10 +116,10 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/classes/snappy</outputDirectory>
+                            <outputDirectory>${project.build.directory}/classes/esa_snappy</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>src/main/resources/snappy</directory>
+                                    <directory>src/main/resources/esa_snappy</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>setup.py</include>

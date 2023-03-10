@@ -980,7 +980,7 @@
                             <group>
                                 <title>Frequently used API</title>
                                 <packages>
-                                    org.esa.snap.core.util:org.esa.snap.core.image:org.esa.snap.core.layer:org.esa.snap.core.jexp:org.esa.snap.python:org.esa.snap.python.gpf
+                                    org.esa.snap.core.util:org.esa.snap.core.image:org.esa.snap.core.layer:org.esa.snap.core.jexp:org.esa.snap.esasnappy:org.esa.snap.esasnappy.gpf
                                 </packages>
                             </group>
                             <group>

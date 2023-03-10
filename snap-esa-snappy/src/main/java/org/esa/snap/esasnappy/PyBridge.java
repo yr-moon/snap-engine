@@ -20,7 +20,6 @@ import org.esa.snap.core.util.Debug;
 import org.esa.snap.core.util.ResourceInstaller;
 import org.esa.snap.core.util.SystemUtils;
 import org.esa.snap.core.util.io.TreeCopier;
-import org.esa.snap.core.util.io.TreeDeleter;
 import org.esa.snap.runtime.Config;
 import org.jpy.PyLib;
 
@@ -40,7 +39,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import static org.esa.snap.core.util.SystemUtils.*;
+import static org.esa.snap.core.util.SystemUtils.LOG;
 
 /**
  * This class is used to establish the bridge between Java and Python.
@@ -76,12 +75,10 @@ public class PyBridge {
     public static final String PYTHON_EXTRA_PATHS_PROPERTY = "snap.pythonExtraPaths";
     public static final Path PYTHON_CONFIG_DIR;
 
-//    public static final String SNAP_PYTHON_DIRNAME = "snap-python";
-    public static final String SNAP_PYTHON_DIRNAME = "snap-esa-snappy";
+    public static final String SNAP_PYTHON_DIRNAME = "snap-python";
     private static final String JPY_DEBUG_PROPERTY = "jpy.debug";
     private static final String JPY_CONFIG_PROPERTY = "jpy.config";
     public static final String SNAPPY_NAME = "esa_snappy";
-//    private static final String SNAPPY_NAME_OLD = "snappy";
     public static final String SNAPPY_PROPERTIES_NAME = "snappy.properties";
     private static final String SNAPPYUTIL_PY_FILENAME = "snappyutil.py";
     private static final String SNAPPYUTIL_LOG_FILENAME = "snappyutil.log";
@@ -145,17 +142,6 @@ public class PyBridge {
             unpackPythonModuleDir(snappyPath);
             storePythonConfig(pythonExecutable, snappyParentDir);
         }
-
-        // remove old snappy dir:
-        // todo: Python operators which use the new 'esa_snappy' still jump into the old 'snappy'
-        //  module if folder <snappyParentDir>/snappy (e.g. default .snap/snap-python/snappy) is still present.
-        //  Find out why. (The other way round is ok: operators which use the old 'snappy' work fine even if
-        //  both folders 'snappy' and 'esa_snappy' are present.)
-        //  (This issue might disappear in future SNAP releases if snap-python module is completely removed.)
-//        Path oldSnappyPath = snappyParentDir.resolve(SNAPPY_NAME_OLD);
-//        if (Files.isDirectory(oldSnappyPath)) {
-//            TreeDeleter.deleteDir(oldSnappyPath);
-//        }
 
         Path jpyConfigFile = snappyPath.resolve(JPY_JAVA_API_CONFIG_FILENAME);
         if (forcePythonConfig || !Files.exists(jpyConfigFile)) {
@@ -289,8 +275,8 @@ public class PyBridge {
         return sb.toString();
     }
 
-    private static Path getResourcePath(String resource) {
-        return MODULE_CODE_BASE_PATH.resolve(resource);
+    private static Path getResourcePath() {
+        return MODULE_CODE_BASE_PATH.resolve(PyBridge.SNAPPY_NAME);
     }
 
     private static Path findModuleCodeBasePath() {
@@ -327,7 +313,7 @@ public class PyBridge {
 
     private static void unpackPythonModuleDir(Path pythonModuleDir) throws IOException {
         Files.createDirectories(pythonModuleDir);
-        TreeCopier.copy(getResourcePath(SNAPPY_NAME), pythonModuleDir);
+        TreeCopier.copy(getResourcePath(), pythonModuleDir);
         LOG.info(String.format("SNAP-Python module '%s' located at %s", SNAPPY_NAME, pythonModuleDir));
     }
 
@@ -390,8 +376,8 @@ public class PyBridge {
         return false;
     }
 
-    private static boolean storePythonConfig(Path pythonExecutable,
-                                             Path pythonModuleInstallDir) {
+    private static void storePythonConfig(Path pythonExecutable,
+                                          Path pythonModuleInstallDir) {
 
         Path pythonConfigFile = PYTHON_CONFIG_DIR.resolve(SNAPPY_PROPERTIES_NAME);
         try {
@@ -405,10 +391,8 @@ public class PyBridge {
                 properties.store(bufferedWriter, "Created by " + PyBridge.class.getName());
             }
             LOG.info(String.format("SNAP-Python configuration written to '%s'", pythonConfigFile));
-            return true;
         } catch (IOException e) {
             LOG.warning(String.format("Failed to store SNAP-Python configuration to '%s'", pythonConfigFile));
-            return false;
         }
     }
 }
