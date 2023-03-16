@@ -100,7 +100,7 @@ public class PyBridge {
             return;
         }
 
-        Path snappyPath = installPythonModule(null, null, null);
+        Path snappyPath = installPythonModule(null, null, null, null);
 
         synchronized (PyLib.class) {
             if (!established) {
@@ -115,12 +115,15 @@ public class PyBridge {
      *
      * @param pythonExecutable  The Python executable.
      * @param snappyParentDir   The directory into which the 'esa_snappy' Python module will be installed and configured.
+     * @param snapApplDir   The directory of the SNAP installation. Can be null, will then be set to
+     *                      SystemUtils.getApplicationHomeDir(). For test purposes mainly.
      * @param forcePythonConfig If {@code true}, any existing installation / configuration will be overwritten.
      * @return The path to the configured 'snappy' Python module.
      * @throws IOException if something went wrong during file access
      */
     public synchronized static Path installPythonModule(Path pythonExecutable,
                                                         Path snappyParentDir,
+                                                        Path snapApplDir,
                                                         Boolean forcePythonConfig) throws IOException {
 
         loadPythonConfig();
@@ -146,7 +149,7 @@ public class PyBridge {
         Path jpyConfigFile = snappyPath.resolve(JPY_JAVA_API_CONFIG_FILENAME);
         if (forcePythonConfig || !Files.exists(jpyConfigFile)) {
             // Configure jpy Python-side
-            configureJpy(pythonExecutable, snappyPath);
+            configureJpy(pythonExecutable, snappyPath, snapApplDir);
         }
         if (!Files.exists(jpyConfigFile)) {
             throw new IOException(String.format("SNAP-Python configuration incomplete.\n" +
@@ -181,7 +184,7 @@ public class PyBridge {
         }
     }
 
-    private static void configureJpy(Path pythonExecutable, Path snappyDir) throws IOException {
+    private static void configureJpy(Path pythonExecutable, Path snappyDir, Path snapApplDir) throws IOException {
         LOG.info("Configuring SNAP-Python interface...");
 
         // "java.home" is always present
@@ -189,7 +192,9 @@ public class PyBridge {
         command.add(pythonExecutable.toString());
         command.add(Paths.get(".", SNAPPYUTIL_PY_FILENAME).toString());
         command.add("--snap_home");
-        command.add(SystemUtils.getApplicationHomeDir().getPath());
+        final String snapHomePath = snapApplDir != null ? snapApplDir.toString() :
+                SystemUtils.getApplicationHomeDir().getPath();
+        command.add(snapHomePath);
         command.add("--java_module");
         command.add(stripJarScheme(MODULE_CODE_BASE_PATH).toString());
         command.add("--force");
