@@ -10,22 +10,18 @@ The `snap-python` module enables Python developers to
 
 It is worth mentioning that the `snap-python` module works with the standard *CPython*, so that any native
 Python extension modules such as `numpy` and `scipy` can be used. Before you read further you may have a look at the
-example code in
+example code in `examples/*.py` for using the SNAP Java API from Python
 
-1. `snappy-examples/*.py` for using the SNAP Java API from Python, and
-2. `snappy-examples/snappy-ndvi-operator` for extending SNAP by an (NDVI) operator plugin.
-
-The link from Python to the SNAP Java API is established via a Python module named *snappy*. The snappy module
+The link from Python to the SNAP Java API is established via a Python module now named *esa_snappy*.
+The snappy module
 depends on a *bi-directional* Java-Python bridge *jpy* that enables calls from Python into a Java virtual machine
 and, at the same time, the other way round. This bridge is implemented by the [jpy Project](https://github.com/bcdev/jpy)
 and is independent from the snappy module.
 
-snappy has been tested with Python 2.7, 3.3 and 3.4 with Java 7 and 8 JDKs. 
-
-Since `snap-python` version 5.0.5, SNAP configures itself for a given Python executable. If not already done
-by the installer, set the configuration property `snap.pythonExecutable` in file `${snap.home}/etc/snap.properties`
-to your desired Python executable.
-
+Until version SNAP-9, the Python module was named *snappy*, but this lead to conflicts as other common Python
+packages exist with this name. E.g., various state-of-the-art Python packages (such as xarray, dask) could not be used.
+Moreover, the *snappy* module could only be used with Python versions <= 3.6. The new *esa_snappy* module now
+also supports Python 3.7, 3.8, 3.9 and 3.10.
 
 ////////////////////////////// To following text is outdated - MUST UPDATE SOON ////////////////////////////// 
 

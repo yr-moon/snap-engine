@@ -37,6 +37,10 @@ public class PyBridgeTest {
     @Ignore
     public void testInstallPythonModule() throws Exception {
 
+        // This test is ignored by default. If needed, remove @Ignore and set correct paths,
+        // i.e. the directory of current SNAP installation.
+        // Also, make sure that environment variable PYTHONHOME is set and points to your
+        // Python installation.
         final String pythonExec = System.getProperty("os.name").startsWith("Windows") ? "python.exe" : "python";
         final Path pythonExecPath = getPythonExecPath(pythonExec);
 
@@ -48,6 +52,8 @@ public class PyBridgeTest {
         }
         assertTrue(Files.isDirectory(snappyCustomPath));
 
+        // set this one properly, e.g.
+        // final String snapApplDir = "/home/<user>/snap-snapshots/10.0-snapshot/snap";
         final String snapApplDir = "D:\\olaf\\bc\\snap-snapshots\\10\\10.0-snapshot\\snap";
         final Path snapApplPath = Paths.get(snapApplDir);
         PyBridge.installPythonModule(pythonExecPath, snappyCustomPath, snapApplPath, true);
@@ -59,6 +65,7 @@ public class PyBridgeTest {
     }
 
     private static Path getPythonExecPath(String pythonExec) {
+        //
         final String pythonExecPath = System.getenv("PYTHONHOME") + File.separator + pythonExec;
         try {
             Runtime.getRuntime().exec(pythonExecPath + " --version");
