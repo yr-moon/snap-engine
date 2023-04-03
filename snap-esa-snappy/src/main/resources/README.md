@@ -15,8 +15,8 @@ example code in `examples/*.py` for using the SNAP Java API from Python
 The link from Python to the SNAP Java API is established via a Python module now named *esa_snappy*.
 The snappy module
 depends on a *bi-directional* Java-Python bridge *jpy* that enables calls from Python into a Java virtual machine
-and, at the same time, the other way round. This bridge is implemented by the [jpy Project](https://github.com/bcdev/jpy)
-and is independent from the snappy module.
+and, at the same time, the other way round. This bridge is implemented by the
+[jpy Project](https://github.com/jpy-consortium/jpy) and is independent from the snappy module.
 
 Until version SNAP-9, the Python module was named *snappy*, but this lead to conflicts as other common Python
 packages exist with this name. E.g., various state-of-the-art Python packages (such as xarray, dask) could not be used.
@@ -25,18 +25,24 @@ also supports Python 3.7, 3.8, 3.9 and 3.10.
 
 ////////////////////////////// To following text is outdated - MUST UPDATE SOON ////////////////////////////// 
 
-
-Before you can start using the SNAP API or developing SNAP operator plugins with Python you need configure 
-SNAP for the desired Python version. 
-
-If there is no matching binary distribution, you will have to build `jpy` on your own and then copy your binary 
-distribution to the `${snap.home}/modules/${snap-python}/lib` directory.
-
-Unfortunately this has to be done manually, so be 
-prepared to invest at least half an hour for setting up things correctly.
+Before you can start using the SNAP API or developing SNAP operator plugins with Python you need configure
+SNAP for the desired Python version.
 
 Installation
 ------------
+
+With the new *esa_snappy* module, a manual installation of jpy is no longer necessary, as jpy wheels for all supported
+Python versions and platforms are included in the module. The jpy installation is done automatically as part of the
+*esa_snappy* installation and Python configuration, which in return can be done either
+
+* from a GUI as an optional step of the SNAP installation itself
+* from the same GUI which can be invoked from SNAP Desktop in SNAP is already installed - TODO!!
+* from the command line using a configuration script which is provided within the SNAP installation
+
+### Installation from GUI during the SNAP installation
+
+### Installation from GUI within SNAP Desktop
+
 
 The first step is to properly install `jpy` as described in the [jpy documentation](http://jpy.readthedocs.org/en/latest/install.html).
 (Be sure use `jpy` version 0.7.3 or higher.) After successful installation of `jpy`, make sure that you have run VISAT at least once so that all modules are unpacked. Afterwards, you will be able to install `snappy` as follows:
