@@ -160,6 +160,15 @@ public class ColorBarLayerType extends LayerType {
     public static final String PROPERTY_LABEL_VALUES_ACTUAL_DEFAULT = "";
     public static final Class PROPERTY_LABEL_VALUES_ACTUAL_TYPE = String.class;
 
+    private static final String PROPERTY_SCHEME_KEY_SUFFIX = PROPERTY_ROOT_KEY + ".scheme.band.lookup";
+    private static final String PROPERTY_SCHEME_ALIAS_SUFFIX = PROPERTY_ROOT_ALIAS + ".scheme.band.lookup";
+    public static final String PROPERTY_SCHEME_AUTO_APPLY_KEY = PROPERTY_SCHEME_KEY_SUFFIX + ".auto.apply";
+    public static final String PROPERTY_SCHEME_AUTO_APPLY_LABEL = "Auto-Apply Scheme (Band Lookup)";
+    public static final String PROPERTY_SCHEME_AUTO_APPLY_TOOLTIP = "Auto-Apply Scheme (Band Lookup)";
+    private static final String PROPERTY_SCHEME_AUTO_APPLY_ALIAS = PROPERTY_SCHEME_ALIAS_SUFFIX + ".auto.apply";
+    public static boolean PROPERTY_SCHEME_AUTO_APPLY_DEFAULT = true;
+    public static final Class PROPERTY_SCHEME_AUTO_APPLY_TYPE = Boolean.class;
+
     public static final String PROPERTY_POPULATE_VALUES_TEXTFIELD_KEY = PROPERTY_LABEL_VALUES_ROOT_KEY + ".populate.values.textfield";
     public static final String PROPERTY_POPULATE_VALUES_TEXTFIELD_LABEL = "Auto-Fill Label Values Textfield";
     public static final String PROPERTY_POPULATE_VALUES_TEXTFIELD_TOOLTIP = "Auto-populate the values field with the generated values";
@@ -290,7 +299,7 @@ public class ColorBarLayerType extends LayerType {
     public static final String PROPERTY_LOCATION_TITLE_VERTICAL_LABEL = "Title Anchor";
     public static final String PROPERTY_LOCATION_TITLE_VERTICAL_TOOLTIP = "Where to place title on vertical legend";
     private static final String PROPERTY_LOCATION_TITLE_VERTICAL_ALIAS = PROPERTY_LOCATION_ROOT_ALIAS + "TitleAnchor";
-    public static final String PROPERTY_LOCATION_TITLE_VERTICAL_DEFAULT = VERTICAL_TITLE_TOP;
+    public static final String PROPERTY_LOCATION_TITLE_VERTICAL_DEFAULT = VERTICAL_TITLE_RIGHT;
     public static final Class PROPERTY_LOCATION_TITLE_VERTICAL_TYPE = String.class;
     public static final Object PROPERTY_LOCATION_TITLE_VERTICAL_VALUE_SET[] = VERTICAL_TITLE_LOCATION_VALUE_SET;
     public static final boolean PROPERTY_LOCATION_TITLE_VERTICAL_ENABLED = false;
@@ -318,7 +327,7 @@ public class ColorBarLayerType extends LayerType {
     public static final String PROPERTY_IMAGE_SCALING_SIZE_LABEL = "Scene Size Scaling";
     public static final String PROPERTY_IMAGE_SCALING_SIZE_TOOLTIP = "Percent to scale " + COLOR_LOWER_CASE + " bar legend relative to the scene image size";
     private static final String PROPERTY_IMAGE_SCALING_SIZE_ALIAS = PROPERTY_IMAGE_SCALING_ROOT_ALIAS + "Size";
-    public static final double PROPERTY_IMAGE_SCALING_SIZE_DEFAULT = 60.0;
+    public static final double PROPERTY_IMAGE_SCALING_SIZE_DEFAULT = 80.0;
     public static final Class PROPERTY_IMAGE_SCALING_SIZE_TYPE = Double.class;
     public static final double PROPERTY_IMAGE_SCALING_SIZE_MIN = 5;
     public static final double PROPERTY_IMAGE_SCALING_SIZE_MAX = 200;
@@ -345,11 +354,11 @@ public class ColorBarLayerType extends LayerType {
     public static final int PROPERTY_COLORBAR_WIDTH_MIN = 5;
     public static final int PROPERTY_COLORBAR_WIDTH_MAX = 1000;
     public static final String PROPERTY_COLORBAR_WIDTH_INTERVAL = "[" + ColorBarLayerType.PROPERTY_COLORBAR_WIDTH_MIN + "," + ColorBarLayerType.PROPERTY_COLORBAR_WIDTH_MAX + "]";
-    public static final int PROPERTY_COLORBAR_WIDTH_DEFAULT = 70;
+    public static final int PROPERTY_COLORBAR_WIDTH_DEFAULT = 55;
     public static final Class PROPERTY_COLORBAR_WIDTH_TYPE = Integer.class;
 
 
-    
+
 
 
 
@@ -440,7 +449,7 @@ public class ColorBarLayerType extends LayerType {
     public static final String PROPERTY_UNITS_FONT_SIZE_LABEL = "Units Size";
     public static final String PROPERTY_UNITS_FONT_SIZE_TOOLTIP = "Set size of the title units";
     private static final String PROPERTY_UNITS_FONT_SIZE_ALIAS = PROPERTY_UNITS_ROOT_ALIAS + "FontSize";
-    public static final int PROPERTY_UNITS_FONT_SIZE_DEFAULT = 35;
+    public static final int PROPERTY_UNITS_FONT_SIZE_DEFAULT = 30;
     public static final Class PROPERTY_UNITS_FONT_SIZE_TYPE = Integer.class;
     public static final int PROPERTY_UNITS_FONT_SIZE_VALUE_MIN = 10;
     public static final int PROPERTY_UNITS_FONT_SIZE_VALUE_MAX = 200;
@@ -826,6 +835,10 @@ public class ColorBarLayerType extends LayerType {
         final Property labelValuesSectionModel = Property.create(PROPERTY_LABEL_VALUES_SECTION_KEY, Boolean.class, true, true);
         labelValuesSectionModel.getDescriptor().setAlias(PROPERTY_LABEL_VALUES_SECTION_ALIAS);
         vc.addProperty(labelValuesSectionModel);
+
+        final Property autoApplySchemesModel = Property.create(PROPERTY_SCHEME_AUTO_APPLY_KEY, Boolean.class, PROPERTY_SCHEME_AUTO_APPLY_DEFAULT, true);
+        autoApplySchemesModel.getDescriptor().setAlias(PROPERTY_SCHEME_AUTO_APPLY_ALIAS);
+        vc.addProperty(autoApplySchemesModel);
 
         final Property labelValuesModeModel = Property.create(PROPERTY_LABEL_VALUES_MODE_KEY, String.class, PROPERTY_LABEL_VALUES_MODE_DEFAULT, true);
         labelValuesModeModel.getDescriptor().setAlias(PROPERTY_LABEL_VALUES_MODE_ALIAS);
