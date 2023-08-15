@@ -339,11 +339,14 @@ public class MetaDataLayer extends Layer {
     protected void fireLayerPropertyChanged(PropertyChangeEvent event) {
         String propertyName = event.getPropertyName();
         if (
-                propertyName.equals(MetaDataLayerType.PROPERTY_FILE_NAME_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_KEY) ||
+                propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_SHOW_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_TEXTFIELD_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER2_TEXTFIELD_KEY) ||
+
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FILE_NAME_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_KEY) ||
+
                         propertyName.equals(MetaDataLayerType.PROPERTY_LOCATION_GAP_FACTOR_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_LOCATION_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_LOCATION_KEY) ||

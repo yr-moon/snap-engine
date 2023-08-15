@@ -155,6 +155,65 @@ public class MetaDataLayerType extends LayerType {
 
 
 
+
+    // Header Formatting Section
+
+    private static final String PROPERTY_HEADER_FORMAT_ROOT_KEY = PROPERTY_ROOT_KEY + ".header.format";
+    private static final String PROPERTY_HEADER_FORMAT_ROOT_ALIAS = PROPERTY_ROOT_ALIAS + "HeaderFormat";
+
+    public static final String PROPERTY_HEADER_FORMAT_SECTION_KEY = PROPERTY_HEADER_FORMAT_ROOT_KEY + ".section";
+    public static final String PROPERTY_HEADER_FORMAT_SECTION_LABEL = "Header Formatting";
+    public static final String PROPERTY_HEADER_FORMAT_SECTION_TOOLTIP = "Formatting parameters for the header";
+    public static final String PROPERTY_HEADER_FORMAT_SECTION_ALIAS = PROPERTY_HEADER_FORMAT_ROOT_ALIAS + "Section";
+
+    public static final String PROPERTY_LABELS_ITALIC_NAME = PROPERTY_HEADER_FORMAT_ROOT_KEY + ".font.italic";
+    public static final String PROPERTY_LABELS_ITALIC_LABEL = "Italic";
+    public static final String PROPERTY_LABELS_ITALIC_TOOLTIP = "Format header text font in italic";
+    public static final String PROPERTY_LABELS_ITALIC_ALIAS = PROPERTY_HEADER_FORMAT_ROOT_ALIAS + "FontItalic";
+    public static final boolean PROPERTY_LABELS_ITALIC_DEFAULT = false;
+    public static final Class PROPERTY_LABELS_ITALIC_TYPE = Boolean.class;
+
+    public static final String PROPERTY_LABELS_BOLD_NAME = PROPERTY_HEADER_FORMAT_ROOT_KEY + ".font.bold";
+    public static final String PROPERTY_LABELS_BOLD_LABEL = "Bold";
+    public static final String PROPERTY_LABELS_BOLD_TOOLTIP = "Format header text font in bold";
+    public static final String PROPERTY_LABELS_BOLD_ALIAS = PROPERTY_HEADER_FORMAT_ROOT_ALIAS + "FontBold";
+    public static final boolean PROPERTY_LABELS_BOLD_DEFAULT = false;
+    public static final Class PROPERTY_LABELS_BOLD_TYPE = Boolean.class;
+
+    public static final String PROPERTY_LABELS_FONT_NAME = PROPERTY_HEADER_FORMAT_ROOT_KEY + ".font.name";
+    public static final String PROPERTY_LABELS_FONT_LABEL = "Font";
+    public static final String PROPERTY_LABELS_FONT_TOOLTIP = "Set the text font of the labels";
+    public static final String PROPERTY_LABELS_FONT_ALIAS = PROPERTY_HEADER_FORMAT_ROOT_ALIAS + "FontName";
+    public static final String PROPERTY_LABELS_FONT_DEFAULT = "SanSerif";
+    public static final Class PROPERTY_LABELS_FONT_TYPE = String.class;
+    public static final String PROPERTY_LABELS_FONT_VALUE_1 = "SanSerif";
+    public static final String PROPERTY_LABELS_FONT_VALUE_2 = "Serif";
+    public static final String PROPERTY_LABELS_FONT_VALUE_3 = "Courier";
+    public static final String PROPERTY_LABELS_FONT_VALUE_4 = "Monospaced";
+    public static final Object PROPERTY_LABELS_FONT_VALUE_SET[] = {PROPERTY_LABELS_FONT_VALUE_1, PROPERTY_LABELS_FONT_VALUE_2, PROPERTY_LABELS_FONT_VALUE_3, PROPERTY_LABELS_FONT_VALUE_4};
+
+
+    public static final String PROPERTY_LABELS_SIZE_NAME = PROPERTY_HEADER_FORMAT_ROOT_KEY + ".labels.size";
+    public static final String PROPERTY_LABELS_SIZE_LABEL = "Size";
+    public static final String PROPERTY_LABELS_SIZE_TOOLTIP = "Set size of the header text";
+    private static final String PROPERTY_LABELS_SIZE_ALIAS =  PROPERTY_HEADER_FORMAT_ROOT_ALIAS + "LabelsSize";
+    public static final int PROPERTY_LABELS_SIZE_DEFAULT = 18;
+    public static final Class PROPERTY_LABELS_SIZE_TYPE = Integer.class;
+    public static final int PROPERTY_LABELS_SIZE_VALUE_MIN = 6;
+    public static final int PROPERTY_LABELS_SIZE_VALUE_MAX = 70;
+    public static final String PROPERTY_LABELS_SIZE_INTERVAL = "[" + GraticuleLayerType.PROPERTY_LABELS_SIZE_VALUE_MIN + "," + GraticuleLayerType.PROPERTY_LABELS_SIZE_VALUE_MAX + "]";
+
+
+    public static final String PROPERTY_LABELS_COLOR_NAME = PROPERTY_HEADER_FORMAT_ROOT_KEY + ".labels.color";
+    public static final String PROPERTY_LABELS_COLOR_LABEL = "Color";
+    public static final String PROPERTY_LABELS_COLOR_TOOLTIP = "Set color of the header text";
+    private static final String PROPERTY_LABELS_COLOR_ALIAS = PROPERTY_HEADER_FORMAT_ROOT_ALIAS + "Color";
+    public static final Color PROPERTY_LABELS_COLOR_DEFAULT = Color.BLACK;
+    public static final Class PROPERTY_LABELS_COLOR_TYPE = Color.class;
+
+
+
+
     // Property Settings: Grid Spacing Section
 
     public static final String PROPERTY_GRID_SPACING_SECTION_NAME = "graticule.grid.spacing.section";
@@ -234,19 +293,7 @@ public class MetaDataLayerType extends LayerType {
     public static final boolean PROPERTY_LABELS_DECIMAL_VALUE_DEFAULT = false;
     public static final Class PROPERTY_LABELS_DECIMAL_VALUE_TYPE = Boolean.class;
 
-    public static final String PROPERTY_LABELS_ITALIC_NAME = "graticule.labels.font.italic";
-    public static final String PROPERTY_LABELS_ITALIC_LABEL = "Italic";
-    public static final String PROPERTY_LABELS_ITALIC_TOOLTIP = "Format label text font in italic";
-    public static final String PROPERTY_LABELS_ITALIC_ALIAS = "graticuleLabelsFontItalic";
-    public static final boolean PROPERTY_LABELS_ITALIC_DEFAULT = false;
-    public static final Class PROPERTY_LABELS_ITALIC_TYPE = Boolean.class;
 
-    public static final String PROPERTY_LABELS_BOLD_NAME = "graticule.labels.font.bold";
-    public static final String PROPERTY_LABELS_BOLD_LABEL = "Bold";
-    public static final String PROPERTY_LABELS_BOLD_TOOLTIP = "Format label text font in bold";
-    public static final String PROPERTY_LABELS_BOLD_ALIAS = "graticuleLabelsFontBold";
-    public static final boolean PROPERTY_LABELS_BOLD_DEFAULT = false;
-    public static final Class PROPERTY_LABELS_BOLD_TYPE = Boolean.class;
 
     public static final String PROPERTY_LABELS_ROTATION_LON_NAME = "graticule.labels.rotation.lon";
     public static final String PROPERTY_LABELS_ROTATION_LON_LABEL = "Rotation (Longitude)";
@@ -262,36 +309,7 @@ public class MetaDataLayerType extends LayerType {
     public static final double PROPERTY_LABELS_ROTATION_LAT_DEFAULT = 90;
     public static final Class PROPERTY_LABELS_ROTATION_LAT_TYPE = Double.class;
 
-    public static final String PROPERTY_LABELS_FONT_NAME = "graticule.labels.font.name";
-    public static final String PROPERTY_LABELS_FONT_LABEL = "Font";
-    public static final String PROPERTY_LABELS_FONT_TOOLTIP = "Set the text font of the labels";
-    public static final String PROPERTY_LABELS_FONT_ALIAS = "graticuleLabelsFontName";
-    public static final String PROPERTY_LABELS_FONT_DEFAULT = "SanSerif";
-    public static final Class PROPERTY_LABELS_FONT_TYPE = String.class;
-    public static final String PROPERTY_LABELS_FONT_VALUE_1 = "SanSerif";
-    public static final String PROPERTY_LABELS_FONT_VALUE_2 = "Serif";
-    public static final String PROPERTY_LABELS_FONT_VALUE_3 = "Courier";
-    public static final String PROPERTY_LABELS_FONT_VALUE_4 = "Monospaced";
-    public static final Object PROPERTY_LABELS_FONT_VALUE_SET[] = {PROPERTY_LABELS_FONT_VALUE_1, PROPERTY_LABELS_FONT_VALUE_2, PROPERTY_LABELS_FONT_VALUE_3, PROPERTY_LABELS_FONT_VALUE_4};
 
-
-    public static final String PROPERTY_LABELS_SIZE_NAME = "graticule.labels.size";
-    public static final String PROPERTY_LABELS_SIZE_LABEL = "Size";
-    public static final String PROPERTY_LABELS_SIZE_TOOLTIP = "Set size of the label text";
-    private static final String PROPERTY_LABELS_SIZE_ALIAS = "graticuleLabelsSize";
-    public static final int PROPERTY_LABELS_SIZE_DEFAULT = 18;
-    public static final Class PROPERTY_LABELS_SIZE_TYPE = Integer.class;
-    public static final int PROPERTY_LABELS_SIZE_VALUE_MIN = 6;
-    public static final int PROPERTY_LABELS_SIZE_VALUE_MAX = 70;
-    public static final String PROPERTY_LABELS_SIZE_INTERVAL = "[" + GraticuleLayerType.PROPERTY_LABELS_SIZE_VALUE_MIN + "," + GraticuleLayerType.PROPERTY_LABELS_SIZE_VALUE_MAX + "]";
-
-
-    public static final String PROPERTY_LABELS_COLOR_NAME = "graticule.labels.color";
-    public static final String PROPERTY_LABELS_COLOR_LABEL = "Color";
-    public static final String PROPERTY_LABELS_COLOR_TOOLTIP = "Set color of the label text";
-    private static final String PROPERTY_LABELS_COLOR_ALIAS = "graticuleLabelsColor";
-    public static final Color PROPERTY_LABELS_COLOR_DEFAULT = Color.BLACK;
-    public static final Class PROPERTY_LABELS_COLOR_TYPE = Color.class;
 
 
     // Property Settings: Gridlines Section
@@ -555,6 +573,11 @@ public class MetaDataLayerType extends LayerType {
 
 
 
+        // Header Formatting Section
+
+        final Property headerFormatSectionModel = Property.create(PROPERTY_HEADER_FORMAT_SECTION_KEY, Boolean.class, true, true);
+        headerFormatSectionModel.getDescriptor().setAlias(PROPERTY_HEADER_FORMAT_SECTION_ALIAS);
+        vc.addProperty(headerFormatSectionModel);
 
 
 
