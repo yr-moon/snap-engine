@@ -90,7 +90,7 @@ public class MetaDataLayer extends Layer {
                 for (String currentLine : linesArray) {
                     if (currentLine != null && currentLine.length() > 0) {
                         currentLine = replaceStringVariables(currentLine);
-                        header2List.add(currentLine);
+                        headerList.add(currentLine);
                     }
                 }
             }
@@ -115,7 +115,11 @@ public class MetaDataLayer extends Layer {
                 footerList.add("File: " + raster.getProduct().getName());
             }
 
-            footerList.add("Band: " + raster.getName());
+            if (isIncludeBandName()) {
+                footerList.add("Band: " + raster.getName());
+            }
+
+
             footerList.add("Band Description: " + raster.getDescription());
             footerList.add("Processing Version: " + ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PROCESSING_VERSION_KEYS));
             footerList.add("Sensor: " + ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS));
@@ -173,8 +177,12 @@ public class MetaDataLayer extends Layer {
                 final MetaDataOnImage.TextGlyph[] textGlyphHeader2 = graticule.getTextGlyphsHeader2();
                 final MetaDataOnImage.TextGlyph[] textGlyphsFooter = graticule.get_textGlyphsFooter();
 
-                drawTextHeaderFooter(g2d, textGlyphHeader, textGlyphHeader2, true, raster);
-                drawTextHeaderFooter(g2d, textGlyphsFooter, null, false, raster);
+                if (getHeaderShow()) {
+                    drawTextHeaderFooter(g2d, textGlyphHeader, textGlyphHeader2, true, raster);
+                }
+                if (getFooterShow()) {
+                    drawTextHeaderFooter(g2d, textGlyphsFooter, null, false, raster);
+                }
 
             } finally {
                 g2d.setTransform(transformSave);
@@ -209,10 +217,22 @@ public class MetaDataLayer extends Layer {
         AffineTransform origTransform = g2d.getTransform();
         Font origFont = g2d.getFont();
 
-        Font font = new Font(getLabelsFont(), getFontType(), getFontSizePixels());
-        g2d.setFont(font);
+        if (isHeader) {
+            Font font = new Font(getLabelsFont(), getFontType(), getFontSizePixels());
+            g2d.setFont(font);
 
-        g2d.setPaint(getLabelsColor());
+            g2d.setPaint(getHeaderFontColor());
+
+
+        } else {
+           Font font = new Font(getLabelsFont(), getFontType(), getFooterFontSizePixels());
+            g2d.setFont(font);
+            g2d.setPaint(getFooterFontColor());
+
+
+        }
+
+
 
 //
 //        Rectangle2D singleLetter = g2d.getFontMetrics().getStringBounds("W", g2d);
@@ -229,9 +249,16 @@ public class MetaDataLayer extends Layer {
         }
 
 
-        double yTopTranslateFirstLine = -heightInformationBlock - raster.getRasterHeight() * (getLocationGapFactor() / 100);
-        double yBottomTranslateFirstLine =  raster.getRasterHeight() * (getLocationGapFactor() / 100);
+        double yTopTranslateFirstLine;
+        double yBottomTranslateFirstLine;
 
+        if (isHeader) {
+            yTopTranslateFirstLine = -heightInformationBlock - raster.getRasterHeight() * (getHeaderGapFactor() / 100);
+            yBottomTranslateFirstLine =  raster.getRasterHeight() * (getHeaderGapFactor() / 100);
+        } else {
+            yTopTranslateFirstLine = -heightInformationBlock - raster.getRasterHeight() * (getFooterGapFactor() / 100);
+            yBottomTranslateFirstLine =  raster.getRasterHeight() * (getFooterGapFactor() / 100);
+        }
 
         for (MetaDataOnImage.TextGlyph glyph : textGlyphs) {
 
@@ -343,19 +370,27 @@ public class MetaDataLayer extends Layer {
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_TEXTFIELD_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER2_TEXTFIELD_KEY) ||
 
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FILE_NAME_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_SHOW_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FILE_NAME_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_BAND_NAME_KEY) ||
 
-                        propertyName.equals(MetaDataLayerType.PROPERTY_LOCATION_GAP_FACTOR_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_LOCATION_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_LOCATION_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_GAP_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_FONT_SIZE_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_FONT_COLOR_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_FONT_STYLE_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_FONT_ITALIC_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_FONT_BOLD_KEY) ||
+
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_LOCATION_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_LABELS_INSIDE_DEFAULT) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_LABELS_ITALIC_NAME) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_LABELS_BOLD_NAME) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_LABELS_FONT_NAME) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_LABELS_SIZE_NAME) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_LABELS_COLOR_NAME)
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_GAP_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_SIZE_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_COLOR_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_STYLE_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_ITALIC_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_BOLD_KEY)
         ) {
             graticule = null;
         }
@@ -379,9 +414,21 @@ public class MetaDataLayer extends Layer {
         return header2;
     }
 
+    private boolean getHeaderShow() {
+        boolean header = getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_SHOW_KEY,
+                MetaDataLayerType.PROPERTY_HEADER_SHOW_DEFAULT);
+        return header;
+    }
+
     private String getFooter() {
         String footer = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD_KEY,
                 MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD_DEFAULT);
+        return footer;
+    }
+
+    private boolean getFooterShow() {
+        boolean footer = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_SHOW_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER_SHOW_DEFAULT);
         return footer;
     }
 
@@ -398,16 +445,29 @@ public class MetaDataLayer extends Layer {
         return isIncludeFileName;
     }
 
+    private boolean isIncludeBandName() {
+        boolean isIncludeBandName = getConfigurationProperty(MetaDataLayerType.PROPERTY_BAND_NAME_KEY,
+                MetaDataLayerType.PROPERTY_BAND_NAME_DEFAULT);
+        return isIncludeBandName;
+    }
 
-    private double getLocationGapFactor() {
-        double locationGapFactor = getConfigurationProperty(MetaDataLayerType.PROPERTY_LOCATION_GAP_FACTOR_KEY,
-                MetaDataLayerType.PROPERTY_LOCATION_GAP_FACTOR_DEFAULT);
+
+    private double getFooterGapFactor() {
+        double locationGapFactor = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_GAP_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER_GAP_DEFAULT);
         return locationGapFactor;
     }
 
+    private double getHeaderGapFactor() {
+        double headerGapFactor = getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_GAP_KEY,
+                MetaDataLayerType.PROPERTY_HEADER_GAP_DEFAULT);
+        return headerGapFactor;
+    }
+
+
     private String getLocationHeader() {
-        String location = getConfigurationProperty(MetaDataLayerType.PROPERTY_LOCATION_KEY,
-                MetaDataLayerType.PROPERTY_LOCATION_DEFAULT);
+        String location = getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_LOCATION_KEY,
+                MetaDataLayerType.PROPERTY_HEADER_LOCATION_DEFAULT);
         return location;
     }
 
@@ -424,28 +484,32 @@ public class MetaDataLayer extends Layer {
 
 
 
-    private double getBorderWidthPixels() {
-        double borderLineWidthPts = getConfigurationProperty(MetaDataLayerType.PROPERTY_BORDER_WIDTH_NAME,
-                MetaDataLayerType.PROPERTY_BORDER_WIDTH_DEFAULT);
-
-        return getPtsToPixelsMultiplier() * borderLineWidthPts;
-    }
-
 
 
 
     private int getFontSizePixels() {
-        int fontSizePts = getConfigurationProperty(MetaDataLayerType.PROPERTY_LABELS_SIZE_NAME,
-                MetaDataLayerType.PROPERTY_LABELS_SIZE_DEFAULT);
+        int fontSizePts = getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_FONT_SIZE_KEY,
+                MetaDataLayerType.PROPERTY_HEADER_FONT_SIZE_DEFAULT);
 
         return (int) Math.round(getPtsToPixelsMultiplier() * fontSizePts);
     }
 
-    private Color getLabelsColor() {
-        return getConfigurationProperty(MetaDataLayerType.PROPERTY_LABELS_COLOR_NAME,
-                MetaDataLayerType.PROPERTY_LABELS_COLOR_DEFAULT);
+    private int getFooterFontSizePixels() {
+        int fontSizePts = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_FONT_SIZE_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER_FONT_SIZE_DEFAULT);
+
+        return (int) Math.round(getPtsToPixelsMultiplier() * fontSizePts);
     }
 
+    private Color getHeaderFontColor() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_FONT_COLOR_KEY,
+                MetaDataLayerType.PROPERTY_HEADER_FONT_COLOR_DEFAULT);
+    }
+
+    private Color getFooterFontColor() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_FONT_COLOR_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER_FONT_COLOR_DEFAULT);
+    }
 
     private double getPtsToPixelsMultiplier() {
 
@@ -461,18 +525,18 @@ public class MetaDataLayer extends Layer {
 
 
     private String getLabelsFont() {
-        return getConfigurationProperty(MetaDataLayerType.PROPERTY_LABELS_FONT_NAME,
-                MetaDataLayerType.PROPERTY_LABELS_FONT_DEFAULT);
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_FONT_STYLE_KEY,
+                MetaDataLayerType.PROPERTY_HEADER_FONT_STYLE_DEFAULT);
     }
 
     private Boolean isLabelsItalic() {
-        return getConfigurationProperty(MetaDataLayerType.PROPERTY_LABELS_ITALIC_NAME,
-                MetaDataLayerType.PROPERTY_LABELS_ITALIC_DEFAULT);
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_FONT_ITALIC_KEY,
+                MetaDataLayerType.PROPERTY_HEADER_FONT_ITALIC_DEFAULT);
     }
 
     private Boolean isLabelsBold() {
-        return getConfigurationProperty(MetaDataLayerType.PROPERTY_LABELS_BOLD_NAME,
-                MetaDataLayerType.PROPERTY_LABELS_BOLD_DEFAULT);
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_FONT_BOLD_KEY,
+                MetaDataLayerType.PROPERTY_HEADER_FONT_BOLD_DEFAULT);
     }
 
     private int getFontType() {
@@ -487,15 +551,6 @@ public class MetaDataLayer extends Layer {
         }
     }
 
-    private boolean isLabelsInside() {
-        return getConfigurationProperty(MetaDataLayerType.PROPERTY_LABELS_INSIDE_NAME,
-                MetaDataLayerType.PROPERTY_LABELS_INSIDE_DEFAULT);
-    }
-
-    private double getLabelsRotationLon() {
-        return getConfigurationProperty(MetaDataLayerType.PROPERTY_LABELS_ROTATION_LON_NAME,
-                MetaDataLayerType.PROPERTY_LABELS_ROTATION_LON_DEFAULT);
-    }
 
 
 
