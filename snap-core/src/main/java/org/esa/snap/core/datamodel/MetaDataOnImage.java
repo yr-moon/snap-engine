@@ -24,7 +24,6 @@ public class MetaDataOnImage {
 
 
     private final TextGlyph[] _textGlyphsHeader;
-    private final TextGlyph[] _textGlyphsHeader2;
     private final TextGlyph[] _textGlyphsFooter;
 
 
@@ -40,18 +39,14 @@ public class MetaDataOnImage {
     }
 
 
-    private MetaDataOnImage(TextGlyph[] textGlyphHeader, TextGlyph[] textGlyphHeader2, TextGlyph[] textGlyphFooter) {
+    private MetaDataOnImage(TextGlyph[] textGlyphHeader, TextGlyph[] textGlyphFooter) {
         _textGlyphsHeader = textGlyphHeader;
-        _textGlyphsHeader2 = textGlyphHeader2;
         _textGlyphsFooter = textGlyphFooter;
     }
 
 
     public TextGlyph[] getTextGlyphsHeader() {
         return _textGlyphsHeader;
-    }
-    public TextGlyph[] getTextGlyphsHeader2() {
-        return _textGlyphsHeader2;
     }
     public TextGlyph[] get_textGlyphsFooter() {
         return _textGlyphsFooter;
@@ -64,7 +59,7 @@ public class MetaDataOnImage {
      * @param raster the product
      * @return the metadata layer or null, if it could not be created
      */
-    public static MetaDataOnImage create(RasterDataNode raster, List<String> headerList, List<String> header2List, List<String> footerList) {
+    public static MetaDataOnImage create(RasterDataNode raster, List<String> headerList, List<String> footerList) {
         Guardian.assertNotNull("product", raster);
         final GeoCoding geoCoding = raster.getGeoCoding();
         if (geoCoding == null || raster.getRasterWidth() < 16 || raster.getRasterHeight() < 16) {
@@ -72,10 +67,9 @@ public class MetaDataOnImage {
         }
 
         TextGlyph[] textGlyphHeader = createTextGlyphsHeader(headerList);
-        TextGlyph[] textGlyphHeader2 = createTextGlyphsHeader(header2List);
         TextGlyph[] textGlyphFooter = createTextGlyphsHeader(footerList);
 
-        return new MetaDataOnImage(textGlyphHeader, textGlyphHeader2, textGlyphFooter);
+        return new MetaDataOnImage(textGlyphHeader, textGlyphFooter);
     }
 
 
