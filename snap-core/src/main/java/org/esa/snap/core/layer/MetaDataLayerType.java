@@ -53,7 +53,7 @@ public class MetaDataLayerType extends LayerType {
     public static final String PROPERTY_HEADER_TEXTFIELD2_LABEL = "Header";
     public static final String PROPERTY_HEADER_TEXTFIELD2_TOOLTIP = "Adds a line to title/header to the Header-Footer Layer";
     public static final String PROPERTY_HEADER_TEXTFIELD2_ALIAS = PROPERTY_HEADER_ROOT_ALIAS + "HeaderTextfield2";
-    public static final String PROPERTY_HEADER_TEXTFIELD2_DEFAULT = "Band: [BAND] ([BAND_DESCRIPTION])";
+    public static final String PROPERTY_HEADER_TEXTFIELD2_DEFAULT = "Band: <Meta=[BAND]> (<Meta=[BAND_DESCRIPTION]>)";
     public static final Class PROPERTY_HEADER_TEXTFIELD2_TYPE = String.class;
 
     public static final String PROPERTY_HEADER_TEXTFIELD3_KEY = PROPERTY_HEADER_ROOT_KEY + ".header.textfield3";
@@ -170,8 +170,10 @@ public class MetaDataLayerType extends LayerType {
     public static final String LOCATION_BOTTOM_CENTER = "Bottom Center";
     public static final String LOCATION_BOTTOM_CENTER_JUSTIFY_LEFT = "Bottom Center Justify Left";
     public static final String LOCATION_BOTTOM_RIGHT = "Bottom Right";
-    public static final String LOCATION_RIGHT = "Right";
-    public static final String LOCATION_LEFT = "Left";
+    public static final String LOCATION_RIGHT = "Upper Right";
+    public static final String LOCATION_RIGHT_BOTTOM = "Lower Right";
+    public static final String LOCATION_LEFT = "Upper Left";
+    public static final String LOCATION_LEFT_BOTTOM = "Lower Left";
 
 
     public static String[] getMetaDataLocationArray() {
@@ -185,7 +187,9 @@ public class MetaDataLayerType extends LayerType {
                 LOCATION_BOTTOM_CENTER_JUSTIFY_LEFT,
                 LOCATION_BOTTOM_RIGHT,
                 LOCATION_RIGHT,
-                LOCATION_LEFT
+                LOCATION_RIGHT_BOTTOM,
+                LOCATION_LEFT,
+                LOCATION_LEFT_BOTTOM
         };
     }
 
