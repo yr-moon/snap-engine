@@ -1392,6 +1392,20 @@ public class ProductUtils {
         return metaData;
     }
 
+    public static String getBandMetaData(Product product, String key, String band) {
+        // Created by Daniel Knowles
+        String metaData = "";
+
+        if (key != null && key.length() > 0 && band != null && band.length() > 0) {
+            try {
+                metaData = product.getMetadataRoot().getElement("Band_Attributes").getElement(band).getAttribute(key).getData().getElemString();
+            } catch (Exception ignore) {
+            }
+        }
+
+        return metaData;
+    }
+
 
 
 

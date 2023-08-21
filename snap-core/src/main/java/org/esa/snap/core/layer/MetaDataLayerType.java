@@ -42,32 +42,32 @@ public class MetaDataLayerType extends LayerType {
     public static final boolean PROPERTY_HEADER_SHOW_DEFAULT = true;
     public static final Class PROPERTY_HEADER_SHOW_TYPE = Boolean.class;
 
-    public static final String PROPERTY_HEADER_TEXTFIELD_KEY = PROPERTY_HEADER_ROOT_KEY + ".header.textfield";
+    public static final String PROPERTY_HEADER_TEXTFIELD_KEY = PROPERTY_HEADER_ROOT_KEY + ".textfield";
     public static final String PROPERTY_HEADER_TEXTFIELD_LABEL = "Header";
     public static final String PROPERTY_HEADER_TEXTFIELD_TOOLTIP = "Adds a title/header to the Header-Footer Layer";
-    public static final String PROPERTY_HEADER_TEXTFIELD_ALIAS = PROPERTY_HEADER_ROOT_ALIAS + "HeaderTextfield";
+    public static final String PROPERTY_HEADER_TEXTFIELD_ALIAS = PROPERTY_HEADER_ROOT_ALIAS + "Textfield";
     public static final String PROPERTY_HEADER_TEXTFIELD_DEFAULT = "Title: <META=title>";
     public static final Class PROPERTY_HEADER_TEXTFIELD_TYPE = String.class;
 
-    public static final String PROPERTY_HEADER_TEXTFIELD2_KEY = PROPERTY_HEADER_ROOT_KEY + ".header.textfield2";
+    public static final String PROPERTY_HEADER_TEXTFIELD2_KEY = PROPERTY_HEADER_ROOT_KEY + ".textfield2";
     public static final String PROPERTY_HEADER_TEXTFIELD2_LABEL = "Header";
     public static final String PROPERTY_HEADER_TEXTFIELD2_TOOLTIP = "Adds a line to title/header to the Header-Footer Layer";
-    public static final String PROPERTY_HEADER_TEXTFIELD2_ALIAS = PROPERTY_HEADER_ROOT_ALIAS + "HeaderTextfield2";
-    public static final String PROPERTY_HEADER_TEXTFIELD2_DEFAULT = "Band: <Meta=[BAND]> (<Meta=[BAND_DESCRIPTION]>)";
+    public static final String PROPERTY_HEADER_TEXTFIELD2_ALIAS = PROPERTY_HEADER_ROOT_ALIAS + "Textfield2";
+    public static final String PROPERTY_HEADER_TEXTFIELD2_DEFAULT = "Band: <INFO=band> (<Info=band_description>)";
     public static final Class PROPERTY_HEADER_TEXTFIELD2_TYPE = String.class;
 
-    public static final String PROPERTY_HEADER_TEXTFIELD3_KEY = PROPERTY_HEADER_ROOT_KEY + ".header.textfield3";
+    public static final String PROPERTY_HEADER_TEXTFIELD3_KEY = PROPERTY_HEADER_ROOT_KEY + ".textfield3";
     public static final String PROPERTY_HEADER_TEXTFIELD3_LABEL = "Header";
     public static final String PROPERTY_HEADER_TEXTFIELD3_TOOLTIP = "Adds a line to title/header to the Header-Footer Layer";
-    public static final String PROPERTY_HEADER_TEXTFIELD3_ALIAS = PROPERTY_HEADER_ROOT_ALIAS + "HeaderTextfield3";
+    public static final String PROPERTY_HEADER_TEXTFIELD3_ALIAS = PROPERTY_HEADER_ROOT_ALIAS + "Textfield3";
     public static final String PROPERTY_HEADER_TEXTFIELD3_DEFAULT = "ID: <META=id>";
     public static final Class PROPERTY_HEADER_TEXTFIELD3_TYPE = String.class;
 
 
-    public static final String PROPERTY_HEADER_METADATA_KEY = PROPERTY_HEADER_ROOT_KEY + ".header.metadata";
+    public static final String PROPERTY_HEADER_METADATA_KEY = PROPERTY_HEADER_ROOT_KEY + ".metadata";
     public static final String PROPERTY_HEADER_METADATA_LABEL = "Header Metadata";
     public static final String PROPERTY_HEADER_METADATA_TOOLTIP = "Adds metadata to header";
-    public static final String PROPERTY_HEADER_METADATA_ALIAS = PROPERTY_HEADER_ROOT_ALIAS + "HeaderMetadata";
+    public static final String PROPERTY_HEADER_METADATA_ALIAS = PROPERTY_HEADER_ROOT_ALIAS + "Metadata";
     public static final String PROPERTY_HEADER_METADATA_DEFAULT = "";
     public static final Class PROPERTY_HEADER_METADATA_TYPE = String.class;
 
@@ -80,18 +80,19 @@ public class MetaDataLayerType extends LayerType {
 
 
 
+    // Footer Contents Section
 
     private static final String PROPERTY_FOOTER_ROOT_KEY = PROPERTY_ROOT_KEY + ".footer.contents";
     private static final String PROPERTY_FOOTER_ROOT_ALIAS = PROPERTY_ROOT_ALIAS + "footerContents";
 
     public static final String PROPERTY_FOOTER_SECTION_KEY = PROPERTY_FOOTER_ROOT_KEY + ".section";
-    public static final String PROPERTY_FOOTER_SECTION_LABEL = "Notes & Metadata";
+    public static final String PROPERTY_FOOTER_SECTION_LABEL = "Margin Notes & Metadata";
     public static final String PROPERTY_FOOTER_SECTION_TOOLTIP = "Contents of footer";
     public static final String PROPERTY_FOOTER_SECTION_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "Section";
 
     public static final String PROPERTY_FOOTER_SHOW_KEY = PROPERTY_FOOTER_ROOT_KEY + ".show";
-    public static final String PROPERTY_FOOTER_SHOW_LABEL = "Show Footer";
-    public static final String PROPERTY_FOOTER_SHOW_TOOLTIP = "Show footer";
+    public static final String PROPERTY_FOOTER_SHOW_LABEL = "Show Margin Notes";
+    public static final String PROPERTY_FOOTER_SHOW_TOOLTIP = "Show margin notes";
     public static final String PROPERTY_FOOTER_SHOW_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "Show";
     public static final boolean PROPERTY_FOOTER_SHOW_DEFAULT = true;
     public static final Class PROPERTY_FOOTER_SHOW_TYPE = Boolean.class;
@@ -105,7 +106,7 @@ public class MetaDataLayerType extends LayerType {
     public static final Class PROPERTY_FOOTER_TEXTFIELD_TYPE = String.class;
 
     public static final String PROPERTY_FOOTER_METADATA_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata";
-    public static final String PROPERTY_FOOTER_METADATA_LABEL = "Footer Metadata";
+    public static final String PROPERTY_FOOTER_METADATA_LABEL = "INFO List ";
     public static final String PROPERTY_FOOTER_METADATA_TOOLTIP = "Adds metadata to footer";
     public static final String PROPERTY_FOOTER_METADATA_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "FooterMetadata";
     public static final String PROPERTY_FOOTER_METADATA_DEFAULT = "[FILE], [Title], [Sensor],[Platform], [File_Location]";
@@ -113,28 +114,28 @@ public class MetaDataLayerType extends LayerType {
 
 
     public static final String PROPERTY_FOOTER_METADATA2_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata2";
-    public static final String PROPERTY_FOOTER_METADATA2_LABEL = "Footer Metadata";
+    public static final String PROPERTY_FOOTER_METADATA2_LABEL = "INFO List";
     public static final String PROPERTY_FOOTER_METADATA2_TOOLTIP = "Adds metadata to footer";
     public static final String PROPERTY_FOOTER_METADATA2_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "FooterMetadata2";
     public static final String PROPERTY_FOOTER_METADATA2_DEFAULT = "[SCENE_SIZE],[SCENE_START_TIME],[SCENE_END_TIME]";
     public static final Class PROPERTY_FOOTER_METADATA2_TYPE = String.class;
 
     public static final String PROPERTY_FOOTER_METADATA3_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata3";
-    public static final String PROPERTY_FOOTER_METADATA3_LABEL = "Footer Metadata";
+    public static final String PROPERTY_FOOTER_METADATA3_LABEL = "META List";
     public static final String PROPERTY_FOOTER_METADATA3_TOOLTIP = "Adds metadata to footer";
     public static final String PROPERTY_FOOTER_METADATA3_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "FooterMetadata3";
     public static final String PROPERTY_FOOTER_METADATA3_DEFAULT = "[BAND],[BAND_DESCRIPTION],[PRODUCT_TYPE]";
     public static final Class PROPERTY_FOOTER_METADATA3_TYPE = String.class;
 
     public static final String PROPERTY_FOOTER_METADATA4_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata4";
-    public static final String PROPERTY_FOOTER_METADATA4_LABEL = "Footer Metadata";
+    public static final String PROPERTY_FOOTER_METADATA4_LABEL = "META List";
     public static final String PROPERTY_FOOTER_METADATA4_TOOLTIP = "Adds metadata to footer";
     public static final String PROPERTY_FOOTER_METADATA4_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "FooterMetadata4";
     public static final String PROPERTY_FOOTER_METADATA4_DEFAULT = "[DAY_NIGHT],[ORBIT],[START_ORBIT],[END_ORBIT]";
     public static final Class PROPERTY_FOOTER_METADATA4_TYPE = String.class;
 
     public static final String PROPERTY_FOOTER_METADATA5_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata5";
-    public static final String PROPERTY_FOOTER_METADATA5_LABEL = "Footer Metadata";
+    public static final String PROPERTY_FOOTER_METADATA5_LABEL = "BAND_META List";
     public static final String PROPERTY_FOOTER_METADATA5_TOOLTIP = "Adds metadata to footer";
     public static final String PROPERTY_FOOTER_METADATA5_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "FooterMetadata5";
     public static final String PROPERTY_FOOTER_METADATA5_DEFAULT = "";
@@ -162,44 +163,86 @@ public class MetaDataLayerType extends LayerType {
     public static final Class PROPERTY_FOOTER_ALL_METADATA_SHOW_TYPE = Boolean.class;
 
 
+
+
+    private static final String PROPERTY_FOOTER2_ROOT_KEY = PROPERTY_ROOT_KEY + ".footer2.contents";
+    private static final String PROPERTY_FOOTER2_ROOT_ALIAS = PROPERTY_ROOT_ALIAS + "footer2Contents";
+
+    public static final String PROPERTY_FOOTER2_SECTION_KEY = PROPERTY_FOOTER2_ROOT_KEY + ".section";
+    public static final String PROPERTY_FOOTER2_SECTION_LABEL = "Footer Contents";
+    public static final String PROPERTY_FOOTER2_SECTION_TOOLTIP = "Contents of footer";
+    public static final String PROPERTY_FOOTER2_SECTION_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "Section";
+
+    public static final String PROPERTY_FOOTER2_SHOW_KEY = PROPERTY_FOOTER2_ROOT_KEY + ".show";
+    public static final String PROPERTY_FOOTER2_SHOW_LABEL = "Show Footer";
+    public static final String PROPERTY_FOOTER2_SHOW_TOOLTIP = "Show footer";
+    public static final String PROPERTY_FOOTER2_SHOW_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "Show";
+    public static final boolean PROPERTY_FOOTER2_SHOW_DEFAULT = true;
+    public static final Class PROPERTY_FOOTER2_SHOW_TYPE = Boolean.class;
+
+    public static final String PROPERTY_FOOTER2_TEXTFIELD_KEY = PROPERTY_FOOTER2_ROOT_KEY + ".textfield";
+    public static final String PROPERTY_FOOTER2_TEXTFIELD_LABEL = "Footer";
+    public static final String PROPERTY_FOOTER2_TEXTFIELD_TOOLTIP = "Adds a footer to the Header-Footer Layer";
+    public static final String PROPERTY_FOOTER2_TEXTFIELD_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "FooterTextfield";
+    public static final String PROPERTY_FOOTER2_TEXTFIELD_DEFAULT = "";
+    public static final Class PROPERTY_FOOTER2_TEXTFIELD_TYPE = String.class;
+
+
+
     public static final String LOCATION_TOP_LEFT = "Top Left";
-    public static final String LOCATION_TOP_CENTER = "Top Center";
-    public static final String LOCATION_TOP_CENTER_JUSTIFY_LEFT = "Top Center Justify Left";
+    public static final String LOCATION_TOP_CENTER = "Top Center (Centered)";
+    public static final String LOCATION_TOP_CENTER_JUSTIFY_LEFT = "Top Center";
     public static final String LOCATION_TOP_RIGHT = "Top Right";
     public static final String LOCATION_BOTTOM_LEFT = "Bottom Left";
-    public static final String LOCATION_BOTTOM_CENTER = "Bottom Center";
-    public static final String LOCATION_BOTTOM_CENTER_JUSTIFY_LEFT = "Bottom Center Justify Left";
+    public static final String LOCATION_BOTTOM_CENTER = "Bottom Center (Centered)";
+    public static final String LOCATION_BOTTOM_CENTER_JUSTIFY_LEFT = "Bottom Center";
     public static final String LOCATION_BOTTOM_RIGHT = "Bottom Right";
     public static final String LOCATION_RIGHT = "Upper Right";
+    public static final String LOCATION_RIGHT_CENTER = "Center Right";
     public static final String LOCATION_RIGHT_BOTTOM = "Lower Right";
     public static final String LOCATION_LEFT = "Upper Left";
+    public static final String LOCATION_LEFT_CENTER = "Center Left";
     public static final String LOCATION_LEFT_BOTTOM = "Lower Left";
 
 
-    public static String[] getMetaDataLocationArray() {
+
+
+    public static String[] getFooterLocationArray() {
         return  new String[]{
-                LOCATION_TOP_LEFT,
-                LOCATION_TOP_CENTER,
-                LOCATION_TOP_CENTER_JUSTIFY_LEFT,
-                LOCATION_TOP_RIGHT,
-                LOCATION_BOTTOM_LEFT,
-                LOCATION_BOTTOM_CENTER,
-                LOCATION_BOTTOM_CENTER_JUSTIFY_LEFT,
-                LOCATION_BOTTOM_RIGHT,
                 LOCATION_RIGHT,
+                LOCATION_RIGHT_CENTER,
                 LOCATION_RIGHT_BOTTOM,
                 LOCATION_LEFT,
+                LOCATION_LEFT_CENTER,
                 LOCATION_LEFT_BOTTOM
         };
     }
 
+    public static String[] getHeaderLocationArray() {
+        return  new String[]{
+                LOCATION_TOP_LEFT,
+                LOCATION_TOP_CENTER_JUSTIFY_LEFT,
+                LOCATION_TOP_CENTER,
+                LOCATION_TOP_RIGHT
+        };
+    }
 
+    public static String[] getFooter2LocationArray() {
+        return  new String[]{
+                LOCATION_BOTTOM_LEFT,
+                LOCATION_BOTTOM_CENTER_JUSTIFY_LEFT,
+                LOCATION_BOTTOM_CENTER,
+                LOCATION_BOTTOM_RIGHT
+        };
+    }
 
 
     public static final String PROPERTY_FONT_STYLE_1 = "SanSerif";
     public static final String PROPERTY_FONT_STYLE_2 = "Serif";
     public static final String PROPERTY_FONT_STYLE_3 = "Courier";
     public static final String PROPERTY_FONT_STYLE_4 = "Monospaced";
+
+
 
 
 
@@ -279,7 +322,6 @@ public class MetaDataLayerType extends LayerType {
 
     // Footer Format Section
 
-
     private static final String PROPERTY_FOOTER_FORMAT_ROOT_KEY = PROPERTY_ROOT_KEY + ".footer.formatting";
     private static final String PROPERTY_FOOTER_FORMAT_ROOT_ALIAS = PROPERTY_ROOT_ALIAS + "FooterFormatting";
 
@@ -343,6 +385,65 @@ public class MetaDataLayerType extends LayerType {
     public static final String PROPERTY_FOOTER_FONT_BOLD_ALIAS = PROPERTY_FOOTER_FORMAT_ROOT_ALIAS + "FontBold";
     public static final boolean PROPERTY_FOOTER_FONT_BOLD_DEFAULT = false;
     public static final Class PROPERTY_FOOTER_FONT_BOLD_TYPE = Boolean.class;
+
+
+
+    // Footer Format Section
+
+    private static final String PROPERTY_FOOTER2_FORMAT_ROOT_KEY = PROPERTY_ROOT_KEY + ".footer2.formatting";
+    private static final String PROPERTY_FOOTER2_FORMAT_ROOT_ALIAS = PROPERTY_ROOT_ALIAS + "Footer2Formatting";
+
+    public static final String PROPERTY_FOOTER2_FORMATTING_SECTION_KEY = PROPERTY_FOOTER2_FORMAT_ROOT_KEY + ".section";
+    public static final String PROPERTY_FOOTER2_FORMATTING_SECTION_LABEL = "Format: Notes & Metadata";
+    public static final String PROPERTY_FOOTER2_FORMATTING_SECTION_TOOLTIP = "Set  location of matadata on the scene image";
+    public static final String PROPERTY_FOOTER2_FORMATTING_SECTION_ALIAS = PROPERTY_FOOTER2_FORMAT_ROOT_ALIAS + "Section";
+
+    public static final String PROPERTY_FOOTER2_LOCATION_KEY = PROPERTY_FOOTER2_FORMAT_ROOT_KEY + ".location";
+    public static final String PROPERTY_FOOTER2_LOCATION_LABEL = "Footer2 Location";
+    public static final String PROPERTY_FOOTER2_LOCATION_TOOLTIP = "Where to place the footer2 on the image";
+    private static final String PROPERTY_FOOTER2_LOCATION_ALIAS = PROPERTY_FOOTER2_FORMAT_ROOT_ALIAS + "Footer2Location";
+    public static final String PROPERTY_FOOTER2_LOCATION_DEFAULT = LOCATION_BOTTOM_LEFT;
+    public static final Class PROPERTY_FOOTER2_LOCATION_TYPE = String.class;
+
+
+    // My Info Section
+
+    private static final String PROPERTY_MY_INFO_ROOT_KEY = PROPERTY_ROOT_KEY + ".my.info.contents";
+    private static final String PROPERTY_MY_INFO_ROOT_ALIAS = PROPERTY_ROOT_ALIAS + "myInfoContents";
+
+    public static final String PROPERTY_MY_INFO_SECTION_KEY = PROPERTY_MY_INFO_ROOT_KEY + ".section";
+    public static final String PROPERTY_MY_INFO_SECTION_LABEL = "Contents of meta parameter MY_INFO";
+    public static final String PROPERTY_MY_INFO_SECTION_TOOLTIP = "Establishes meta parameter MY_INFO";
+    public static final String PROPERTY_MY_INFO_SECTION_ALIAS = PROPERTY_MY_INFO_ROOT_ALIAS + "Section";
+
+    public static final String PROPERTY_MY_INFO_TEXTFIELD1_KEY = PROPERTY_MY_INFO_ROOT_KEY + ".textfield1";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD1_LABEL = "MY_INFO1";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD1_TOOLTIP = "First line of MY_INFO";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD1_ALIAS = PROPERTY_MY_INFO_ROOT_ALIAS + "HeaderTextfield1";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD1_DEFAULT = "Name: ";
+    public static final Class PROPERTY_MY_INFO_TEXTFIELD1_TYPE = String.class;
+
+    public static final String PROPERTY_MY_INFO_TEXTFIELD2_KEY = PROPERTY_MY_INFO_ROOT_KEY + ".textfield2";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD2_LABEL = "MY_INFO2";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD2_TOOLTIP = "Second line of MY_INFO";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD2_ALIAS = PROPERTY_MY_INFO_ROOT_ALIAS + "HeaderTextfield2";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD2_DEFAULT = "Address: ";
+    public static final Class PROPERTY_MY_INFO_TEXTFIELD2_TYPE = String.class;
+
+    public static final String PROPERTY_MY_INFO_TEXTFIELD3_KEY = PROPERTY_MY_INFO_ROOT_KEY + ".textfield3";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD3_LABEL = "MY_INFO3";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD3_TOOLTIP = "Third line of MY_INFO";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD3_ALIAS = PROPERTY_MY_INFO_ROOT_ALIAS + "HeaderTextfield3";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD3_DEFAULT = "Address2: ";
+    public static final Class PROPERTY_MY_INFO_TEXTFIELD3_TYPE = String.class;
+
+    public static final String PROPERTY_MY_INFO_TEXTFIELD4_KEY = PROPERTY_MY_INFO_ROOT_KEY + ".textfield4";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD4_LABEL = "MY_INFO4";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD4_TOOLTIP = "Fourth line of MY_INFO";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD4_ALIAS = PROPERTY_MY_INFO_ROOT_ALIAS + "HeaderTextfield4";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD4_DEFAULT = "Phone: ";
+    public static final Class PROPERTY_MY_INFO_TEXTFIELD4_TYPE = String.class;
+
 
 
 
@@ -414,6 +515,9 @@ public class MetaDataLayerType extends LayerType {
         vc.addProperty(headerMetadataKeysShowModel);
 
 
+
+
+
         final Property footerParametersSectionModel = Property.create(PROPERTY_FOOTER_SECTION_KEY, Boolean.class, true, true);
         footerParametersSectionModel.getDescriptor().setAlias(PROPERTY_FOOTER_SECTION_ALIAS);
         vc.addProperty(footerParametersSectionModel);
@@ -460,6 +564,20 @@ public class MetaDataLayerType extends LayerType {
         footerMetadataDelimiterModel.getDescriptor().setAlias(PROPERTY_FOOTER_METADATA_DELIMITER_ALIAS);
         vc.addProperty(footerMetadataDelimiterModel);
 
+
+        // Footer2 Contents Section
+
+        final Property footer2ParametersSectionModel = Property.create(PROPERTY_FOOTER2_SECTION_KEY, Boolean.class, true, true);
+        footer2ParametersSectionModel.getDescriptor().setAlias(PROPERTY_FOOTER2_SECTION_ALIAS);
+        vc.addProperty(footer2ParametersSectionModel);
+
+        final Property footer2ShowModel = Property.create(PROPERTY_FOOTER2_SHOW_KEY, PROPERTY_FOOTER2_SHOW_TYPE, true, true);
+        footer2ShowModel.getDescriptor().setAlias(PROPERTY_FOOTER2_SHOW_ALIAS);
+        vc.addProperty(footer2ShowModel);
+
+        final Property footer2TextfieldModel = Property.create(PROPERTY_FOOTER2_TEXTFIELD_KEY, PROPERTY_FOOTER2_TEXTFIELD_TYPE, true, true);
+        footer2TextfieldModel.getDescriptor().setAlias(PROPERTY_FOOTER2_TEXTFIELD_ALIAS);
+        vc.addProperty(footer2TextfieldModel);
 
 
 
@@ -533,6 +651,42 @@ public class MetaDataLayerType extends LayerType {
         final Property footerFontBoldModel = Property.create(PROPERTY_FOOTER_FONT_BOLD_KEY, Boolean.class, PROPERTY_FOOTER_FONT_BOLD_DEFAULT, true);
         footerFontBoldModel.getDescriptor().setAlias(PROPERTY_FOOTER_FONT_BOLD_ALIAS);
         vc.addProperty(footerFontBoldModel);
+
+
+
+        final Property myInfoSectionModel = Property.create(PROPERTY_MY_INFO_SECTION_KEY, Boolean.class, true, true);
+        myInfoSectionModel.getDescriptor().setAlias(PROPERTY_MY_INFO_SECTION_ALIAS);
+        vc.addProperty(myInfoSectionModel);
+
+        final Property myInfo1Model = Property.create(PROPERTY_MY_INFO_TEXTFIELD1_KEY, String.class, PROPERTY_MY_INFO_TEXTFIELD1_DEFAULT, true);
+        myInfo1Model.getDescriptor().setAlias(PROPERTY_MY_INFO_TEXTFIELD1_ALIAS);
+        vc.addProperty(myInfo1Model);
+
+        final Property myInfo2Model = Property.create(PROPERTY_MY_INFO_TEXTFIELD2_KEY, String.class, PROPERTY_MY_INFO_TEXTFIELD2_DEFAULT, true);
+        myInfo2Model.getDescriptor().setAlias(PROPERTY_MY_INFO_TEXTFIELD2_ALIAS);
+        vc.addProperty(myInfo2Model);
+
+        final Property myInfo3Model = Property.create(PROPERTY_MY_INFO_TEXTFIELD3_KEY, String.class, PROPERTY_MY_INFO_TEXTFIELD3_DEFAULT, true);
+        myInfo3Model.getDescriptor().setAlias(PROPERTY_MY_INFO_TEXTFIELD3_ALIAS);
+        vc.addProperty(myInfo3Model);
+
+        final Property myInfo4Model = Property.create(PROPERTY_MY_INFO_TEXTFIELD4_KEY, String.class, PROPERTY_MY_INFO_TEXTFIELD4_DEFAULT, true);
+        myInfo4Model.getDescriptor().setAlias(PROPERTY_MY_INFO_TEXTFIELD4_ALIAS);
+        vc.addProperty(myInfo4Model);
+
+
+
+        // Footer2 Formatting Section
+
+        final Property footer2LocationSectionModel = Property.create(PROPERTY_FOOTER2_FORMATTING_SECTION_KEY, Boolean.class, true, true);
+        footer2LocationSectionModel.getDescriptor().setAlias(PROPERTY_FOOTER2_FORMATTING_SECTION_ALIAS);
+        vc.addProperty(footer2LocationSectionModel);
+
+        final Property footer2LocationModel = Property.create(PROPERTY_FOOTER2_LOCATION_KEY, PROPERTY_FOOTER2_LOCATION_TYPE, true, true);
+        footer2LocationModel.getDescriptor().setAlias(PROPERTY_FOOTER2_LOCATION_ALIAS);
+        vc.addProperty(footer2LocationModel);
+
+
 
 
         final Property rasterModel = Property.create(PROPERTY_NAME_RASTER, RasterDataNode.class);

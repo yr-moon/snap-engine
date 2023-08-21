@@ -69,30 +69,8 @@ public class MetaDataLayer extends Layer {
         if (headerFooter == null) {
             final List<String> headerList = new ArrayList<String>();
             final List<String> footerList = new ArrayList<String>();
+            final List<String> footer2List = new ArrayList<String>();
 
-//            String header = getHeader();
-//            if (header != null && header.length() > 0) {
-//                String[] linesArray = header.split("(\\n|<br>)");
-//                for (String currentLine : linesArray) {
-//                    if (currentLine != null && currentLine.length() > 0) {
-////                        currentLine = replaceStringVariables(currentLine, getHeaderMetadataKeysShow());
-//                        currentLine = replaceStringVariables(currentLine, false);
-//                        headerList.add(currentLine);
-//                    }
-//                }
-//            }
-//
-//            String header2 = getHeader2();
-//            if (header2 != null && header2.length() > 0) {
-//                String[] linesArray = header2.split("(\\n|<br>)");
-//                for (String currentLine : linesArray) {
-//                    if (currentLine != null && currentLine.length() > 0) {
-//                        currentLine = replaceStringVariables(currentLine, false);
-////                        currentLine = replaceStringVariables(currentLine, getHeaderMetadataKeysShow());
-//                        headerList.add(currentLine);
-//                    }
-//                }
-//            }
 
             for (String curr : getHeaderFooterLinesArray(getHeader())) {
                 headerList.add(curr);
@@ -112,47 +90,8 @@ public class MetaDataLayer extends Layer {
                 headerMetadataCombinedArrayList.add(curr);
             }
 
-            addFromMetadataList(headerMetadataCombinedArrayList, headerList);
+            addFromMetadataList(headerMetadataCombinedArrayList, headerList, true, true);
 
-//
-//            String headerMetadata = getHeaderMetadata();
-//            if (headerMetadata != null && headerMetadata.length() > 0) {
-//                String[] paramsArray = headerMetadata.split("[ ,]+");
-//                for (String currentParam : paramsArray) {
-//                    currentParam = currentParam.trim();
-//                    if (currentParam != null && currentParam.length() > 0) {
-//                        if (currentParam.startsWith("[")) {
-//                            String key = currentParam;
-//                            int length = key.length();
-//                            key = key.substring(1, length - 1);
-//                            currentParam = replaceStringVariables(currentParam.toUpperCase(), getHeaderMetadataKeysShow());
-//
-//                            if (getHeaderMetadataKeysShow()) {
-//                                currentParam = key + getFooterMetadataDelimiter() + currentParam;
-//                            }
-//                        } else {
-//                            if (getHeaderMetadataKeysShow()) {
-//                                currentParam = currentParam + getFooterMetadataDelimiter() + ProductUtils.getMetaData(raster.getProduct(), currentParam);
-//                            } else {
-//                                currentParam = ProductUtils.getMetaData(raster.getProduct(), currentParam);
-//                            }
-//                        }
-//                        headerList.add(currentParam);
-//                    }
-//                }
-//            }
-
-
-//            String footer = getFooter();
-//            if (footer != null && footer.length() > 0) {
-//                String[] linesArray = footer.split("(\\n|<br>)");
-//                for (String currentLine : linesArray) {
-//                    if (currentLine != null && currentLine.length() > 0) {
-//                        currentLine = replaceStringVariables(currentLine, getFooterMetadataKeysShow());
-//                        footerList.add(currentLine);
-//                    }
-//                }
-//            }
 
             for (String curr : getHeaderFooterLinesArray(getFooter())) {
                 footerList.add(curr);
@@ -161,13 +100,15 @@ public class MetaDataLayer extends Layer {
 
 
             ArrayList<String> footerMetadataCombinedArrayList = new ArrayList<String>();
+            ArrayList<String> footerBandMetadataCombinedArrayList = new ArrayList<String>();
+            ArrayList<String> footerInfoCombinedArrayList = new ArrayList<String>();
 
             for (String curr : getMetadataArrayList(getFooterMetadata())) {
-                footerMetadataCombinedArrayList.add(curr);
+                footerInfoCombinedArrayList.add(curr);
             }
 
             for (String curr : getMetadataArrayList(getFooterMetadata2())) {
-                footerMetadataCombinedArrayList.add(curr);
+                footerInfoCombinedArrayList.add(curr);
             }
 
             for (String curr : getMetadataArrayList(getFooterMetadata3())) {
@@ -179,53 +120,48 @@ public class MetaDataLayer extends Layer {
             }
 
             for (String curr : getMetadataArrayList(getFooterMetadata5())) {
-                footerMetadataCombinedArrayList.add(curr);
+                footerBandMetadataCombinedArrayList.add(curr);
             }
 
             if (displayAllMetadata()) {
                 String[] allAttributes = getProduct().getMetadataRoot().getElement("Global_Attributes").getAttributeNames();
+//                footerMetadataCombinedArrayList.add(" ");
+//                footerMetadataCombinedArrayList.add("Global_Attributes");
+                footerMetadataCombinedArrayList.clear();
                 for (String curr : allAttributes) {
                     footerMetadataCombinedArrayList.add(curr);
                 }
             }
 
-            addFromMetadataList(footerMetadataCombinedArrayList, footerList);
-//
-//            for (String currKey : footerMetadataCombinedArrayList) {
-//                if (currKey != null && currKey.length() > 0) {
-//                    String currParam = null;
-//                    if (currKey.startsWith("[")) {
-//                        int length = currKey.length();
-//                        if (length > 2) {
-//                            currParam = getDerivedMeta(currKey.toUpperCase());
-//
-//                            if (getFooterMetadataKeysShow()) {
-//                                String keyTrimmed = currKey.substring(1, length - 1);
-//                                currParam = keyTrimmed + getFooterMetadataDelimiter() + currParam;
-//                            }
-//                        }
-//                    } else {
-//                        String key = currKey;
-//                        currParam = ProductUtils.getMetaData(raster.getProduct(), currKey);
-//
-//                        if (getFooterMetadataKeysShow()) {
-//                            currParam = key + getFooterMetadataDelimiter() + currParam;
-//                        }
-//                    }
-//                    if (currParam != null && currParam.trim() != null && currParam.length() > 0) {
-//                        footerList.add(currParam);
-////                    } else {
-////                        footerList.add(currKey);
-//                    }
-//                }
-//            }
+            if (displayAllMetadata()) {
+                String[] allAttributes = getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttributeNames();
+//                footerMetadataCombinedArrayList.add(" ");
+//                footerMetadataCombinedArrayList.add("Band_Attributes for: '" + raster.getName() + "'");
+                footerBandMetadataCombinedArrayList.clear();
+                for (String curr : allAttributes) {
+                    footerBandMetadataCombinedArrayList.add(curr);
+                }
+            }
+
+            footerList.add("");
+            footerList.add("File-Band Info:");
+            addFromMetadataList(footerInfoCombinedArrayList, footerList, false, false);
+
+            footerList.add("");
+            footerList.add("File Metadata: (Global_Attributes)");
+            addFromMetadataList(footerMetadataCombinedArrayList, footerList, true, true);
+
+            footerList.add("");
+            footerList.add("Band Metadata (Band_Attributes):");
+            addFromMetadataList(footerBandMetadataCombinedArrayList, footerList, true, false);
 
 
-            //            TextGlyph[] textGlyphHeader = createTextGlyphsHeader(raster.getProduct().getName() + "processing_version=" + raster.getProduct().getMetadataRoot().getAttributeString("processing_version"));
+            for (String curr : getHeaderFooterLinesArray(getFooter2Textfield())) {
+                footer2List.add(curr);
+            }
 
-            String[] attributes = raster.getProduct().getMetadataRoot().getAttributeNames();
 
-            headerFooter = MetaDataOnImage.create(raster, headerList, footerList);
+            headerFooter = MetaDataOnImage.create(raster, headerList, footerList, footer2List);
         }
         if (headerFooter != null) {
 
@@ -247,12 +183,16 @@ public class MetaDataLayer extends Layer {
 
                 final MetaDataOnImage.TextGlyph[] textGlyphHeader = headerFooter.getTextGlyphsHeader();
                 final MetaDataOnImage.TextGlyph[] textGlyphsFooter = headerFooter.get_textGlyphsFooter();
+                final MetaDataOnImage.TextGlyph[] textGlyphsFooter2 = headerFooter.get_textGlyphsFooter2();
 
                 if (getHeaderShow()) {
-                    drawTextHeaderFooter(g2d, textGlyphHeader, true, raster);
+                    drawTextHeaderFooter(g2d, textGlyphHeader, true, false, raster);
                 }
                 if (getFooterShow()) {
-                    drawTextHeaderFooter(g2d, textGlyphsFooter, false, raster);
+                    drawTextHeaderFooter(g2d, textGlyphsFooter, false, false, raster);
+                }
+                if (getFooter2Show()) {
+                    drawTextHeaderFooter(g2d, textGlyphsFooter2, false, true, raster);
                 }
 
             } finally {
@@ -261,28 +201,33 @@ public class MetaDataLayer extends Layer {
         }
     }
 
-    private void addFromMetadataList(ArrayList<String> footerMetadataCombinedArrayList, List<String> footerList) {
+    private void addFromMetadataList(ArrayList<String> footerMetadataCombinedArrayList, List<String> footerList, boolean isMeta, boolean globalAttributes) {
         for (String currKey : footerMetadataCombinedArrayList) {
             if (currKey != null && currKey.length() > 0) {
                 String currParam = null;
-                if (currKey.startsWith("[")) {
+                if (!isMeta) {
                     int length = currKey.length();
                     if (length > 2) {
                         currParam = getDerivedMeta(currKey.toUpperCase());
 
                         if (getFooterMetadataKeysShow()) {
-                            String keyTrimmed = currKey.substring(1, length - 1);
-                            currParam = keyTrimmed + getFooterMetadataDelimiter() + currParam;
+                            currParam = currKey + getFooterMetadataDelimiter() + currParam;
                         }
                     }
                 } else {
                     String key = currKey;
-                    currParam = ProductUtils.getMetaData(raster.getProduct(), currKey);
+
+                    if (globalAttributes) {
+                        currParam = ProductUtils.getMetaData(raster.getProduct(), currKey);
+                    } else {
+                        currParam = ProductUtils.getBandMetaData(raster.getProduct(), currKey, raster.getName());
+                    }
 
                     if (getFooterMetadataKeysShow()) {
                         currParam = key + getFooterMetadataDelimiter() + currParam;
                     }
                 }
+
                 if (currParam != null && currParam.trim() != null && currParam.length() > 0) {
                     footerList.add(currParam);
 //                    } else {
@@ -329,7 +274,7 @@ public class MetaDataLayer extends Layer {
         return converted.toString();
     }
 
-    private String replaceStringVariables(String inputString, boolean showKeys) {
+    private String replaceStringVariables(String inputString, boolean showKeys, String replaceKey) {
         if (inputString != null && inputString.length() > 0) {
 ////            inputString = inputString.replace("[FILE]", raster.getProduct().getName());
 ////            inputString = inputString.replace("[File]", raster.getProduct().getName());
@@ -388,14 +333,46 @@ public class MetaDataLayer extends Layer {
             String afterMetaData = "";
             String metaStart = "";
 
-//            String META_START = "<META>";
-//            String META_END = "</META>";
 
-            String META_START = "<META=";
+            String META_START = replaceKey;
+
+
             String META_END = ">";
 
-            inputString = inputString.replace("<Meta=", META_START);
-            inputString = inputString.replace("<meta=", META_START);
+
+            switch (META_START) {
+                case "<META=":
+                    inputString = inputString.replace("<Meta=", META_START);
+                    inputString = inputString.replace("<meta=", META_START);
+                    break;
+
+                case "<FILE_META=":
+                    inputString = inputString.replace("<File_Meta=", META_START);
+                    inputString = inputString.replace("<file_meta=", META_START);
+                    break;
+
+                case "<BAND_META=":
+                    inputString = inputString.replace("<Band_Meta=", META_START);
+                    inputString = inputString.replace("<band_meta=", META_START);
+                    break;
+
+                case "<FILE_INFO=":
+                    inputString = inputString.replace("<File_Info=", META_START);
+                    inputString = inputString.replace("<file_info=", META_START);
+                    break;
+
+                case "<BAND_INFO=":
+                    inputString = inputString.replace("<Band_Info=", META_START);
+                    inputString = inputString.replace("<band_info=", META_START);
+                    break;
+
+                case "<INFO=":
+                    inputString = inputString.replace("<Info=", META_START);
+                    inputString = inputString.replace("<info=", META_START);
+                    break;
+            }
+
+
 
 
 
@@ -430,11 +407,34 @@ public class MetaDataLayer extends Layer {
 
                 if (metaId != null && metaId.length() > 0) {
                     String value = "";
-                    if (metaId.startsWith("[") && metaId.endsWith("]")) {
-                        value = getDerivedMeta(metaId);
-                    } else {
-                        value = ProductUtils.getMetaData(raster.getProduct(), metaId);
-                    }
+
+
+                        switch (META_START) {
+                            case "<META=":
+                                value = ProductUtils.getMetaData(raster.getProduct(), metaId);
+                                break;
+
+                            case "<FILE_META=":
+                                value = ProductUtils.getMetaData(raster.getProduct(), metaId);
+                                break;
+
+                            case "<BAND_META=":
+                                value = ProductUtils.getBandMetaData(raster.getProduct(), metaId, raster.getName());
+                                break;
+
+                            case "<FILE_INFO=":
+                                value = getDerivedMeta(metaId);
+                                break;
+
+                            case "<BAND_INFO=":
+                                value = getDerivedMeta(metaId);
+                                break;
+
+                            case "<INFO=":
+                                value = getDerivedMeta(metaId);
+                                break;
+                        }
+
                     if (showKeys) {
                         inputString = beforeMetaData + metaId + getFooterMetadataDelimiter() +value + afterMetaData;
                     } else {
@@ -456,79 +456,120 @@ public class MetaDataLayer extends Layer {
         String value = "";
 
         if (inputString != null && inputString.length() > 0) {
+            inputString = inputString.toUpperCase();
 
             switch (inputString) {
 
-                case "[FILE]":
+                case "FILE":
                     value = raster.getProduct().getName();
                     break;
 
-                case "[PROCESSING_VERSION]":
+                case "PROCESSING_VERSION":
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PROCESSING_VERSION_KEYS);
                     break;
 
-                case "[SENSOR]":
+                case "SENSOR":
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS);
                     break;
-                case "[PLATFORM]":
+                case "PLATFORM":
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PLATFORM_KEYS);
                     break;
-                case "[PROJECTION]":
+                case "PROJECTION":
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PROJECTION_KEYS);
                     break;
-                case "[RESOLUTION]":
+                case "RESOLUTION":
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_RESOLUTION_KEYS);
                     break;
 
-                case "[DAY_NIGHT]":
+                case "DAY_NIGHT":
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_DAY_NIGHT_KEYS);
                     break;
-                case "[ORBIT]":
+                case "ORBIT":
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_ORBIT_KEYS);
                     break;
-                case "[START_ORBIT]":
+                case "START_ORBIT":
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_START_ORBIT_KEYS);
                     break;
-                case "[END_ORBIT]":
+                case "END_ORBIT":
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_END_ORBIT_KEYS);
                     break;
 
-                case "[BAND]":
+                case "BAND":
                     value = raster.getName();
                     break;
 
-                case "[BAND_DESCRIPTION]":
+                case "BAND_DESCRIPTION":
                     value = raster.getDescription();
                     break;
 
-                case "[FILE_LOCATION]":
+                case "FILE_LOCATION":
                     value = raster.getProduct().getFileLocation().toString();
                     break;
 
-                case "[PRODUCT_TYPE]":
+                case "PRODUCT_TYPE":
                     value = raster.getProduct().getProductType();
                     break;
 
-                case "[SCENE_START_TIME]":
+                case "SCENE_START_TIME":
                     value = raster.getProduct().getStartTime().toString();
                     break;
 
-                case "[SCENE_END_TIME]":
+                case "SCENE_END_TIME":
                     value = raster.getProduct().getEndTime().toString();
                     break;
 
-                case "[SCENE_HEIGHT]":
+                case "SCENE_HEIGHT":
                     value = Integer.toString(raster.getRasterHeight());
                     break;
 
-                case "[SCENE_WIDTH]":
+                case "SCENE_WIDTH":
                     value = Integer.toString(raster.getRasterWidth());
                     break;
 
-                case "[SCENE_SIZE]":
+                case "SCENE_SIZE":
                     value = "(w x h) " + raster.getRasterWidth() + " pixels x " + raster.getRasterHeight() + " pixels";
                     break;
+
+                case "MY_INFO":
+                    value = getMyInfo();
+                    break;
+
+                case "MY_INFO1":
+                    value = getMyInfo1();
+                    break;
+
+                case "MY_INFO2":
+                    value = getMyInfo2();
+                    break;
+
+                case "MY_INFO3":
+                    value = getMyInfo3();
+                    break;
+
+                case "[MY_INFO4]":
+                    value = getMyInfo4();
+                    break;
             }
+
+            //
+//            raster.getImageInfo().getColorPaletteDef().isLogScaled();
+//            raster.getValidPixelExpression();
+//            raster.getUnit();
+//            raster.getOverlayMaskGroup().getNodeDisplayNames();
+//            raster.getOverlayMaskGroup().getNodeNames();
+//            raster.getProduct().getBand(raster.getName()).getSpectralWavelength();
+//            raster.getProduct().getBand(raster.getName()).getAngularValue();
+//            raster.getProduct().getBand(raster.getName()).getFlagCoding();
+//            raster.getNoDataValue();
+//            raster.isNoDataValueSet();
+//            raster.isNoDataValueUsed();
+//            raster.isScalingApplied();
+//            raster.getScalingFactor();
+//            raster.getScalingOffset();
+//            raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("reference").getData().getElemString();
+//            raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_min").getData().getElemString();
+//            raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_max").getData().getElemString();
+
         }
 
 
@@ -571,6 +612,7 @@ public class MetaDataLayer extends Layer {
     private void drawTextHeaderFooter(Graphics2D g2d,
                                       final MetaDataOnImage.TextGlyph[] textGlyphs,
                                       boolean isHeader,
+                                      boolean isFooter2,
                                       RasterDataNode raster) {
 
 
@@ -632,7 +674,14 @@ public class MetaDataLayer extends Layer {
 
             Rectangle2D labelBounds = g2d.getFontMetrics().getStringBounds(glyph.getText(), g2d);
 
-            String location = (isHeader) ? getLocationHeader() : getLocationFooter();
+            String location;
+            if (isHeader) {
+                location = getLocationHeader();
+            } else if (isFooter2) {
+                location = getLocationFooter2();
+            } else {
+                location = getLocationFooter();
+            }
 
             float xOffset = 0;
             float yOffset = 0;
@@ -683,6 +732,11 @@ public class MetaDataLayer extends Layer {
                     yOffset = 0;
                     break;
 
+                case MetaDataLayerType.LOCATION_RIGHT_CENTER:
+                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getFooterGapFactor() / 100));;
+                    yOffset = (float) (raster.getRasterHeight()/2.0 + labelBounds.getHeight() - heightInformationBlock);
+                    break;
+
                 case MetaDataLayerType.LOCATION_RIGHT_BOTTOM:
                     xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getFooterGapFactor() / 100));;
                     yOffset = (float) (raster.getRasterHeight() + labelBounds.getHeight() - heightInformationBlock);
@@ -691,6 +745,11 @@ public class MetaDataLayer extends Layer {
                 case MetaDataLayerType.LOCATION_LEFT:
                     xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getFooterGapFactor() / 100));;
                     yOffset = 0;
+                    break;
+
+                case MetaDataLayerType.LOCATION_LEFT_CENTER:
+                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getFooterGapFactor() / 100));;
+                    yOffset = (float) (raster.getRasterHeight()/2.0 + labelBounds.getHeight() - heightInformationBlock);
                     break;
 
                 case MetaDataLayerType.LOCATION_LEFT_BOTTOM:
@@ -759,6 +818,9 @@ public class MetaDataLayer extends Layer {
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_DELIMITER_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_ALL_METADATA_SHOW_KEY) ||
 
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_SHOW_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD_KEY) ||
+
 
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_LOCATION_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_GAP_KEY) ||
@@ -774,7 +836,10 @@ public class MetaDataLayer extends Layer {
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_COLOR_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_STYLE_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_ITALIC_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_BOLD_KEY)
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_BOLD_KEY) ||
+
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_LOCATION_KEY
+                        )
         ) {
             headerFooter = null;
         }
@@ -873,6 +938,18 @@ public class MetaDataLayer extends Layer {
 
 
 
+    private boolean getFooter2Show() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_SHOW_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_SHOW_DEFAULT);
+    }
+
+    private String getFooter2Textfield() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD_DEFAULT);
+    }
+
+
+
     private ArrayList<String> getFooterMetadataArrayList() {
 
         ArrayList<String> footerMetadataArrayList = new ArrayList<String>();
@@ -913,7 +990,12 @@ public class MetaDataLayer extends Layer {
             String[] linesArray = text.split("(\\n|<br>)");
             for (String currentLine : linesArray) {
                 if (currentLine != null && currentLine.length() > 0) {
-                    currentLine = replaceStringVariables(currentLine, false);
+                    currentLine = replaceStringVariables(currentLine, false, "<INFO=");
+                    currentLine = replaceStringVariables(currentLine, false, "<META=");
+                    currentLine = replaceStringVariables(currentLine, false, "<FILE_INFO=");
+                    currentLine = replaceStringVariables(currentLine, false, "<BAND_INFO=");
+                    currentLine = replaceStringVariables(currentLine, false, "<FILE_META=");
+                    currentLine = replaceStringVariables(currentLine, false, "<BAND_META=");
                     lineArrayList.add(currentLine);
                 }
             }
@@ -961,6 +1043,11 @@ public class MetaDataLayer extends Layer {
         String footerLocation = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_LOCATION_KEY,
                 MetaDataLayerType.PROPERTY_FOOTER_LOCATION_DEFAULT);
         return footerLocation;
+    }
+
+    private String getLocationFooter2() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_LOCATION_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_LOCATION_DEFAULT);
     }
 
 
@@ -1054,6 +1141,63 @@ public class MetaDataLayer extends Layer {
         } else {
             return Font.PLAIN;
         }
+    }
+
+
+    private String getMyInfo1() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD1_KEY,
+                MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD1_DEFAULT);
+    }
+
+    private String getMyInfo2() {
+        return  getConfigurationProperty(MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD2_KEY,
+                MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD2_DEFAULT);
+    }
+
+    private String getMyInfo3() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD3_KEY,
+                MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD3_DEFAULT);
+    }
+
+    private String getMyInfo4() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD4_KEY,
+                MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD4_DEFAULT);
+    }
+
+    private String getMyInfo() {
+        StringBuilder sb = new StringBuilder();
+
+        String myInfo1 = getMyInfo1();
+        String myInfo2 = getMyInfo2();
+        String myInfo3 = getMyInfo3();
+        String myInfo4 = getMyInfo4();
+
+        if (myInfo1 != null && myInfo1.length() > 1) {
+            sb.append(myInfo1);
+            sb.append(" ");
+        }
+
+        if (myInfo2 != null && myInfo2.length() > 1) {
+            sb.append(myInfo2);
+            sb.append(" ");
+        }
+
+        if (myInfo3 != null && myInfo3.length() > 1) {
+            sb.append(myInfo3);
+            sb.append(" ");
+        }
+
+        if (myInfo4 != null && myInfo4.length() > 1) {
+            sb.append(myInfo4);
+            sb.append(" ");
+        }
+
+        String myInfo = sb.toString();
+        if (myInfo != null) {
+            myInfo = myInfo.trim();
+        }
+
+        return myInfo;
     }
 
 
