@@ -33,13 +33,72 @@ public class MetaDataLayer extends Layer {
     private double ptsToPixelsMultiplier = NULL_DOUBLE;
 
 
+    private final String INFO_PARAM_FILE = "FILE";
+    private final String INFO_PARAM_PROCESSING_VERSION = "PROCESSING_VERSION";
+    private final String INFO_PARAM_SENSOR = "SENSOR";
+    private final String INFO_PARAM_PLATFORM = "PLATFORM";
+    private final String INFO_PARAM_PROJECTION = "PROJECTION";
+    private final String INFO_PARAM_RESOLUTION = "RESOLUTION";
+    private final String INFO_PARAM_DAY_NIGHT = "DAY_NIGHT";
+    private final String INFO_PARAM_ORBIT = "ORBIT";
+    private final String INFO_PARAM_START_ORBIT = "START_ORBIT";
+    private final String INFO_PARAM_END_ORBIT = "END_ORBIT";
+    private final String INFO_PARAM_BAND = "BAND";
+    private final String INFO_PARAM_BAND_DESCRIPTION = "BAND_DESCRIPTION";
+    private final String INFO_PARAM_FILE_LOCATION = "FILE_LOCATION";
+    private final String INFO_PARAM_PRODUCT_TYPE = "PRODUCT_TYPE";
+    private final String INFO_PARAM_SCENE_START_TIME = "SCENE_START_TIME";
+    private final String INFO_PARAM_SCENE_END_TIME = "SCENE_END_TIME";
+    private final String INFO_PARAM_SCENE_HEIGHT = "SCENE_HEIGHT";
+    private final String INFO_PARAM_SCENE_WIDTH = "SCENE_WIDTH";
+    private final String  INFO_PARAM_SCENE_SIZE = "SCENE_SIZE";
+
+
+    private String[] INFO_PARAMS = {
+            INFO_PARAM_FILE,
+            INFO_PARAM_PROCESSING_VERSION,
+            INFO_PARAM_SENSOR,
+            INFO_PARAM_PLATFORM,
+            INFO_PARAM_PROJECTION,
+            INFO_PARAM_RESOLUTION,
+            INFO_PARAM_DAY_NIGHT,
+            INFO_PARAM_ORBIT,
+            INFO_PARAM_START_ORBIT,
+            INFO_PARAM_END_ORBIT,
+            INFO_PARAM_BAND,
+            INFO_PARAM_BAND_DESCRIPTION,
+            INFO_PARAM_FILE_LOCATION,
+            INFO_PARAM_PRODUCT_TYPE,
+            INFO_PARAM_SCENE_START_TIME,
+            INFO_PARAM_SCENE_END_TIME,
+            INFO_PARAM_SCENE_HEIGHT,
+            INFO_PARAM_SCENE_WIDTH,
+            INFO_PARAM_SCENE_SIZE
+    };
+
+
+//    public static enum InfoFields {
+//        FILE("FILE"),
+//        BAND("BAND");
+//
+//        final  String fieldName;
+//
+//        InfoFields(String fieldName) {
+//            this.fieldName = fieldName;
+//        }
+//
+//        public String getFieldName() {
+//            return fieldName;
+//        }
+//    }
+
     public MetaDataLayer(RasterDataNode raster) {
         this(LAYER_TYPE, raster, initConfiguration(LAYER_TYPE.createLayerConfig(null), raster));
     }
 
     public MetaDataLayer(MetaDataLayerType type, RasterDataNode raster, PropertySet configuration) {
         super(type, configuration);
-        setName("Title Metadata Layer");
+        setName("Metadata Annotation Layer");
         this.raster = raster;
 
         productNodeHandler = new ProductNodeHandler();
@@ -84,19 +143,21 @@ public class MetaDataLayer extends Layer {
                 headerList.add(curr);
             }
 
-            ArrayList<String> headerMetadataCombinedArrayList = new ArrayList<String>();
-
-            for (String curr : getMetadataArrayList(getHeaderMetadata())) {
-                headerMetadataCombinedArrayList.add(curr);
+            for (String curr : getHeaderFooterLinesArray(getHeader4())) {
+                headerList.add(curr);
             }
 
-            addFromMetadataList(headerMetadataCombinedArrayList, headerList, true, true);
+//            ArrayList<String> headerMetadataCombinedArrayList = new ArrayList<String>();
+//
+//            for (String curr : getMetadataArrayList(getHeader4())) {
+//                headerMetadataCombinedArrayList.add(curr);
+//            }
+//            addFromMetadataList(headerMetadataCombinedArrayList, headerList, true, true);
 
 
             for (String curr : getHeaderFooterLinesArray(getFooter())) {
                 footerList.add(curr);
             }
-
 
 
             ArrayList<String> footerMetadataCombinedArrayList = new ArrayList<String>();
@@ -123,20 +184,23 @@ public class MetaDataLayer extends Layer {
                 footerBandMetadataCombinedArrayList.add(curr);
             }
 
+            if (displayAllInfo()) {
+                footerInfoCombinedArrayList.clear();
+                for (String infoField : INFO_PARAMS) {
+                    footerInfoCombinedArrayList.add(infoField);
+                }
+            }
+
             if (displayAllMetadata()) {
                 String[] allAttributes = getProduct().getMetadataRoot().getElement("Global_Attributes").getAttributeNames();
-//                footerMetadataCombinedArrayList.add(" ");
-//                footerMetadataCombinedArrayList.add("Global_Attributes");
                 footerMetadataCombinedArrayList.clear();
                 for (String curr : allAttributes) {
                     footerMetadataCombinedArrayList.add(curr);
                 }
             }
 
-            if (displayAllMetadata()) {
+            if (displayAllBandMetadata()) {
                 String[] allAttributes = getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttributeNames();
-//                footerMetadataCombinedArrayList.add(" ");
-//                footerMetadataCombinedArrayList.add("Band_Attributes for: '" + raster.getName() + "'");
                 footerBandMetadataCombinedArrayList.clear();
                 for (String curr : allAttributes) {
                     footerBandMetadataCombinedArrayList.add(curr);
@@ -152,12 +216,27 @@ public class MetaDataLayer extends Layer {
             addFromMetadataList(footerMetadataCombinedArrayList, footerList, true, true);
 
             footerList.add("");
-            footerList.add("Band Metadata (Band_Attributes):");
+            footerList.add("Band Metadata '" + raster.getName() + "' (Band_Attributes):");
             addFromMetadataList(footerBandMetadataCombinedArrayList, footerList, true, false);
 
 
             for (String curr : getHeaderFooterLinesArray(getFooter2Textfield())) {
                 footer2List.add(curr);
+            }
+
+            if (getFooter2MyInfoShow()) {
+                for (String curr : getHeaderFooterLinesArray(getMyInfo1())) {
+                    footer2List.add(curr);
+                }
+                for (String curr : getHeaderFooterLinesArray(getMyInfo2())) {
+                    footer2List.add(curr);
+                }
+                for (String curr : getHeaderFooterLinesArray(getMyInfo3())) {
+                    footer2List.add(curr);
+                }
+                for (String curr : getHeaderFooterLinesArray(getMyInfo4())) {
+                    footer2List.add(curr);
+                }
             }
 
 
@@ -327,7 +406,6 @@ public class MetaDataLayer extends Layer {
 //            raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_max").getData().getElemString();
 
 
-
             String metaId = null;
             String beforeMetaData = "";
             String afterMetaData = "";
@@ -373,9 +451,6 @@ public class MetaDataLayer extends Layer {
             }
 
 
-
-
-
             int whileCnt = 0;
             boolean hasMetaData = (inputString.contains(META_START) && inputString.contains(META_START)) ? true : false;
 
@@ -409,34 +484,34 @@ public class MetaDataLayer extends Layer {
                     String value = "";
 
 
-                        switch (META_START) {
-                            case "<META=":
-                                value = ProductUtils.getMetaData(raster.getProduct(), metaId);
-                                break;
+                    switch (META_START) {
+                        case "<META=":
+                            value = ProductUtils.getMetaData(raster.getProduct(), metaId);
+                            break;
 
-                            case "<FILE_META=":
-                                value = ProductUtils.getMetaData(raster.getProduct(), metaId);
-                                break;
+                        case "<FILE_META=":
+                            value = ProductUtils.getMetaData(raster.getProduct(), metaId);
+                            break;
 
-                            case "<BAND_META=":
-                                value = ProductUtils.getBandMetaData(raster.getProduct(), metaId, raster.getName());
-                                break;
+                        case "<BAND_META=":
+                            value = ProductUtils.getBandMetaData(raster.getProduct(), metaId, raster.getName());
+                            break;
 
-                            case "<FILE_INFO=":
-                                value = getDerivedMeta(metaId);
-                                break;
+                        case "<FILE_INFO=":
+                            value = getDerivedMeta(metaId);
+                            break;
 
-                            case "<BAND_INFO=":
-                                value = getDerivedMeta(metaId);
-                                break;
+                        case "<BAND_INFO=":
+                            value = getDerivedMeta(metaId);
+                            break;
 
-                            case "<INFO=":
-                                value = getDerivedMeta(metaId);
-                                break;
-                        }
+                        case "<INFO=":
+                            value = getDerivedMeta(metaId);
+                            break;
+                    }
 
                     if (showKeys) {
-                        inputString = beforeMetaData + metaId + getFooterMetadataDelimiter() +value + afterMetaData;
+                        inputString = beforeMetaData + metaId + getFooterMetadataDelimiter() + value + afterMetaData;
                     } else {
                         inputString = beforeMetaData + value + afterMetaData;
                     }
@@ -455,78 +530,79 @@ public class MetaDataLayer extends Layer {
     private String getDerivedMeta(String inputString) {
         String value = "";
 
+
         if (inputString != null && inputString.length() > 0) {
             inputString = inputString.toUpperCase();
 
             switch (inputString) {
 
-                case "FILE":
+                case INFO_PARAM_FILE:
                     value = raster.getProduct().getName();
                     break;
 
-                case "PROCESSING_VERSION":
+                case INFO_PARAM_PROCESSING_VERSION:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PROCESSING_VERSION_KEYS);
                     break;
 
-                case "SENSOR":
+                case INFO_PARAM_SENSOR:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS);
                     break;
-                case "PLATFORM":
+                case INFO_PARAM_PLATFORM:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PLATFORM_KEYS);
                     break;
-                case "PROJECTION":
+                case INFO_PARAM_PROJECTION:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PROJECTION_KEYS);
                     break;
-                case "RESOLUTION":
+                case INFO_PARAM_RESOLUTION:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_RESOLUTION_KEYS);
                     break;
 
-                case "DAY_NIGHT":
+                case INFO_PARAM_DAY_NIGHT:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_DAY_NIGHT_KEYS);
                     break;
-                case "ORBIT":
+                case INFO_PARAM_ORBIT:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_ORBIT_KEYS);
                     break;
-                case "START_ORBIT":
+                case INFO_PARAM_START_ORBIT:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_START_ORBIT_KEYS);
                     break;
-                case "END_ORBIT":
+                case INFO_PARAM_END_ORBIT:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_END_ORBIT_KEYS);
                     break;
 
-                case "BAND":
+                case INFO_PARAM_BAND:
                     value = raster.getName();
                     break;
 
-                case "BAND_DESCRIPTION":
+                case INFO_PARAM_BAND_DESCRIPTION:
                     value = raster.getDescription();
                     break;
 
-                case "FILE_LOCATION":
+                case INFO_PARAM_FILE_LOCATION:
                     value = raster.getProduct().getFileLocation().toString();
                     break;
 
-                case "PRODUCT_TYPE":
+                case INFO_PARAM_PRODUCT_TYPE:
                     value = raster.getProduct().getProductType();
                     break;
 
-                case "SCENE_START_TIME":
+                case INFO_PARAM_SCENE_START_TIME:
                     value = raster.getProduct().getStartTime().toString();
                     break;
 
-                case "SCENE_END_TIME":
+                case INFO_PARAM_SCENE_END_TIME:
                     value = raster.getProduct().getEndTime().toString();
                     break;
 
-                case "SCENE_HEIGHT":
+                case INFO_PARAM_SCENE_HEIGHT:
                     value = Integer.toString(raster.getRasterHeight());
                     break;
 
-                case "SCENE_WIDTH":
+                case INFO_PARAM_SCENE_WIDTH:
                     value = Integer.toString(raster.getRasterWidth());
                     break;
 
-                case "SCENE_SIZE":
+                case INFO_PARAM_SCENE_SIZE:
                     value = "(w x h) " + raster.getRasterWidth() + " pixels x " + raster.getRasterHeight() + " pixels";
                     break;
 
@@ -546,7 +622,7 @@ public class MetaDataLayer extends Layer {
                     value = getMyInfo3();
                     break;
 
-                case "[MY_INFO4]":
+                case "MY_INFO4":
                     value = getMyInfo4();
                     break;
             }
@@ -566,38 +642,31 @@ public class MetaDataLayer extends Layer {
 //            raster.isScalingApplied();
 //            raster.getScalingFactor();
 //            raster.getScalingOffset();
-//            raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("reference").getData().getElemString();
-//            raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_min").getData().getElemString();
-//            raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_max").getData().getElemString();
 
         }
-
-
 
 
 //            inputString = inputString.replace("[TITLE]", raster.getProduct().toString());
 
 
-
-            raster.getImageInfo().getColorPaletteDef().isLogScaled();
+        raster.getImageInfo().getColorPaletteDef().isLogScaled();
         raster.isLog10Scaled();
         raster.getValidPixelExpression();
-            raster.getUnit();
-            raster.getOverlayMaskGroup().getNodeDisplayNames();
-            raster.getOverlayMaskGroup().getNodeNames();
-            raster.getProduct().getBand(raster.getName()).getSpectralWavelength();
-            raster.getProduct().getBand(raster.getName()).getAngularValue();
-            raster.getProduct().getBand(raster.getName()).getFlagCoding();
-            raster.getNoDataValue();
-            raster.isNoDataValueSet();
-            raster.isNoDataValueUsed();
-            raster.isScalingApplied();
-            raster.getScalingFactor();
-            raster.getScalingOffset();
-            raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("reference").getData().getElemString();
-            raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_min").getData().getElemString();
-            raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_max").getData().getElemString();
-
+        raster.getUnit();
+        raster.getOverlayMaskGroup().getNodeDisplayNames();
+        raster.getOverlayMaskGroup().getNodeNames();
+        raster.getProduct().getBand(raster.getName()).getSpectralWavelength();
+        raster.getProduct().getBand(raster.getName()).getAngularValue();
+        raster.getProduct().getBand(raster.getName()).getFlagCoding();
+        raster.getNoDataValue();
+        raster.isNoDataValueSet();
+        raster.isNoDataValueUsed();
+        raster.isScalingApplied();
+        raster.getScalingFactor();
+        raster.getScalingOffset();
+        raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("reference").getData().getElemString();
+        raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_min").getData().getElemString();
+        raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_max").getData().getElemString();
 
 
         return value;
@@ -728,32 +797,38 @@ public class MetaDataLayer extends Layer {
                     break;
 
                 case MetaDataLayerType.LOCATION_RIGHT:
-                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getFooterGapFactor() / 100));;
+                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getFooterGapFactor() / 100));
+                    ;
                     yOffset = 0;
                     break;
 
                 case MetaDataLayerType.LOCATION_RIGHT_CENTER:
-                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getFooterGapFactor() / 100));;
-                    yOffset = (float) (raster.getRasterHeight()/2.0 + labelBounds.getHeight() - heightInformationBlock);
+                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getFooterGapFactor() / 100));
+                    ;
+                    yOffset = (float) (raster.getRasterHeight() / 2.0 + labelBounds.getHeight() - heightInformationBlock);
                     break;
 
                 case MetaDataLayerType.LOCATION_RIGHT_BOTTOM:
-                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getFooterGapFactor() / 100));;
+                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getFooterGapFactor() / 100));
+                    ;
                     yOffset = (float) (raster.getRasterHeight() + labelBounds.getHeight() - heightInformationBlock);
                     break;
 
                 case MetaDataLayerType.LOCATION_LEFT:
-                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getFooterGapFactor() / 100));;
+                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getFooterGapFactor() / 100));
+                    ;
                     yOffset = 0;
                     break;
 
                 case MetaDataLayerType.LOCATION_LEFT_CENTER:
-                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getFooterGapFactor() / 100));;
-                    yOffset = (float) (raster.getRasterHeight()/2.0 + labelBounds.getHeight() - heightInformationBlock);
+                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getFooterGapFactor() / 100));
+                    ;
+                    yOffset = (float) (raster.getRasterHeight() / 2.0 + labelBounds.getHeight() - heightInformationBlock);
                     break;
 
                 case MetaDataLayerType.LOCATION_LEFT_BOTTOM:
-                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getFooterGapFactor() / 100));;
+                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getFooterGapFactor() / 100));
+                    ;
                     yOffset = (float) (raster.getRasterHeight() + labelBounds.getHeight() - heightInformationBlock);
                     break;
 
@@ -804,8 +879,7 @@ public class MetaDataLayer extends Layer {
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_TEXTFIELD_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_TEXTFIELD2_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_TEXTFIELD3_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_METADATA_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_METADATA_KEYS_SHOW_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_TEXTFIELD4_KEY) ||
 
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_SHOW_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD_KEY) ||
@@ -815,10 +889,13 @@ public class MetaDataLayer extends Layer {
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA4_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA5_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_KEYS_SHOW_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_DELIMITER_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_ALL_METADATA_SHOW_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_SHOW_ALL_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_KEY) ||
 
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_SHOW_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_MY_INFO_SHOW_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD_KEY) ||
 
 
@@ -868,17 +945,19 @@ public class MetaDataLayer extends Layer {
         return header3;
     }
 
+    private String getHeader4() {
+        String header4 = getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_TEXTFIELD4_KEY,
+                MetaDataLayerType.PROPERTY_HEADER_TEXTFIELD4_DEFAULT);
+        return header4;
+    }
+
+
     private boolean getHeaderShow() {
         boolean header = getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_SHOW_KEY,
                 MetaDataLayerType.PROPERTY_HEADER_SHOW_DEFAULT);
         return header;
     }
 
-    private boolean getHeaderMetadataKeysShow() {
-        boolean headerMetadataKeysShow = getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_METADATA_KEYS_SHOW_KEY,
-                MetaDataLayerType.PROPERTY_HEADER_METADATA_KEYS_SHOW_DEFAULT);
-        return headerMetadataKeysShow;
-    }
 
     private boolean getFooterMetadataKeysShow() {
         boolean footerMetadataKeysShow = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA_KEYS_SHOW_KEY,
@@ -937,17 +1016,23 @@ public class MetaDataLayer extends Layer {
     }
 
 
-
     private boolean getFooter2Show() {
         return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_SHOW_KEY,
                 MetaDataLayerType.PROPERTY_FOOTER2_SHOW_DEFAULT);
     }
 
+    private boolean getFooter2MyInfoShow() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_MY_INFO_SHOW_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_MY_INFO_SHOW_DEFAULT);
+    }
+
+
+
+
     private String getFooter2Textfield() {
         return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD_KEY,
                 MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD_DEFAULT);
     }
-
 
 
     private ArrayList<String> getFooterMetadataArrayList() {
@@ -1005,19 +1090,21 @@ public class MetaDataLayer extends Layer {
     }
 
 
-    private String getHeaderMetadata() {
-        String headerMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_METADATA_KEY,
-                MetaDataLayerType.PROPERTY_HEADER_METADATA_DEFAULT);
-        return headerMetadata;
+    private boolean displayAllInfo() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_DEFAULT);
     }
 
     private boolean displayAllMetadata() {
-        boolean displayAllMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_ALL_METADATA_SHOW_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_ALL_METADATA_SHOW_DEFAULT);
+        boolean displayAllMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA_SHOW_ALL_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER_METADATA_SHOW_ALL_DEFAULT);
         return displayAllMetadata;
     }
 
-
+    private boolean displayAllBandMetadata() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_DEFAULT);
+    }
 
 
     private double getFooterGapFactor() {
@@ -1150,7 +1237,7 @@ public class MetaDataLayer extends Layer {
     }
 
     private String getMyInfo2() {
-        return  getConfigurationProperty(MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD2_KEY,
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD2_KEY,
                 MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD2_DEFAULT);
     }
 

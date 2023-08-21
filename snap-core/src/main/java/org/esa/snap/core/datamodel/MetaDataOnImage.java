@@ -59,7 +59,7 @@ public class MetaDataOnImage {
 
 
     /**
-     * Creates a graticule for the given product.
+     * Creates a metadata layer image for the given product.
      *
      * @param raster the product
      * @return the metadata layer or null, if it could not be created
