@@ -51,7 +51,7 @@ public class MetaDataLayer extends Layer {
     private final String INFO_PARAM_SCENE_END_TIME = "SCENE_END_TIME";
     private final String INFO_PARAM_SCENE_HEIGHT = "SCENE_HEIGHT";
     private final String INFO_PARAM_SCENE_WIDTH = "SCENE_WIDTH";
-    private final String  INFO_PARAM_SCENE_SIZE = "SCENE_SIZE";
+    private final String INFO_PARAM_SCENE_SIZE = "SCENE_SIZE";
 
 
     private String[] INFO_PARAMS = {
@@ -547,12 +547,15 @@ public class MetaDataLayer extends Layer {
                 case INFO_PARAM_SENSOR:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS);
                     break;
+
                 case INFO_PARAM_PLATFORM:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PLATFORM_KEYS);
                     break;
+
                 case INFO_PARAM_PROJECTION:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PROJECTION_KEYS);
                     break;
+
                 case INFO_PARAM_RESOLUTION:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_RESOLUTION_KEYS);
                     break;
@@ -560,12 +563,15 @@ public class MetaDataLayer extends Layer {
                 case INFO_PARAM_DAY_NIGHT:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_DAY_NIGHT_KEYS);
                     break;
+
                 case INFO_PARAM_ORBIT:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_ORBIT_KEYS);
                     break;
+
                 case INFO_PARAM_START_ORBIT:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_START_ORBIT_KEYS);
                     break;
+
                 case INFO_PARAM_END_ORBIT:
                     value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_END_ORBIT_KEYS);
                     break;
@@ -649,24 +655,24 @@ public class MetaDataLayer extends Layer {
 //            inputString = inputString.replace("[TITLE]", raster.getProduct().toString());
 
 
-        raster.getImageInfo().getColorPaletteDef().isLogScaled();
-        raster.isLog10Scaled();
-        raster.getValidPixelExpression();
-        raster.getUnit();
-        raster.getOverlayMaskGroup().getNodeDisplayNames();
-        raster.getOverlayMaskGroup().getNodeNames();
-        raster.getProduct().getBand(raster.getName()).getSpectralWavelength();
-        raster.getProduct().getBand(raster.getName()).getAngularValue();
-        raster.getProduct().getBand(raster.getName()).getFlagCoding();
-        raster.getNoDataValue();
-        raster.isNoDataValueSet();
-        raster.isNoDataValueUsed();
-        raster.isScalingApplied();
-        raster.getScalingFactor();
-        raster.getScalingOffset();
-        raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("reference").getData().getElemString();
-        raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_min").getData().getElemString();
-        raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_max").getData().getElemString();
+//        raster.getImageInfo().getColorPaletteDef().isLogScaled();
+//        raster.isLog10Scaled();
+//        raster.getValidPixelExpression();
+//        raster.getUnit();
+//        raster.getOverlayMaskGroup().getNodeDisplayNames();
+//        raster.getOverlayMaskGroup().getNodeNames();
+//        raster.getProduct().getBand(raster.getName()).getSpectralWavelength();
+//        raster.getProduct().getBand(raster.getName()).getAngularValue();
+//        raster.getProduct().getBand(raster.getName()).getFlagCoding();
+//        raster.getNoDataValue();
+//        raster.isNoDataValueSet();
+//        raster.isNoDataValueUsed();
+//        raster.isScalingApplied();
+//        raster.getScalingFactor();
+//        raster.getScalingOffset();
+//        raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("reference").getData().getElemString();
+//        raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_min").getData().getElemString();
+//        raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_max").getData().getElemString();
 
 
         return value;
@@ -692,16 +698,15 @@ public class MetaDataLayer extends Layer {
         if (isHeader) {
             Font font = new Font(getHeaderFontStyle(), getHeaderFontType(), getHeaderFontSizePixels());
             g2d.setFont(font);
-
             g2d.setPaint(getHeaderFontColor());
-
-
+        } else if (isFooter2) {
+            Font font = new Font(getFooter2FontStyle(), getFooter2FontType(), getFooter2FontSizePixels());
+            g2d.setFont(font);
+            g2d.setPaint(getFooter2FontColor());
         } else {
             Font font = new Font(getFooterFontStyle(), getFooterFontType(), getFooterFontSizePixels());
             g2d.setFont(font);
             g2d.setPaint(getFooterFontColor());
-
-
         }
 
 
@@ -726,10 +731,14 @@ public class MetaDataLayer extends Layer {
         if (isHeader) {
             yTopTranslateFirstLine = -heightInformationBlock - raster.getRasterHeight() * (getHeaderGapFactor() / 100);
             yBottomTranslateFirstLine = raster.getRasterHeight() * (getHeaderGapFactor() / 100);
+        } else if (isFooter2) {
+            yTopTranslateFirstLine = -heightInformationBlock - raster.getRasterHeight() * (getFooter2GapFactor() / 100);
+            yBottomTranslateFirstLine = raster.getRasterHeight() * (getFooter2GapFactor() / 100);
         } else {
             yTopTranslateFirstLine = -heightInformationBlock - raster.getRasterHeight() * (getFooterGapFactor() / 100);
             yBottomTranslateFirstLine = raster.getRasterHeight() * (getFooterGapFactor() / 100);
         }
+
 
         for (MetaDataOnImage.TextGlyph glyph : textGlyphs) {
 
@@ -915,8 +924,15 @@ public class MetaDataLayer extends Layer {
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_ITALIC_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_BOLD_KEY) ||
 
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_LOCATION_KEY
-                        )
+
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_LOCATION_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_GAP_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_FONT_SIZE_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_FONT_COLOR_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_FONT_STYLE_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_FONT_ITALIC_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_FONT_BOLD_KEY)
+
         ) {
             headerFooter = null;
         }
@@ -1027,8 +1043,6 @@ public class MetaDataLayer extends Layer {
     }
 
 
-
-
     private String getFooter2Textfield() {
         return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD_KEY,
                 MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD_DEFAULT);
@@ -1113,6 +1127,12 @@ public class MetaDataLayer extends Layer {
         return locationGapFactor;
     }
 
+    private double getFooter2GapFactor() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_GAP_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_GAP_DEFAULT);
+    }
+
+
     private double getHeaderGapFactor() {
         double headerGapFactor = getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_GAP_KEY,
                 MetaDataLayerType.PROPERTY_HEADER_GAP_DEFAULT);
@@ -1152,6 +1172,13 @@ public class MetaDataLayer extends Layer {
         return (int) Math.round(getPtsToPixelsMultiplier() * fontSizePts);
     }
 
+    private int getFooter2FontSizePixels() {
+        int fontSizePts = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_FONT_SIZE_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_FONT_SIZE_DEFAULT);
+
+        return (int) Math.round(getPtsToPixelsMultiplier() * fontSizePts);
+    }
+
     private Color getHeaderFontColor() {
         return getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_FONT_COLOR_KEY,
                 MetaDataLayerType.PROPERTY_HEADER_FONT_COLOR_DEFAULT);
@@ -1160,6 +1187,11 @@ public class MetaDataLayer extends Layer {
     private Color getFooterFontColor() {
         return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_FONT_COLOR_KEY,
                 MetaDataLayerType.PROPERTY_FOOTER_FONT_COLOR_DEFAULT);
+    }
+
+    private Color getFooter2FontColor() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_FONT_COLOR_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_FONT_COLOR_DEFAULT);
     }
 
     private double getPtsToPixelsMultiplier() {
@@ -1184,6 +1216,12 @@ public class MetaDataLayer extends Layer {
         return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_FONT_STYLE_KEY,
                 MetaDataLayerType.PROPERTY_FOOTER_FONT_STYLE_DEFAULT);
     }
+
+    private String getFooter2FontStyle() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_FONT_STYLE_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_FONT_STYLE_DEFAULT);
+    }
+
 
     private Boolean isHeaderFontItalic() {
         return getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_FONT_ITALIC_KEY,
@@ -1220,6 +1258,28 @@ public class MetaDataLayer extends Layer {
 
     private int getFooterFontType() {
         if (isFooterFontItalic() && isFooterFontBold()) {
+            return Font.ITALIC | Font.BOLD;
+        } else if (isFooterFontItalic()) {
+            return Font.ITALIC;
+        } else if (isFooterFontBold()) {
+            return Font.BOLD;
+        } else {
+            return Font.PLAIN;
+        }
+    }
+
+    private Boolean isFooter2FontItalic() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_FONT_ITALIC_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_FONT_ITALIC_DEFAULT);
+    }
+
+    private Boolean isFooter2FontBold() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_FONT_BOLD_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_FONT_BOLD_DEFAULT);
+    }
+
+    private int getFooter2FontType() {
+        if (isFooter2FontItalic() && isFooter2FontBold()) {
             return Font.ITALIC | Font.BOLD;
         } else if (isFooterFontItalic()) {
             return Font.ITALIC;
