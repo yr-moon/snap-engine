@@ -21,10 +21,7 @@ import com.bc.ceres.binding.PropertyDescriptor;
 import com.bc.ceres.binding.PropertySet;
 import com.bc.ceres.swing.TableLayout;
 
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.Font;
 
@@ -190,6 +187,10 @@ public class PropertyPane {
             if(components[0] instanceof JScrollPane) {
                 layout.setRowWeightY(rowIndex, 1.0);
                 layout.setRowFill(rowIndex, TableLayout.Fill.BOTH);
+            }
+            if(components[0] instanceof JComboBox) {
+                layout.setRowWeightY(rowIndex, 1.0);
+                layout.setCellFill(rowIndex, 1, TableLayout.Fill.NONE);
             }
             panel.add(components[0], cell(rowIndex, 1));
         } else {
