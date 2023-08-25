@@ -208,10 +208,11 @@ public class PropertyPane {
                         Font sectionFont=new Font(sectionLabel.getFont().getName(),   Font.BOLD,increasedFontSize);
                         sectionLabel.setFont(sectionFont);
                     } else {
-                        sectionLabel = new JLabel( "‣ " + descriptor.getDisplayName() + " --");
+//                        sectionLabel = new JLabel( "‣ " + descriptor.getDisplayName() + " --");
+                        sectionLabel = new JLabel( "‣ " + descriptor.getDisplayName() + ":");
 //                        sectionLabel = new JLabel( "‣ " + descriptor.getDisplayName());
                         int origFontSize = sectionLabel.getFont().getSize();
-                        int increasedFontSize = (int) Math.floor(origFontSize * 1.0);
+                        int increasedFontSize = (int) Math.floor(origFontSize * 1.05);
 //                        Font sectionFont=new Font(sectionLabel.getFont().getName(),Font.ITALIC | Font.BOLD,sectionLabel.getFont().getSize());
                         Font sectionFont=new Font(sectionLabel.getFont().getName(),  Font.BOLD,increasedFontSize);
                         sectionLabel.setFont(sectionFont);

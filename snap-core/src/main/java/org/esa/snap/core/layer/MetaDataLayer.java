@@ -14,6 +14,7 @@ import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -44,6 +45,7 @@ public class MetaDataLayer extends Layer {
     private final String INFO_PARAM_START_ORBIT = "START_ORBIT";
     private final String INFO_PARAM_END_ORBIT = "END_ORBIT";
     private final String INFO_PARAM_BAND = "BAND";
+    private final String INFO_PARAM_UNIT = "UNIT";
     private final String INFO_PARAM_BAND_DESCRIPTION = "BAND_DESCRIPTION";
     private final String INFO_PARAM_FILE_LOCATION = "FILE_LOCATION";
     private final String INFO_PARAM_PRODUCT_TYPE = "PRODUCT_TYPE";
@@ -54,18 +56,38 @@ public class MetaDataLayer extends Layer {
     private final String INFO_PARAM_SCENE_SIZE = "SCENE_SIZE";
 
 
+    private final String INFO_PARAM_WAVE = "WAVE";
+    private final String INFO_PARAM_ANGLE = "ANGLE";
+    private final String INFO_PARAM_FLAG_CODING = "FLAG_CODING";
+    private final String INFO_PARAM_VALID_PIXEL_EXPRESSION = "VALID_PIXEL_EXPRESSION";
+    private final String INFO_PARAM_NO_DATA_VALUE = "NO_DATA_VALUE";
+    private final String INFO_PARAM_IS_NO_DATA_VALUE_SET = "IS_NO_DATA_VALUE_SET";
+    private final String INFO_PARAM_IS_NO_DATA_VALUE_USED = "IS_NO_DATA_VALUE_USED";
+    private final String INFO_PARAM_IS_SCALING_APPLIED = "IS_SCALING_APPLIED";
+    private final String INFO_PARAM_SCALING_FACTOR = "SCALING_FACTOR";
+    private final String INFO_PARAM_SCALING_OFFSET = "SCALING_OFFSET";
+    private final String INFO_PARAM_IS_LOG_SCALED = "IS_LOG_SCALED";
+    private final String INFO_PARAM_IS_PALETTE_LOG_SCALED = "IS_PALETTE_LOG_SCALED";
+    private final String INFO_PARAM_NODE_DISPLAY_NAMES = "NODE_DISPLAY_NAMES";
+    private final String INFO_PARAM_NODE_NAMES = "NODE_NAMES";
+
+
+    boolean showNullKeys = true;
+
+
     private String[] INFO_PARAMS = {
             INFO_PARAM_FILE,
-            INFO_PARAM_PROCESSING_VERSION,
-            INFO_PARAM_SENSOR,
-            INFO_PARAM_PLATFORM,
-            INFO_PARAM_PROJECTION,
-            INFO_PARAM_RESOLUTION,
-            INFO_PARAM_DAY_NIGHT,
-            INFO_PARAM_ORBIT,
-            INFO_PARAM_START_ORBIT,
-            INFO_PARAM_END_ORBIT,
+//            INFO_PARAM_PROCESSING_VERSION,
+//            INFO_PARAM_SENSOR,
+//            INFO_PARAM_PLATFORM,
+//            INFO_PARAM_PROJECTION,
+//            INFO_PARAM_RESOLUTION,
+//            INFO_PARAM_DAY_NIGHT,
+//            INFO_PARAM_ORBIT,
+//            INFO_PARAM_START_ORBIT,
+//            INFO_PARAM_END_ORBIT,
             INFO_PARAM_BAND,
+            INFO_PARAM_UNIT,
             INFO_PARAM_BAND_DESCRIPTION,
             INFO_PARAM_FILE_LOCATION,
             INFO_PARAM_PRODUCT_TYPE,
@@ -73,7 +95,22 @@ public class MetaDataLayer extends Layer {
             INFO_PARAM_SCENE_END_TIME,
             INFO_PARAM_SCENE_HEIGHT,
             INFO_PARAM_SCENE_WIDTH,
-            INFO_PARAM_SCENE_SIZE
+            INFO_PARAM_SCENE_SIZE,
+
+            INFO_PARAM_WAVE,
+            INFO_PARAM_ANGLE,
+            INFO_PARAM_FLAG_CODING,
+            INFO_PARAM_VALID_PIXEL_EXPRESSION,
+            INFO_PARAM_NO_DATA_VALUE,
+            INFO_PARAM_IS_NO_DATA_VALUE_SET,
+            INFO_PARAM_IS_NO_DATA_VALUE_USED,
+            INFO_PARAM_IS_SCALING_APPLIED,
+            INFO_PARAM_SCALING_FACTOR,
+            INFO_PARAM_SCALING_OFFSET,
+            INFO_PARAM_IS_LOG_SCALED,
+            INFO_PARAM_IS_PALETTE_LOG_SCALED,
+            INFO_PARAM_NODE_DISPLAY_NAMES,
+            INFO_PARAM_NODE_NAMES
     };
 
 
@@ -159,6 +196,10 @@ public class MetaDataLayer extends Layer {
                 footerList.add(curr);
             }
 
+            for (String curr : getHeaderFooterLinesArray(getFooter2())) {
+                footerList.add(curr);
+            }
+
 
             ArrayList<String> footerMetadataCombinedArrayList = new ArrayList<String>();
             ArrayList<String> footerBandMetadataCombinedArrayList = new ArrayList<String>();
@@ -172,12 +213,21 @@ public class MetaDataLayer extends Layer {
                 footerInfoCombinedArrayList.add(curr);
             }
 
+
             for (String curr : getMetadataArrayList(getFooterMetadata3())) {
-                footerMetadataCombinedArrayList.add(curr);
+                for (String key : getAllPossibleRelatedKeys(curr)) {
+                    if (ProductUtils.isMetadataKeyExists(raster.getProduct(), key)) {
+                        footerMetadataCombinedArrayList.add(key);
+                    }
+                }
             }
 
             for (String curr : getMetadataArrayList(getFooterMetadata4())) {
-                footerMetadataCombinedArrayList.add(curr);
+                for (String key : getAllPossibleRelatedKeys(curr)) {
+                    if (ProductUtils.isMetadataKeyExists(raster.getProduct(), key)) {
+                        footerMetadataCombinedArrayList.add(key);
+                    }
+                }
             }
 
             for (String curr : getMetadataArrayList(getFooterMetadata5())) {
@@ -187,24 +237,51 @@ public class MetaDataLayer extends Layer {
             if (displayAllInfo()) {
                 footerInfoCombinedArrayList.clear();
                 for (String infoField : INFO_PARAMS) {
-                    footerInfoCombinedArrayList.add(infoField);
+                    footerInfoCombinedArrayList.add(infoField.toLowerCase());
                 }
             }
 
-            if (displayAllMetadata()) {
-                String[] allAttributes = getProduct().getMetadataRoot().getElement("Global_Attributes").getAttributeNames();
-                footerMetadataCombinedArrayList.clear();
-                for (String curr : allAttributes) {
-                    footerMetadataCombinedArrayList.add(curr);
+
+            if (displayAllMetadata() || displayAllMetadataProcessControlParams()) {
+                try {
+                    String[] allAttributes = getProduct().getMetadataRoot().getElement("Global_Attributes").getAttributeNames();
+                    footerMetadataCombinedArrayList.clear();
+                    for (String curr : allAttributes) {
+                        if (curr != null) {
+                            if (displayAllMetadata() && displayAllMetadataProcessControlParams()) {
+                                footerMetadataCombinedArrayList.add(curr);
+                            } else if (displayAllMetadata() && !displayAllMetadataProcessControlParams()) {
+                                if (curr.startsWith("processing_control")) {
+                                    if (curr.equals("processing_control_software_name") ||
+                                            curr.equals("processing_control_software_version") ||
+                                            curr.equals("processing_control_mask_names")
+                                    ) {
+                                        footerMetadataCombinedArrayList.add(curr);
+                                    }
+                                } else {
+                                    footerMetadataCombinedArrayList.add(curr);
+                                }
+                            } else if (!displayAllMetadata() && displayAllMetadataProcessControlParams()) {
+                                if (curr.startsWith("processing_control")) {
+                                    footerMetadataCombinedArrayList.add(curr);
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception ignore) {
                 }
             }
 
             if (displayAllBandMetadata()) {
-                String[] allAttributes = getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttributeNames();
-                footerBandMetadataCombinedArrayList.clear();
-                for (String curr : allAttributes) {
-                    footerBandMetadataCombinedArrayList.add(curr);
+                try {
+                    String[] allAttributes = getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttributeNames();
+                    footerBandMetadataCombinedArrayList.clear();
+                    for (String curr : allAttributes) {
+                        footerBandMetadataCombinedArrayList.add(curr);
+                    }
+                } catch (Exception ignore) {
                 }
+
             }
 
             footerList.add("");
@@ -221,6 +298,18 @@ public class MetaDataLayer extends Layer {
 
 
             for (String curr : getHeaderFooterLinesArray(getFooter2Textfield())) {
+                footer2List.add(curr);
+            }
+
+            for (String curr : getHeaderFooterLinesArray(getFooter2Textfield2())) {
+                footer2List.add(curr);
+            }
+
+            for (String curr : getHeaderFooterLinesArray(getFooter2Textfield3())) {
+                footer2List.add(curr);
+            }
+
+            for (String curr : getHeaderFooterLinesArray(getFooter2Textfield4())) {
                 footer2List.add(curr);
             }
 
@@ -280,6 +369,29 @@ public class MetaDataLayer extends Layer {
         }
     }
 
+    private String[] getAllPossibleRelatedKeys(String key) {
+        ArrayList<String[]> keySets = new ArrayList<String[]>();
+
+        keySets.add(ProductUtils.METADATA_POSSIBLE_PROJECTION_KEYS);
+        keySets.add(ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS);
+        keySets.add(ProductUtils.METADATA_POSSIBLE_PLATFORM_KEYS);
+        keySets.add(ProductUtils.METADATA_POSSIBLE_PROCESSING_VERSION_KEYS);
+        keySets.add(ProductUtils.METADATA_POSSIBLE_DAY_NIGHT_KEYS);
+        keySets.add(ProductUtils.METADATA_POSSIBLE_ORBIT_KEYS);
+        keySets.add(ProductUtils.METADATA_POSSIBLE_START_ORBIT_KEYS);
+        keySets.add(ProductUtils.METADATA_POSSIBLE_END_ORBIT_KEYS);
+
+        for (String[] keySet : keySets) {
+            for (String keyInSet : keySet) {
+                if (keyInSet.equals(key)) {
+                    return keySet;
+                }
+            }
+        }
+
+        return new String[]{key};
+    }
+
     private void addFromMetadataList(ArrayList<String> footerMetadataCombinedArrayList, List<String> footerList, boolean isMeta, boolean globalAttributes) {
         for (String currKey : footerMetadataCombinedArrayList) {
             if (currKey != null && currKey.length() > 0) {
@@ -307,10 +419,10 @@ public class MetaDataLayer extends Layer {
                     }
                 }
 
-                if (currParam != null && currParam.trim() != null && currParam.length() > 0) {
-                    footerList.add(currParam);
-//                    } else {
-//                        footerList.add(currKey);
+                if (currParam != null && currParam.trim() != null) {
+                    if (currParam.length() > 0 || showNullKeys) {
+                        footerList.add(currParam);
+                    }
                 }
             }
         }
@@ -487,6 +599,15 @@ public class MetaDataLayer extends Layer {
                     switch (META_START) {
                         case "<META=":
                             value = ProductUtils.getMetaData(raster.getProduct(), metaId);
+                            if (value == null || value.length() == 0) {
+                                for (String keyInSet : getAllPossibleRelatedKeys(metaId)) {
+                                    value = ProductUtils.getMetaData(raster.getProduct(), keyInSet);
+                                    if (value != null && value.length() > 0) {
+                                        metaId = keyInSet;
+                                        break;
+                                    }
+                                }
+                            }
                             break;
 
                         case "<FILE_META=":
@@ -536,52 +657,9 @@ public class MetaDataLayer extends Layer {
 
             switch (inputString) {
 
+
                 case INFO_PARAM_FILE:
                     value = raster.getProduct().getName();
-                    break;
-
-                case INFO_PARAM_PROCESSING_VERSION:
-                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PROCESSING_VERSION_KEYS);
-                    break;
-
-                case INFO_PARAM_SENSOR:
-                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS);
-                    break;
-
-                case INFO_PARAM_PLATFORM:
-                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PLATFORM_KEYS);
-                    break;
-
-                case INFO_PARAM_PROJECTION:
-                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PROJECTION_KEYS);
-                    break;
-
-                case INFO_PARAM_RESOLUTION:
-                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_RESOLUTION_KEYS);
-                    break;
-
-                case INFO_PARAM_DAY_NIGHT:
-                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_DAY_NIGHT_KEYS);
-                    break;
-
-                case INFO_PARAM_ORBIT:
-                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_ORBIT_KEYS);
-                    break;
-
-                case INFO_PARAM_START_ORBIT:
-                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_START_ORBIT_KEYS);
-                    break;
-
-                case INFO_PARAM_END_ORBIT:
-                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_END_ORBIT_KEYS);
-                    break;
-
-                case INFO_PARAM_BAND:
-                    value = raster.getName();
-                    break;
-
-                case INFO_PARAM_BAND_DESCRIPTION:
-                    value = raster.getDescription();
                     break;
 
                 case INFO_PARAM_FILE_LOCATION:
@@ -600,6 +678,55 @@ public class MetaDataLayer extends Layer {
                     value = raster.getProduct().getEndTime().toString();
                     break;
 
+//                case INFO_PARAM_PROCESSING_VERSION:
+//                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PROCESSING_VERSION_KEYS);
+//                    break;
+//
+//                case INFO_PARAM_SENSOR:
+//                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_SENSOR_KEYS);
+//                    break;
+//
+//                case INFO_PARAM_PLATFORM:
+//                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PLATFORM_KEYS);
+//                    break;
+//
+//                case INFO_PARAM_PROJECTION:
+//                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_PROJECTION_KEYS);
+//                    break;
+//
+//                case INFO_PARAM_RESOLUTION:
+//                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_RESOLUTION_KEYS);
+//                    break;
+//
+//                case INFO_PARAM_DAY_NIGHT:
+//                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_DAY_NIGHT_KEYS);
+//                    break;
+//
+//                case INFO_PARAM_ORBIT:
+//                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_ORBIT_KEYS);
+//                    break;
+//
+//                case INFO_PARAM_START_ORBIT:
+//                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_START_ORBIT_KEYS);
+//                    break;
+//
+//                case INFO_PARAM_END_ORBIT:
+//                    value = ProductUtils.getMetaData(raster.getProduct(), ProductUtils.METADATA_POSSIBLE_END_ORBIT_KEYS);
+//                    break;
+
+                case INFO_PARAM_BAND:
+                    value = raster.getName();
+                    break;
+
+
+                case INFO_PARAM_UNIT:
+                    value = raster.getUnit();
+                    break;
+
+                case INFO_PARAM_BAND_DESCRIPTION:
+                    value = raster.getDescription();
+                    break;
+
                 case INFO_PARAM_SCENE_HEIGHT:
                     value = Integer.toString(raster.getRasterHeight());
                     break;
@@ -611,6 +738,79 @@ public class MetaDataLayer extends Layer {
                 case INFO_PARAM_SCENE_SIZE:
                     value = "(w x h) " + raster.getRasterWidth() + " pixels x " + raster.getRasterHeight() + " pixels";
                     break;
+
+                case INFO_PARAM_WAVE:
+                    value = String.valueOf(raster.getProduct().getBand(raster.getName()).getSpectralWavelength());
+                    break;
+
+                case INFO_PARAM_ANGLE:
+                    value = String.valueOf(raster.getProduct().getBand(raster.getName()).getAngularValue());
+                    break;
+
+                case INFO_PARAM_FLAG_CODING:
+                    value = String.valueOf(raster.getProduct().getBand(raster.getName()).getFlagCoding());
+                    break;
+
+                case INFO_PARAM_VALID_PIXEL_EXPRESSION:
+                    value = raster.getValidPixelExpression();
+                    break;
+
+                case INFO_PARAM_NO_DATA_VALUE:
+                    value = String.valueOf(raster.getNoDataValue());
+                    break;
+
+                case INFO_PARAM_IS_NO_DATA_VALUE_SET:
+                    value = String.valueOf(raster.isNoDataValueSet());
+                    break;
+
+                case INFO_PARAM_IS_NO_DATA_VALUE_USED:
+                    value = String.valueOf(raster.isNoDataValueUsed());
+                    break;
+
+                case INFO_PARAM_IS_SCALING_APPLIED:
+                    value = String.valueOf(raster.isScalingApplied());
+                    break;
+
+                case INFO_PARAM_SCALING_FACTOR:
+                    value = String.valueOf(raster.getScalingFactor());
+                    break;
+
+                case INFO_PARAM_SCALING_OFFSET:
+                    value = String.valueOf(raster.getScalingOffset());
+                    break;
+
+                case INFO_PARAM_IS_LOG_SCALED:
+                    value = String.valueOf(raster.isLog10Scaled());
+                    break;
+
+                case INFO_PARAM_IS_PALETTE_LOG_SCALED:
+                    value = String.valueOf(raster.getImageInfo().getColorPaletteDef().isLogScaled());
+                    break;
+
+                case INFO_PARAM_NODE_DISPLAY_NAMES:
+                    value = "";
+                    String[] nodeDisplayNames = raster.getOverlayMaskGroup().getNodeDisplayNames();
+                    for (String nodeDisplayName : nodeDisplayNames) {
+                        if (value.length() == 0) {
+                            value = nodeDisplayName;
+                        } else {
+                            value = value + ", " + nodeDisplayName;
+                        }
+                    }
+                    break;
+
+                case INFO_PARAM_NODE_NAMES:
+                    value = "";
+                    String[] getNodeNames = raster.getOverlayMaskGroup().getNodeNames();
+                    for (String getNodeName : getNodeNames) {
+                        if (value.length() == 0) {
+                            value = getNodeName;
+                        } else {
+                            value = value + ", " + getNodeName;
+                        }
+                    }
+                    break;
+
 
                 case "MY_INFO":
                     value = getMyInfo();
@@ -633,46 +833,8 @@ public class MetaDataLayer extends Layer {
                     break;
             }
 
-            //
-//            raster.getImageInfo().getColorPaletteDef().isLogScaled();
-//            raster.getValidPixelExpression();
-//            raster.getUnit();
-//            raster.getOverlayMaskGroup().getNodeDisplayNames();
-//            raster.getOverlayMaskGroup().getNodeNames();
-//            raster.getProduct().getBand(raster.getName()).getSpectralWavelength();
-//            raster.getProduct().getBand(raster.getName()).getAngularValue();
-//            raster.getProduct().getBand(raster.getName()).getFlagCoding();
-//            raster.getNoDataValue();
-//            raster.isNoDataValueSet();
-//            raster.isNoDataValueUsed();
-//            raster.isScalingApplied();
-//            raster.getScalingFactor();
-//            raster.getScalingOffset();
 
         }
-
-
-//            inputString = inputString.replace("[TITLE]", raster.getProduct().toString());
-
-
-//        raster.getImageInfo().getColorPaletteDef().isLogScaled();
-//        raster.isLog10Scaled();
-//        raster.getValidPixelExpression();
-//        raster.getUnit();
-//        raster.getOverlayMaskGroup().getNodeDisplayNames();
-//        raster.getOverlayMaskGroup().getNodeNames();
-//        raster.getProduct().getBand(raster.getName()).getSpectralWavelength();
-//        raster.getProduct().getBand(raster.getName()).getAngularValue();
-//        raster.getProduct().getBand(raster.getName()).getFlagCoding();
-//        raster.getNoDataValue();
-//        raster.isNoDataValueSet();
-//        raster.isNoDataValueUsed();
-//        raster.isScalingApplied();
-//        raster.getScalingFactor();
-//        raster.getScalingOffset();
-//        raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("reference").getData().getElemString();
-//        raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_min").getData().getElemString();
-//        raster.getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttribute("valid_max").getData().getElemString();
 
 
         return value;
@@ -892,6 +1054,7 @@ public class MetaDataLayer extends Layer {
 
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_SHOW_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD2_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA2_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA3_KEY) ||
@@ -901,12 +1064,15 @@ public class MetaDataLayer extends Layer {
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_DELIMITER_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_SHOW_ALL_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_KEY) ||
 
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_SHOW_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_MY_INFO_SHOW_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD_KEY) ||
-
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD2_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD3_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD4_KEY) ||
 
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_LOCATION_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_GAP_KEY) ||
@@ -924,15 +1090,18 @@ public class MetaDataLayer extends Layer {
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_ITALIC_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_BOLD_KEY) ||
 
-
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_LOCATION_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_GAP_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_FONT_SIZE_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_FONT_COLOR_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_FONT_STYLE_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_FONT_ITALIC_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_FONT_BOLD_KEY)
+                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_FONT_BOLD_KEY) ||
 
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD1_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD2_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD3_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MY_INFO_TEXTFIELD4_KEY)
         ) {
             headerFooter = null;
         }
@@ -987,6 +1156,13 @@ public class MetaDataLayer extends Layer {
                 MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD_DEFAULT);
         return footer;
     }
+
+    private String getFooter2() {
+        String footer = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD2_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD2_DEFAULT);
+        return footer;
+    }
+
 
     private boolean getFooterShow() {
         boolean footer = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_SHOW_KEY,
@@ -1046,6 +1222,21 @@ public class MetaDataLayer extends Layer {
     private String getFooter2Textfield() {
         return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD_KEY,
                 MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD_DEFAULT);
+    }
+
+    private String getFooter2Textfield2() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD2_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD2_DEFAULT);
+    }
+
+    private String getFooter2Textfield3() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD3_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD3_DEFAULT);
+    }
+
+    private String getFooter2Textfield4() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD4_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER2_TEXTFIELD4_DEFAULT);
     }
 
 
@@ -1113,6 +1304,12 @@ public class MetaDataLayer extends Layer {
         boolean displayAllMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA_SHOW_ALL_KEY,
                 MetaDataLayerType.PROPERTY_FOOTER_METADATA_SHOW_ALL_DEFAULT);
         return displayAllMetadata;
+    }
+
+    private boolean displayAllMetadataProcessControlParams() {
+        boolean displayAllMetadataProcessControlParams = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_KEY,
+                MetaDataLayerType.PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_DEFAULT);
+        return displayAllMetadataProcessControlParams;
     }
 
     private boolean displayAllBandMetadata() {

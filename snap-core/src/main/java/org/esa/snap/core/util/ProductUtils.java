@@ -1392,6 +1392,25 @@ public class ProductUtils {
         return metaData;
     }
 
+    public static boolean isMetadataKeyExists(Product product, String key) {
+        // Created by Daniel Knowles
+        boolean keyExists = false;
+
+        MetadataAttribute metadataAttribute;
+
+        if (key != null && key.length() > 0) {
+            try {
+                metadataAttribute = product.getMetadataRoot().getElement("Global_Attributes").getAttribute(key);
+                if (metadataAttribute != null) {
+                    keyExists = true;
+                }
+            } catch (Exception ignore) {
+            }
+        }
+
+        return keyExists;
+    }
+
     public static String getBandMetaData(Product product, String key, String band) {
         // Created by Daniel Knowles
         String metaData = "";
