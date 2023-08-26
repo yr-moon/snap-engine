@@ -52,7 +52,7 @@ import static com.bc.ceres.swing.TableLayout.cell;
 public class PropertyPane {
 
     private final BindingContext bindingContext;
-    private final static String DASHES = "---";
+    private final static String DASHES = "----";
     private final static String DASHES_SUBSECTION = "- - - -";
 
 
@@ -204,7 +204,7 @@ public class PropertyPane {
 
 //                        sectionLabel = new JLabel("• " + descriptor.getDisplayName() + " •");
                         int origFontSize = sectionLabel.getFont().getSize();
-                        int increasedFontSize = (int) Math.floor(origFontSize * 1.1);
+                        int increasedFontSize = (int) Math.floor(origFontSize * 1.15);
                         Font sectionFont=new Font(sectionLabel.getFont().getName(),   Font.BOLD,increasedFontSize);
                         sectionLabel.setFont(sectionFont);
                     } else {
@@ -212,7 +212,7 @@ public class PropertyPane {
                         sectionLabel = new JLabel( "‣ " + descriptor.getDisplayName() + ":");
 //                        sectionLabel = new JLabel( "‣ " + descriptor.getDisplayName());
                         int origFontSize = sectionLabel.getFont().getSize();
-                        int increasedFontSize = (int) Math.floor(origFontSize * 1.05);
+                        int increasedFontSize = (int) Math.floor(origFontSize * 1.1);
 //                        Font sectionFont=new Font(sectionLabel.getFont().getName(),Font.ITALIC | Font.BOLD,sectionLabel.getFont().getSize());
                         Font sectionFont=new Font(sectionLabel.getFont().getName(),  Font.BOLD,increasedFontSize);
                         sectionLabel.setFont(sectionFont);

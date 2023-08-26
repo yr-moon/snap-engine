@@ -14,7 +14,6 @@ import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 
 /**
@@ -192,11 +191,11 @@ public class MetaDataLayer extends Layer {
 //            addFromMetadataList(headerMetadataCombinedArrayList, headerList, true, true);
 
 
-            for (String curr : getHeaderFooterLinesArray(getFooter())) {
+            for (String curr : getHeaderFooterLinesArray(getMarginTextfield1())) {
                 footerList.add(curr);
             }
 
-            for (String curr : getHeaderFooterLinesArray(getFooter2())) {
+            for (String curr : getHeaderFooterLinesArray(getMarginTextfield2())) {
                 footerList.add(curr);
             }
 
@@ -205,16 +204,16 @@ public class MetaDataLayer extends Layer {
             ArrayList<String> footerBandMetadataCombinedArrayList = new ArrayList<String>();
             ArrayList<String> footerInfoCombinedArrayList = new ArrayList<String>();
 
-            for (String curr : getMetadataArrayList(getFooterMetadata())) {
+            for (String curr : getMetadataArrayList(getMarginMetadata1())) {
                 footerInfoCombinedArrayList.add(curr);
             }
 
-            for (String curr : getMetadataArrayList(getFooterMetadata2())) {
+            for (String curr : getMetadataArrayList(getMarginMetadata2())) {
                 footerInfoCombinedArrayList.add(curr);
             }
 
 
-            for (String curr : getMetadataArrayList(getFooterMetadata3())) {
+            for (String curr : getMetadataArrayList(getMarginMetadata3())) {
                 for (String key : getAllPossibleRelatedKeys(curr)) {
                     if (ProductUtils.isMetadataKeyExists(raster.getProduct(), key)) {
                         footerMetadataCombinedArrayList.add(key);
@@ -222,7 +221,7 @@ public class MetaDataLayer extends Layer {
                 }
             }
 
-            for (String curr : getMetadataArrayList(getFooterMetadata4())) {
+            for (String curr : getMetadataArrayList(getMarginMetadata4())) {
                 for (String key : getAllPossibleRelatedKeys(curr)) {
                     if (ProductUtils.isMetadataKeyExists(raster.getProduct(), key)) {
                         footerMetadataCombinedArrayList.add(key);
@@ -230,7 +229,7 @@ public class MetaDataLayer extends Layer {
                 }
             }
 
-            for (String curr : getMetadataArrayList(getFooterMetadata5())) {
+            for (String curr : getMetadataArrayList(getMarginMetadata5())) {
                 footerBandMetadataCombinedArrayList.add(curr);
             }
 
@@ -356,7 +355,7 @@ public class MetaDataLayer extends Layer {
                 if (getHeaderShow()) {
                     drawTextHeaderFooter(g2d, textGlyphHeader, true, false, raster);
                 }
-                if (getFooterShow()) {
+                if (getMarginShow()) {
                     drawTextHeaderFooter(g2d, textGlyphsFooter, false, false, raster);
                 }
                 if (getFooter2Show()) {
@@ -401,8 +400,8 @@ public class MetaDataLayer extends Layer {
                     if (length > 2) {
                         currParam = getDerivedMeta(currKey.toUpperCase());
 
-                        if (getFooterMetadataKeysShow()) {
-                            currParam = currKey + getFooterMetadataDelimiter() + currParam;
+                        if (getMarginMetadataKeysShow()) {
+                            currParam = currKey + getMarginMetadataDelimiter() + currParam;
                         }
                     }
                 } else {
@@ -414,8 +413,8 @@ public class MetaDataLayer extends Layer {
                         currParam = ProductUtils.getBandMetaData(raster.getProduct(), currKey, raster.getName());
                     }
 
-                    if (getFooterMetadataKeysShow()) {
-                        currParam = key + getFooterMetadataDelimiter() + currParam;
+                    if (getMarginMetadataKeysShow()) {
+                        currParam = key + getMarginMetadataDelimiter() + currParam;
                     }
                 }
 
@@ -632,7 +631,7 @@ public class MetaDataLayer extends Layer {
                     }
 
                     if (showKeys) {
-                        inputString = beforeMetaData + metaId + getFooterMetadataDelimiter() + value + afterMetaData;
+                        inputString = beforeMetaData + metaId + getMarginMetadataDelimiter() + value + afterMetaData;
                     } else {
                         inputString = beforeMetaData + value + afterMetaData;
                     }
@@ -866,9 +865,9 @@ public class MetaDataLayer extends Layer {
             g2d.setFont(font);
             g2d.setPaint(getFooter2FontColor());
         } else {
-            Font font = new Font(getFooterFontStyle(), getFooterFontType(), getFooterFontSizePixels());
+            Font font = new Font(getMarginFontStyle(), getMarginFontType(), getMarginFontSizePixels());
             g2d.setFont(font);
-            g2d.setPaint(getFooterFontColor());
+            g2d.setPaint(getMarginFontColor());
         }
 
 
@@ -897,8 +896,8 @@ public class MetaDataLayer extends Layer {
             yTopTranslateFirstLine = -heightInformationBlock - raster.getRasterHeight() * (getFooter2GapFactor() / 100);
             yBottomTranslateFirstLine = raster.getRasterHeight() * (getFooter2GapFactor() / 100);
         } else {
-            yTopTranslateFirstLine = -heightInformationBlock - raster.getRasterHeight() * (getFooterGapFactor() / 100);
-            yBottomTranslateFirstLine = raster.getRasterHeight() * (getFooterGapFactor() / 100);
+            yTopTranslateFirstLine = -heightInformationBlock - raster.getRasterHeight() * (getMarginGapFactor() / 100);
+            yBottomTranslateFirstLine = raster.getRasterHeight() * (getMarginGapFactor() / 100);
         }
 
 
@@ -916,11 +915,11 @@ public class MetaDataLayer extends Layer {
 
             String location;
             if (isHeader) {
-                location = getLocationHeader();
+                location = getHeaderLocation();
             } else if (isFooter2) {
-                location = getLocationFooter2();
+                location = getFooter2Location();
             } else {
-                location = getLocationFooter();
+                location = getMarginLocation();
             }
 
             float xOffset = 0;
@@ -968,37 +967,37 @@ public class MetaDataLayer extends Layer {
                     break;
 
                 case MetaDataLayerType.LOCATION_RIGHT:
-                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getFooterGapFactor() / 100));
+                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getMarginGapFactor() / 100));
                     ;
                     yOffset = 0;
                     break;
 
                 case MetaDataLayerType.LOCATION_RIGHT_CENTER:
-                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getFooterGapFactor() / 100));
+                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getMarginGapFactor() / 100));
                     ;
                     yOffset = (float) (raster.getRasterHeight() / 2.0 + labelBounds.getHeight() - heightInformationBlock);
                     break;
 
                 case MetaDataLayerType.LOCATION_RIGHT_BOTTOM:
-                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getFooterGapFactor() / 100));
+                    xOffset = (float) (raster.getRasterWidth() + raster.getRasterWidth() * (getMarginGapFactor() / 100));
                     ;
                     yOffset = (float) (raster.getRasterHeight() + labelBounds.getHeight() - heightInformationBlock);
                     break;
 
                 case MetaDataLayerType.LOCATION_LEFT:
-                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getFooterGapFactor() / 100));
+                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getMarginGapFactor() / 100));
                     ;
                     yOffset = 0;
                     break;
 
                 case MetaDataLayerType.LOCATION_LEFT_CENTER:
-                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getFooterGapFactor() / 100));
+                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getMarginGapFactor() / 100));
                     ;
                     yOffset = (float) (raster.getRasterHeight() / 2.0 + labelBounds.getHeight() - heightInformationBlock);
                     break;
 
                 case MetaDataLayerType.LOCATION_LEFT_BOTTOM:
-                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getFooterGapFactor() / 100));
+                    xOffset = (float) (-maxWidthInformationBlock - raster.getRasterWidth() * (getMarginGapFactor() / 100));
                     ;
                     yOffset = (float) (raster.getRasterHeight() + labelBounds.getHeight() - heightInformationBlock);
                     break;
@@ -1052,20 +1051,20 @@ public class MetaDataLayer extends Layer {
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_TEXTFIELD3_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_TEXTFIELD4_KEY) ||
 
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_SHOW_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD2_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA2_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA3_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA4_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA5_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_KEYS_SHOW_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_DELIMITER_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_SHOW_ALL_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_SHOW_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_TEXTFIELD_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_TEXTFIELD2_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_METADATA_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_METADATA2_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_METADATA3_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_METADATA4_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_METADATA5_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_METADATA_KEYS_SHOW_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_INFO_KEYS_SHOW_ALL_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_METADATA_DELIMITER_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_METADATA_SHOW_ALL_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_BAND_METADATA_SHOW_ALL_KEY) ||
 
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_SHOW_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_MY_INFO_SHOW_KEY) ||
@@ -1082,13 +1081,13 @@ public class MetaDataLayer extends Layer {
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_FONT_ITALIC_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_HEADER_FONT_BOLD_KEY) ||
 
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_LOCATION_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_GAP_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_SIZE_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_COLOR_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_STYLE_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_ITALIC_KEY) ||
-                        propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER_FONT_BOLD_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_LOCATION_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_GAP_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_FONT_SIZE_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_FONT_COLOR_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_FONT_STYLE_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_FONT_ITALIC_KEY) ||
+                        propertyName.equals(MetaDataLayerType.PROPERTY_MARGIN_FONT_BOLD_KEY) ||
 
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_LOCATION_KEY) ||
                         propertyName.equals(MetaDataLayerType.PROPERTY_FOOTER2_GAP_KEY) ||
@@ -1144,66 +1143,66 @@ public class MetaDataLayer extends Layer {
     }
 
 
-    private boolean getFooterMetadataKeysShow() {
-        boolean footerMetadataKeysShow = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA_KEYS_SHOW_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_METADATA_KEYS_SHOW_DEFAULT);
+    private boolean getMarginMetadataKeysShow() {
+        boolean footerMetadataKeysShow = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_METADATA_KEYS_SHOW_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_METADATA_KEYS_SHOW_DEFAULT);
         return footerMetadataKeysShow;
     }
 
 
-    private String getFooter() {
-        String footer = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD_DEFAULT);
+    private String getMarginTextfield1() {
+        String footer = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_TEXTFIELD_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_TEXTFIELD_DEFAULT);
         return footer;
     }
 
-    private String getFooter2() {
-        String footer = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD2_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_TEXTFIELD2_DEFAULT);
+    private String getMarginTextfield2() {
+        String footer = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_TEXTFIELD2_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_TEXTFIELD2_DEFAULT);
         return footer;
     }
 
 
-    private boolean getFooterShow() {
-        boolean footer = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_SHOW_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_SHOW_DEFAULT);
+    private boolean getMarginShow() {
+        boolean footer = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_SHOW_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_SHOW_DEFAULT);
         return footer;
     }
 
-    private String getFooterMetadata() {
-        String footerMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_METADATA_DEFAULT);
+    private String getMarginMetadata1() {
+        String footerMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_METADATA_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_METADATA_DEFAULT);
         return footerMetadata;
     }
 
-    private String getFooterMetadata2() {
-        String footerMetadata2 = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA2_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_METADATA2_DEFAULT);
+    private String getMarginMetadata2() {
+        String footerMetadata2 = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_METADATA2_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_METADATA2_DEFAULT);
         return footerMetadata2;
     }
 
-    private String getFooterMetadata3() {
-        String footerMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA3_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_METADATA3_DEFAULT);
+    private String getMarginMetadata3() {
+        String footerMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_METADATA3_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_METADATA3_DEFAULT);
         return footerMetadata;
     }
 
-    private String getFooterMetadata4() {
-        String footerMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA4_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_METADATA4_DEFAULT);
+    private String getMarginMetadata4() {
+        String footerMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_METADATA4_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_METADATA4_DEFAULT);
         return footerMetadata;
     }
 
-    private String getFooterMetadata5() {
-        String footerMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA5_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_METADATA5_DEFAULT);
+    private String getMarginMetadata5() {
+        String footerMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_METADATA5_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_METADATA5_DEFAULT);
         return footerMetadata;
     }
 
 
-    private String getFooterMetadataDelimiter() {
-        String footerMetadataDelimiter = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA_DELIMITER_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_METADATA_DELIMITER_DEFAULT);
+    private String getMarginMetadataDelimiter() {
+        String footerMetadataDelimiter = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_METADATA_DELIMITER_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_METADATA_DELIMITER_DEFAULT);
         return footerMetadataDelimiter;
     }
 
@@ -1243,7 +1242,7 @@ public class MetaDataLayer extends Layer {
     private ArrayList<String> getFooterMetadataArrayList() {
 
         ArrayList<String> footerMetadataArrayList = new ArrayList<String>();
-        String footerMetadata = getFooterMetadata();
+        String footerMetadata = getMarginMetadata1();
         if (footerMetadata != null && footerMetadata.trim() != null && footerMetadata.trim().length() > 0) {
             String[] paramsArray = footerMetadata.split("[ ,]+");
             for (String currentParam : paramsArray) {
@@ -1296,31 +1295,31 @@ public class MetaDataLayer extends Layer {
 
 
     private boolean displayAllInfo() {
-        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_DEFAULT);
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_INFO_KEYS_SHOW_ALL_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_INFO_KEYS_SHOW_ALL_DEFAULT);
     }
 
     private boolean displayAllMetadata() {
-        boolean displayAllMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA_SHOW_ALL_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_METADATA_SHOW_ALL_DEFAULT);
+        boolean displayAllMetadata = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_METADATA_SHOW_ALL_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_METADATA_SHOW_ALL_DEFAULT);
         return displayAllMetadata;
     }
 
     private boolean displayAllMetadataProcessControlParams() {
-        boolean displayAllMetadataProcessControlParams = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_DEFAULT);
+        boolean displayAllMetadataProcessControlParams = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_DEFAULT);
         return displayAllMetadataProcessControlParams;
     }
 
     private boolean displayAllBandMetadata() {
-        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_DEFAULT);
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_BAND_METADATA_SHOW_ALL_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_BAND_METADATA_SHOW_ALL_DEFAULT);
     }
 
 
-    private double getFooterGapFactor() {
-        double locationGapFactor = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_GAP_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_GAP_DEFAULT);
+    private double getMarginGapFactor() {
+        double locationGapFactor = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_GAP_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_GAP_DEFAULT);
         return locationGapFactor;
     }
 
@@ -1337,19 +1336,19 @@ public class MetaDataLayer extends Layer {
     }
 
 
-    private String getLocationHeader() {
+    private String getHeaderLocation() {
         String location = getConfigurationProperty(MetaDataLayerType.PROPERTY_HEADER_LOCATION_KEY,
                 MetaDataLayerType.PROPERTY_HEADER_LOCATION_DEFAULT);
         return location;
     }
 
-    private String getLocationFooter() {
-        String footerLocation = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_LOCATION_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_LOCATION_DEFAULT);
+    private String getMarginLocation() {
+        String footerLocation = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_LOCATION_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_LOCATION_DEFAULT);
         return footerLocation;
     }
 
-    private String getLocationFooter2() {
+    private String getFooter2Location() {
         return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER2_LOCATION_KEY,
                 MetaDataLayerType.PROPERTY_FOOTER2_LOCATION_DEFAULT);
     }
@@ -1362,9 +1361,9 @@ public class MetaDataLayer extends Layer {
         return (int) Math.round(getPtsToPixelsMultiplier() * fontSizePts);
     }
 
-    private int getFooterFontSizePixels() {
-        int fontSizePts = getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_FONT_SIZE_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_FONT_SIZE_DEFAULT);
+    private int getMarginFontSizePixels() {
+        int fontSizePts = getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_FONT_SIZE_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_FONT_SIZE_DEFAULT);
 
         return (int) Math.round(getPtsToPixelsMultiplier() * fontSizePts);
     }
@@ -1381,9 +1380,9 @@ public class MetaDataLayer extends Layer {
                 MetaDataLayerType.PROPERTY_HEADER_FONT_COLOR_DEFAULT);
     }
 
-    private Color getFooterFontColor() {
-        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_FONT_COLOR_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_FONT_COLOR_DEFAULT);
+    private Color getMarginFontColor() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_FONT_COLOR_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_FONT_COLOR_DEFAULT);
     }
 
     private Color getFooter2FontColor() {
@@ -1409,9 +1408,9 @@ public class MetaDataLayer extends Layer {
                 MetaDataLayerType.PROPERTY_HEADER_FONT_STYLE_DEFAULT);
     }
 
-    private String getFooterFontStyle() {
-        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_FONT_STYLE_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_FONT_STYLE_DEFAULT);
+    private String getMarginFontStyle() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_FONT_STYLE_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_FONT_STYLE_DEFAULT);
     }
 
     private String getFooter2FontStyle() {
@@ -1443,22 +1442,22 @@ public class MetaDataLayer extends Layer {
     }
 
 
-    private Boolean isFooterFontItalic() {
-        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_FONT_ITALIC_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_FONT_ITALIC_DEFAULT);
+    private Boolean isMarginFontItalic() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_FONT_ITALIC_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_FONT_ITALIC_DEFAULT);
     }
 
-    private Boolean isFooterFontBold() {
-        return getConfigurationProperty(MetaDataLayerType.PROPERTY_FOOTER_FONT_BOLD_KEY,
-                MetaDataLayerType.PROPERTY_FOOTER_FONT_BOLD_DEFAULT);
+    private Boolean isMarginFontBold() {
+        return getConfigurationProperty(MetaDataLayerType.PROPERTY_MARGIN_FONT_BOLD_KEY,
+                MetaDataLayerType.PROPERTY_MARGIN_FONT_BOLD_DEFAULT);
     }
 
-    private int getFooterFontType() {
-        if (isFooterFontItalic() && isFooterFontBold()) {
+    private int getMarginFontType() {
+        if (isMarginFontItalic() && isMarginFontBold()) {
             return Font.ITALIC | Font.BOLD;
-        } else if (isFooterFontItalic()) {
+        } else if (isMarginFontItalic()) {
             return Font.ITALIC;
-        } else if (isFooterFontBold()) {
+        } else if (isMarginFontBold()) {
             return Font.BOLD;
         } else {
             return Font.PLAIN;
@@ -1478,9 +1477,9 @@ public class MetaDataLayer extends Layer {
     private int getFooter2FontType() {
         if (isFooter2FontItalic() && isFooter2FontBold()) {
             return Font.ITALIC | Font.BOLD;
-        } else if (isFooterFontItalic()) {
+        } else if (isMarginFontItalic()) {
             return Font.ITALIC;
-        } else if (isFooterFontBold()) {
+        } else if (isMarginFontBold()) {
             return Font.BOLD;
         } else {
             return Font.PLAIN;

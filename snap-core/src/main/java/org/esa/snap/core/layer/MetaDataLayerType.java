@@ -40,14 +40,18 @@ public class MetaDataLayerType extends LayerType {
 
 
 
-    public static String[] getFooterLocationArray() {
+    public static String[] getMarginLocationArray() {
         return  new String[]{
                 LOCATION_RIGHT,
                 LOCATION_RIGHT_CENTER,
                 LOCATION_RIGHT_BOTTOM,
                 LOCATION_LEFT,
                 LOCATION_LEFT_CENTER,
-                LOCATION_LEFT_BOTTOM
+                LOCATION_LEFT_BOTTOM,
+                LOCATION_BOTTOM_LEFT,
+                LOCATION_BOTTOM_CENTER_JUSTIFY_LEFT,
+                LOCATION_BOTTOM_CENTER,
+                LOCATION_BOTTOM_RIGHT
         };
     }
 
@@ -76,8 +80,198 @@ public class MetaDataLayerType extends LayerType {
     public static final String PROPERTY_FONT_STYLE_4 = "Monospaced";
 
 
-    private static final String PROPERTY_ROOT_KEY = "metadata.annotation.layer";
-    private static final String PROPERTY_ROOT_ALIAS = "metadataAnnotationLayer";
+    private static final String PROPERTY_ROOT_KEY = "annotation.layer";
+    private static final String PROPERTY_ROOT_ALIAS = "AnnotationLayer";
+
+
+
+
+
+    // Margin Contents Section
+
+    private static final String PROPERTY_MARGIN_ROOT_KEY = PROPERTY_ROOT_KEY + ".margin.contents";
+    private static final String PROPERTY_MARGIN_ROOT_ALIAS = PROPERTY_ROOT_ALIAS + "marginContents";
+
+    public static final String PROPERTY_MARGIN_SECTION_KEY = PROPERTY_MARGIN_ROOT_KEY + ".section";
+    public static final String PROPERTY_MARGIN_SECTION_LABEL = "Margin Annotation";
+    public static final String PROPERTY_MARGIN_SECTION_TOOLTIP = "Contents of metadata and notes section";
+    public static final String PROPERTY_MARGIN_SECTION_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Section";
+
+    public static final String PROPERTY_MARGIN_SHOW_KEY = PROPERTY_MARGIN_ROOT_KEY + ".show";
+    public static final String PROPERTY_MARGIN_SHOW_LABEL = "Show";
+    public static final String PROPERTY_MARGIN_SHOW_TOOLTIP = "Show metadata annotation section";
+    public static final String PROPERTY_MARGIN_SHOW_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Show";
+    public static final boolean PROPERTY_MARGIN_SHOW_DEFAULT = true;
+    public static final Class PROPERTY_MARGIN_SHOW_TYPE = Boolean.class;
+
+    public static final String PROPERTY_MARGIN_LOCATION_KEY = PROPERTY_MARGIN_ROOT_KEY + ".location";
+    public static final String PROPERTY_MARGIN_LOCATION_LABEL = "Location";
+    public static final String PROPERTY_MARGIN_LOCATION_TOOLTIP = "Where to place the footer on the image";
+    private static final String PROPERTY_MARGIN_LOCATION_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Location";
+    public static final String PROPERTY_MARGIN_LOCATION_DEFAULT = LOCATION_RIGHT;
+    public static final Class PROPERTY_MARGIN_LOCATION_TYPE = String.class;
+
+    public static final String PROPERTY_MARGIN_GAP_KEY = PROPERTY_MARGIN_ROOT_KEY + ".offset";
+    public static final String PROPERTY_MARGIN_GAP_LABEL = "Location Gap";
+    public static final String PROPERTY_MARGIN_GAP_TOOLTIP = "Percentage of scene size to place metadata away from the edge of the scene image";
+    private static final String PROPERTY_MARGIN_GAP_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Offset";
+    public static final Double PROPERTY_MARGIN_GAP_DEFAULT = 40.0;
+    public static final double PROPERTY_MARGIN_GAP_MIN = -100;
+    public static final double PROPERTY_MARGIN_GAP_MAX = 100;
+    public static final String PROPERTY_MARGIN_GAP_INTERVAL = "[" + MetaDataLayerType.PROPERTY_MARGIN_GAP_MIN + "," + MetaDataLayerType.PROPERTY_MARGIN_GAP_MAX + "]";
+    public static final Class PROPERTY_MARGIN_GAP_TYPE = Double.class;
+
+
+    public static final String PROPERTY_MARGIN_TEXTFIELD_KEY = PROPERTY_MARGIN_ROOT_KEY + ".textfield";
+    public static final String PROPERTY_MARGIN_TEXTFIELD_LABEL = "Annotation Text";
+    public static final String PROPERTY_MARGIN_TEXTFIELD_TOOLTIP = "Adds a line to the Metadata & Notes section";
+    public static final String PROPERTY_MARGIN_TEXTFIELD_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Textfield";
+    public static final String PROPERTY_MARGIN_TEXTFIELD_DEFAULT = "";
+    public static final Class PROPERTY_MARGIN_TEXTFIELD_TYPE = String.class;
+
+    public static final String PROPERTY_MARGIN_TEXTFIELD2_KEY = PROPERTY_MARGIN_ROOT_KEY + ".textfield2";
+    public static final String PROPERTY_MARGIN_TEXTFIELD2_LABEL = "Annotation Text";
+    public static final String PROPERTY_MARGIN_TEXTFIELD2_TOOLTIP = "Adds a line to the Metadata & Notes section";
+    public static final String PROPERTY_MARGIN_TEXTFIELD2_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Textfield2";
+    public static final String PROPERTY_MARGIN_TEXTFIELD2_DEFAULT = "";
+    public static final Class PROPERTY_MARGIN_TEXTFIELD2_TYPE = String.class;
+
+
+    public static final String PROPERTY_MARGIN_METADATA_KEY = PROPERTY_MARGIN_ROOT_KEY + ".metadata";
+    public static final String PROPERTY_MARGIN_METADATA_LABEL = "INFO Key(s)";
+    public static final String PROPERTY_MARGIN_METADATA_TOOLTIP = "Adds information properties";
+    public static final String PROPERTY_MARGIN_METADATA_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Metadata";
+    public static final String PROPERTY_MARGIN_METADATA_DEFAULT = "File,Sensor,Platform,Product_Type";
+    public static final Class PROPERTY_MARGIN_METADATA_TYPE = String.class;
+
+    public static final String PROPERTY_MARGIN_METADATA2_KEY = PROPERTY_MARGIN_ROOT_KEY + ".metadata2";
+    public static final String PROPERTY_MARGIN_METADATA2_LABEL = "INFO Key(s)";
+    public static final String PROPERTY_MARGIN_METADATA2_TOOLTIP = "Adds information properties";
+    public static final String PROPERTY_MARGIN_METADATA2_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Metadata2";
+    public static final String PROPERTY_MARGIN_METADATA2_DEFAULT = "File_Location,Band,Band_Description";
+    public static final Class PROPERTY_MARGIN_METADATA2_TYPE = String.class;
+
+    public static final String PROPERTY_MARGIN_METADATA3_KEY = PROPERTY_MARGIN_ROOT_KEY + ".metadata3";
+    public static final String PROPERTY_MARGIN_METADATA3_LABEL = "META Key(s)";
+    public static final String PROPERTY_MARGIN_METADATA3_TOOLTIP = "Adds metadata based on a key list";
+    public static final String PROPERTY_MARGIN_METADATA3_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Metadata3";
+    public static final String PROPERTY_MARGIN_METADATA3_DEFAULT = "id";
+    public static final Class PROPERTY_MARGIN_METADATA3_TYPE = String.class;
+
+    public static final String PROPERTY_MARGIN_METADATA4_KEY = PROPERTY_MARGIN_ROOT_KEY + ".metadata4";
+    public static final String PROPERTY_MARGIN_METADATA4_LABEL = "META Key(s)";
+    public static final String PROPERTY_MARGIN_METADATA4_TOOLTIP = "Adds metadata based on a key list";
+    public static final String PROPERTY_MARGIN_METADATA4_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Metadata4";
+    public static final String PROPERTY_MARGIN_METADATA4_DEFAULT = "processing_control_software_name";
+    public static final Class PROPERTY_MARGIN_METADATA4_TYPE = String.class;
+
+    public static final String PROPERTY_MARGIN_METADATA5_KEY = PROPERTY_MARGIN_ROOT_KEY + ".metadata5";
+    public static final String PROPERTY_MARGIN_METADATA5_LABEL = "BAND_META Key(s)";
+    public static final String PROPERTY_MARGIN_METADATA5_TOOLTIP = "Adds band-metadata based on a key list";
+    public static final String PROPERTY_MARGIN_METADATA5_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Metadata5";
+    public static final String PROPERTY_MARGIN_METADATA5_DEFAULT = "long_name,reference";
+    public static final Class PROPERTY_MARGIN_METADATA5_TYPE = String.class;
+
+    public static final String PROPERTY_MARGIN_METADATA_KEYS_SHOW_KEY = PROPERTY_MARGIN_ROOT_KEY + ".metadata.keys.show";
+    public static final String PROPERTY_MARGIN_METADATA_KEYS_SHOW_LABEL = "Show Missing";
+    public static final String PROPERTY_MARGIN_METADATA_KEYS_SHOW_TOOLTIP = "Shows params even if missing a value";
+    public static final String PROPERTY_MARGIN_METADATA_KEYS_SHOW_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "MetadataKeysShow";
+    public static final boolean PROPERTY_MARGIN_METADATA_KEYS_SHOW_DEFAULT = true;
+    public static final Class PROPERTY_MARGIN_METADATA_KEYS_SHOW_TYPE = Boolean.class;
+
+    public static final String PROPERTY_MARGIN_METADATA_DELIMITER_KEY = PROPERTY_MARGIN_ROOT_KEY + ".metadata.delimiter";
+    public static final String PROPERTY_MARGIN_METADATA_DELIMITER_LABEL = "Keys Delimiter";
+    public static final String PROPERTY_MARGIN_METADATA_DELIMITER_TOOLTIP = "Delimiter to use when auto-displaying metadata key-value pairs";
+    public static final String PROPERTY_MARGIN_METADATA_DELIMITER_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "MetadataDelimiter";
+    public static final String PROPERTY_MARGIN_METADATA_DELIMITER_DEFAULT = ": ";
+    public static final Class PROPERTY_MARGIN_METADATA_DELIMITER_TYPE = String.class;
+
+
+    public static final String PROPERTY_MARGIN_INFO_KEYS_SHOW_ALL_KEY = PROPERTY_MARGIN_ROOT_KEY + ".show.all.info";
+    public static final String PROPERTY_MARGIN_INFO_KEYS_SHOW_ALL_LABEL = "Show All Info";
+    public static final String PROPERTY_MARGIN_INFO_KEYS_SHOW_ALL_TOOLTIP = "Display all info keys";
+    public static final String PROPERTY_MARGIN_INFO_KEYS_SHOW_ALL_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "ShowAllInfo";
+    public static final boolean PROPERTY_MARGIN_INFO_KEYS_SHOW_ALL_DEFAULT = false;
+    public static final Class PROPERTY_MARGIN_INFO_KEYS_SHOW_ALL_TYPE = Boolean.class;
+
+
+    public static final String PROPERTY_MARGIN_METADATA_SHOW_ALL_KEY = PROPERTY_MARGIN_ROOT_KEY + ".metadata.show.all";
+    public static final String PROPERTY_MARGIN_METADATA_SHOW_ALL_LABEL = "Show All Metadata*";
+    public static final String PROPERTY_MARGIN_METADATA_SHOW_ALL_TOOLTIP = "Display all metadata keys (does NOT include all processing control params)";
+    public static final String PROPERTY_MARGIN_METADATA_SHOW_ALL_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "MetadataShowAll";
+    public static final boolean PROPERTY_MARGIN_METADATA_SHOW_ALL_DEFAULT = false;
+    public static final Class PROPERTY_MARGIN_METADATA_SHOW_ALL_TYPE = Boolean.class;
+
+    public static final String PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_KEY = PROPERTY_MARGIN_ROOT_KEY + ".metadata.process.control.show.all";
+    public static final String PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_LABEL = "Show All Metadata (Processing Control Params)";
+    public static final String PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_TOOLTIP = "Display all metadata processing control params keys";
+    public static final String PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "MetadataProcessControlShowAll";
+    public static final boolean PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_DEFAULT = false;
+    public static final Class PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_TYPE = Boolean.class;
+
+    public static final String PROPERTY_MARGIN_BAND_METADATA_SHOW_ALL_KEY = PROPERTY_MARGIN_ROOT_KEY + ".band.metadata.show.all";
+    public static final String PROPERTY_MARGIN_BAND_METADATA_SHOW_ALL_LABEL = "Show All Band Metadata";
+    public static final String PROPERTY_MARGIN_BAND_METADATA_SHOW_ALL_TOOLTIP = "Display all band metadata keys";
+    public static final String PROPERTY_MARGIN_BAND_METADATA_SHOW_ALL_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "BandMetadataShow";
+    public static final boolean PROPERTY_MARGIN_BAND_METADATA_SHOW_ALL_DEFAULT = false;
+    public static final Class PROPERTY_MARGIN_BAND_METADATA_SHOW_ALL_TYPE = Boolean.class;
+
+
+
+
+
+
+
+
+
+    // Margin Format Section
+
+    private static final String PROPERTY_MARGIN_FORMAT_ROOT_KEY = PROPERTY_ROOT_KEY + ".margin.formatting";
+    private static final String PROPERTY_MARGIN_FORMAT_ROOT_ALIAS = PROPERTY_ROOT_ALIAS + "MarginFormatting";
+
+    public static final String PROPERTY_MARGIN_FORMATTING_SECTION_KEY = PROPERTY_MARGIN_FORMAT_ROOT_KEY + ".subsection";
+    public static final String PROPERTY_MARGIN_FORMATTING_SECTION_LABEL = "Margin Annotation Font Formatting";
+    public static final String PROPERTY_MARGIN_FORMATTING_SECTION_TOOLTIP = "Set  location of matadata on the scene image";
+    public static final String PROPERTY_MARGIN_FORMATTING_SECTION_ALIAS = PROPERTY_MARGIN_FORMAT_ROOT_ALIAS + "SubSection";
+
+    public static final String PROPERTY_MARGIN_FONT_SIZE_KEY = PROPERTY_MARGIN_FORMAT_ROOT_KEY + ".size";
+    public static final String PROPERTY_MARGIN_FONT_SIZE_LABEL = "Font Size";
+    public static final String PROPERTY_MARGIN_FONT_SIZE_TOOLTIP = "Set size of the footer text";
+    private static final String PROPERTY_MARGIN_FONT_SIZE_ALIAS =  PROPERTY_MARGIN_FORMAT_ROOT_ALIAS + "Size";
+    public static final int PROPERTY_MARGIN_FONT_SIZE_DEFAULT = 15;
+    public static final Class PROPERTY_MARGIN_FONT_SIZE_TYPE = Integer.class;
+    public static final int PROPERTY_MARGIN_FONT_SIZE_MIN = 6;
+    public static final int PROPERTY_MARGIN_FONT_SIZE_MAX = 70;
+    public static final String PROPERTY_MARGIN_FONT_SIZE_INTERVAL = "[" + PROPERTY_MARGIN_FONT_SIZE_MIN + "," + PROPERTY_MARGIN_FONT_SIZE_MAX + "]";
+
+    public static final String PROPERTY_MARGIN_FONT_COLOR_KEY = PROPERTY_MARGIN_FORMAT_ROOT_KEY + ".font.color";
+    public static final String PROPERTY_MARGIN_FONT_COLOR_LABEL = "Font Color";
+    public static final String PROPERTY_MARGIN_FONT_COLOR_TOOLTIP = "Set color of the footer text";
+    private static final String PROPERTY_MARGIN_FONT_COLOR_ALIAS = PROPERTY_MARGIN_FORMAT_ROOT_ALIAS + "FontColor";
+    public static final Color PROPERTY_MARGIN_FONT_COLOR_DEFAULT = Color.BLACK;
+    public static final Class PROPERTY_MARGIN_FONT_COLOR_TYPE = Color.class;
+
+    public static final String PROPERTY_MARGIN_FONT_STYLE_KEY = PROPERTY_MARGIN_FORMAT_ROOT_KEY + ".font.style";
+    public static final String PROPERTY_MARGIN_FONT_STYLE_LABEL = "Font Style";
+    public static final String PROPERTY_MARGIN_FONT_STYLE_TOOLTIP = "Set the font style of the footer";
+    public static final String PROPERTY_MARGIN_FONT_STYLE_ALIAS = PROPERTY_MARGIN_FORMAT_ROOT_ALIAS + "FontName";
+    public static final String PROPERTY_MARGIN_FONT_STYLE_DEFAULT = "SanSerif";
+    public static final Class PROPERTY_MARGIN_FONT_STYLE_TYPE = String.class;
+    public static final Object PROPERTY_MARGIN_FONT_STYLE_VALUE_SET[] = {PROPERTY_FONT_STYLE_1, PROPERTY_FONT_STYLE_2, PROPERTY_FONT_STYLE_3, PROPERTY_FONT_STYLE_4};
+
+    public static final String PROPERTY_MARGIN_FONT_ITALIC_KEY = PROPERTY_MARGIN_FORMAT_ROOT_KEY + ".font.italic";
+    public static final String PROPERTY_MARGIN_FONT_ITALIC_LABEL = "Font Italic";
+    public static final String PROPERTY_MARGIN_FONT_ITALIC_TOOLTIP = "Format footer text font in italic";
+    public static final String PROPERTY_MARGIN_FONT_ITALIC_ALIAS = PROPERTY_MARGIN_FORMAT_ROOT_ALIAS + "FontItalic";
+    public static final boolean PROPERTY_MARGIN_FONT_ITALIC_DEFAULT = false;
+    public static final Class PROPERTY_MARGIN_FONT_ITALIC_TYPE = Boolean.class;
+
+    public static final String PROPERTY_MARGIN_FONT_BOLD_KEY = PROPERTY_MARGIN_FORMAT_ROOT_KEY + ".font.bold";
+    public static final String PROPERTY_MARGIN_FONT_BOLD_LABEL = "Font Bold";
+    public static final String PROPERTY_MARGIN_FONT_BOLD_TOOLTIP = "Format footer text font in bold";
+    public static final String PROPERTY_MARGIN_FONT_BOLD_ALIAS = PROPERTY_MARGIN_FORMAT_ROOT_ALIAS + "FontBold";
+    public static final boolean PROPERTY_MARGIN_FONT_BOLD_DEFAULT = false;
+    public static final Class PROPERTY_MARGIN_FONT_BOLD_TYPE = Boolean.class;
 
 
 
@@ -128,126 +322,6 @@ public class MetaDataLayerType extends LayerType {
     public static final String PROPERTY_HEADER_TEXTFIELD4_ALIAS = PROPERTY_HEADER_CONTENTS_ROOT_ALIAS + "Textfield4";
     public static final String PROPERTY_HEADER_TEXTFIELD4_DEFAULT = "";
     public static final Class PROPERTY_HEADER_TEXTFIELD4_TYPE = String.class;
-
-
-
-
-
-    // Margin Contents Section
-
-    private static final String PROPERTY_FOOTER_ROOT_KEY = PROPERTY_ROOT_KEY + ".margin.notes.contents";
-    private static final String PROPERTY_FOOTER_ROOT_ALIAS = PROPERTY_ROOT_ALIAS + "marginNotesContents";
-
-    public static final String PROPERTY_FOOTER_SECTION_KEY = PROPERTY_FOOTER_ROOT_KEY + ".section";
-    public static final String PROPERTY_FOOTER_SECTION_LABEL = "Margin Annotation";
-    public static final String PROPERTY_FOOTER_SECTION_TOOLTIP = "Contents of metadata and notes section";
-    public static final String PROPERTY_FOOTER_SECTION_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "Section";
-
-    public static final String PROPERTY_FOOTER_SHOW_KEY = PROPERTY_FOOTER_ROOT_KEY + ".show";
-    public static final String PROPERTY_FOOTER_SHOW_LABEL = "Show";
-    public static final String PROPERTY_FOOTER_SHOW_TOOLTIP = "Show metadata annotation section";
-    public static final String PROPERTY_FOOTER_SHOW_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "Show";
-    public static final boolean PROPERTY_FOOTER_SHOW_DEFAULT = true;
-    public static final Class PROPERTY_FOOTER_SHOW_TYPE = Boolean.class;
-
-
-    public static final String PROPERTY_FOOTER_TEXTFIELD_KEY = PROPERTY_FOOTER_ROOT_KEY + ".textfield";
-    public static final String PROPERTY_FOOTER_TEXTFIELD_LABEL = "Annotation Text";
-    public static final String PROPERTY_FOOTER_TEXTFIELD_TOOLTIP = "Adds a line to the Metadata & Notes section";
-    public static final String PROPERTY_FOOTER_TEXTFIELD_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "FooterTextfield";
-    public static final String PROPERTY_FOOTER_TEXTFIELD_DEFAULT = "";
-    public static final Class PROPERTY_FOOTER_TEXTFIELD_TYPE = String.class;
-
-    public static final String PROPERTY_FOOTER_TEXTFIELD2_KEY = PROPERTY_FOOTER_ROOT_KEY + ".textfield2";
-    public static final String PROPERTY_FOOTER_TEXTFIELD2_LABEL = "Annotation Text";
-    public static final String PROPERTY_FOOTER_TEXTFIELD2_TOOLTIP = "Adds a line to the Metadata & Notes section";
-    public static final String PROPERTY_FOOTER_TEXTFIELD2_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "FooterTextfield2";
-    public static final String PROPERTY_FOOTER_TEXTFIELD2_DEFAULT = "";
-    public static final Class PROPERTY_FOOTER_TEXTFIELD2_TYPE = String.class;
-
-
-    public static final String PROPERTY_FOOTER_METADATA_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata";
-    public static final String PROPERTY_FOOTER_METADATA_LABEL = "INFO Key(s)";
-    public static final String PROPERTY_FOOTER_METADATA_TOOLTIP = "Adds information properties";
-    public static final String PROPERTY_FOOTER_METADATA_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "FooterMetadata";
-    public static final String PROPERTY_FOOTER_METADATA_DEFAULT = "File,Sensor,Platform,Product_Type";
-    public static final Class PROPERTY_FOOTER_METADATA_TYPE = String.class;
-
-    public static final String PROPERTY_FOOTER_METADATA2_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata2";
-    public static final String PROPERTY_FOOTER_METADATA2_LABEL = "INFO Key(s)";
-    public static final String PROPERTY_FOOTER_METADATA2_TOOLTIP = "Adds information properties";
-    public static final String PROPERTY_FOOTER_METADATA2_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "FooterMetadata2";
-    public static final String PROPERTY_FOOTER_METADATA2_DEFAULT = "File_Location,Band,Band_Description";
-    public static final Class PROPERTY_FOOTER_METADATA2_TYPE = String.class;
-
-    public static final String PROPERTY_FOOTER_METADATA3_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata3";
-    public static final String PROPERTY_FOOTER_METADATA3_LABEL = "META Key(s)";
-    public static final String PROPERTY_FOOTER_METADATA3_TOOLTIP = "Adds metadata based on a key list";
-    public static final String PROPERTY_FOOTER_METADATA3_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "FooterMetadata3";
-    public static final String PROPERTY_FOOTER_METADATA3_DEFAULT = "id";
-    public static final Class PROPERTY_FOOTER_METADATA3_TYPE = String.class;
-
-    public static final String PROPERTY_FOOTER_METADATA4_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata4";
-    public static final String PROPERTY_FOOTER_METADATA4_LABEL = "META Key(s)";
-    public static final String PROPERTY_FOOTER_METADATA4_TOOLTIP = "Adds metadata based on a key list";
-    public static final String PROPERTY_FOOTER_METADATA4_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "FooterMetadata4";
-    public static final String PROPERTY_FOOTER_METADATA4_DEFAULT = "processing_control_software_name";
-    public static final Class PROPERTY_FOOTER_METADATA4_TYPE = String.class;
-
-    public static final String PROPERTY_FOOTER_METADATA5_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata5";
-    public static final String PROPERTY_FOOTER_METADATA5_LABEL = "BAND_META Key(s)";
-    public static final String PROPERTY_FOOTER_METADATA5_TOOLTIP = "Adds band-metadata based on a key list";
-    public static final String PROPERTY_FOOTER_METADATA5_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "FooterMetadata5";
-    public static final String PROPERTY_FOOTER_METADATA5_DEFAULT = "long_name,reference";
-    public static final Class PROPERTY_FOOTER_METADATA5_TYPE = String.class;
-
-    public static final String PROPERTY_FOOTER_METADATA_KEYS_SHOW_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata.keys.show";
-    public static final String PROPERTY_FOOTER_METADATA_KEYS_SHOW_LABEL = "Show Missing";
-    public static final String PROPERTY_FOOTER_METADATA_KEYS_SHOW_TOOLTIP = "Shows params even if missing a value";
-    public static final String PROPERTY_FOOTER_METADATA_KEYS_SHOW_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "MetadataKeysShow";
-    public static final boolean PROPERTY_FOOTER_METADATA_KEYS_SHOW_DEFAULT = true;
-    public static final Class PROPERTY_FOOTER_METADATA_KEYS_SHOW_TYPE = Boolean.class;
-
-
-
-
-    public static final String PROPERTY_FOOTER_METADATA_DELIMITER_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata.delimiter";
-    public static final String PROPERTY_FOOTER_METADATA_DELIMITER_LABEL = "Keys Delimiter";
-    public static final String PROPERTY_FOOTER_METADATA_DELIMITER_TOOLTIP = "Delimiter to use when auto-displaying metadata key-value pairs";
-    public static final String PROPERTY_FOOTER_METADATA_DELIMITER_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "MetadataDelimiter";
-    public static final String PROPERTY_FOOTER_METADATA_DELIMITER_DEFAULT = ": ";
-    public static final Class PROPERTY_FOOTER_METADATA_DELIMITER_TYPE = String.class;
-
-
-    public static final String PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_KEY = PROPERTY_FOOTER_ROOT_KEY + ".show.all.info";
-    public static final String PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_LABEL = "Show All Info";
-    public static final String PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_TOOLTIP = "Display all info keys";
-    public static final String PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "ShowAllInfo";
-    public static final boolean PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_DEFAULT = false;
-    public static final Class PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_TYPE = Boolean.class;
-
-
-    public static final String PROPERTY_FOOTER_METADATA_SHOW_ALL_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata.show.all";
-    public static final String PROPERTY_FOOTER_METADATA_SHOW_ALL_LABEL = "Show All Metadata*";
-    public static final String PROPERTY_FOOTER_METADATA_SHOW_ALL_TOOLTIP = "Display all metadata keys (does NOT include all processing control params)";
-    public static final String PROPERTY_FOOTER_METADATA_SHOW_ALL_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "MetadataShowAll";
-    public static final boolean PROPERTY_FOOTER_METADATA_SHOW_ALL_DEFAULT = false;
-    public static final Class PROPERTY_FOOTER_METADATA_SHOW_ALL_TYPE = Boolean.class;
-
-    public static final String PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_KEY = PROPERTY_FOOTER_ROOT_KEY + ".metadata.process.control.show.all";
-    public static final String PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_LABEL = "Show All Metadata (Processing Control Params)";
-    public static final String PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_TOOLTIP = "Display all metadata processing control params keys";
-    public static final String PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "MetadataProcessControlShowAll";
-    public static final boolean PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_DEFAULT = false;
-    public static final Class PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_TYPE = Boolean.class;
-
-    public static final String PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_KEY = PROPERTY_FOOTER_ROOT_KEY + ".band.metadata.show.all";
-    public static final String PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_LABEL = "Show All Band Metadata";
-    public static final String PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_TOOLTIP = "Display all band metadata keys";
-    public static final String PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_ALIAS = PROPERTY_FOOTER_ROOT_ALIAS + "BandMetadataShow";
-    public static final boolean PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_DEFAULT = false;
-    public static final Class PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_TYPE = Boolean.class;
-
 
 
 
@@ -333,79 +407,11 @@ public class MetaDataLayerType extends LayerType {
 
 
 
-    // Footer Format Section
-
-    private static final String PROPERTY_FOOTER_FORMAT_ROOT_KEY = PROPERTY_ROOT_KEY + ".footer.formatting";
-    private static final String PROPERTY_FOOTER_FORMAT_ROOT_ALIAS = PROPERTY_ROOT_ALIAS + "FooterFormatting";
-
-    public static final String PROPERTY_FOOTER_FORMATTING_SECTION_KEY = PROPERTY_FOOTER_FORMAT_ROOT_KEY + ".subsection";
-    public static final String PROPERTY_FOOTER_FORMATTING_SECTION_LABEL = "Margin Annotation Font Formatting";
-    public static final String PROPERTY_FOOTER_FORMATTING_SECTION_TOOLTIP = "Set  location of matadata on the scene image";
-    public static final String PROPERTY_FOOTER_FORMATTING_SECTION_ALIAS = PROPERTY_FOOTER_FORMAT_ROOT_ALIAS + "SubSection";
-
-    public static final String PROPERTY_FOOTER_LOCATION_KEY = PROPERTY_FOOTER_FORMAT_ROOT_KEY + ".location";
-    public static final String PROPERTY_FOOTER_LOCATION_LABEL = "Location";
-    public static final String PROPERTY_FOOTER_LOCATION_TOOLTIP = "Where to place the footer on the image";
-    private static final String PROPERTY_FOOTER_LOCATION_ALIAS = PROPERTY_FOOTER_FORMAT_ROOT_ALIAS + "FooterLocation";
-    public static final String PROPERTY_FOOTER_LOCATION_DEFAULT = LOCATION_RIGHT;
-    public static final Class PROPERTY_FOOTER_LOCATION_TYPE = String.class;
-
-    public static final String PROPERTY_FOOTER_GAP_KEY = PROPERTY_FOOTER_FORMAT_ROOT_KEY + ".offset";
-    public static final String PROPERTY_FOOTER_GAP_LABEL = "Location Gap";
-    public static final String PROPERTY_FOOTER_GAP_TOOLTIP = "Percentage of scene size to place metadata away from the edge of the scene image";
-    private static final String PROPERTY_FOOTER_GAP_ALIAS = PROPERTY_FOOTER_FORMAT_ROOT_ALIAS + "Offset";
-    public static final Double PROPERTY_FOOTER_GAP_DEFAULT = 40.0;
-    public static final double PROPERTY_FOOTER_GAP_MIN = -100;
-    public static final double PROPERTY_FOOTER_GAP_MAX = 100;
-    public static final String PROPERTY_FOOTER_GAP_INTERVAL = "[" + MetaDataLayerType.PROPERTY_FOOTER_GAP_MIN + "," + MetaDataLayerType.PROPERTY_FOOTER_GAP_MAX + "]";
-    public static final Class PROPERTY_FOOTER_GAP_TYPE = Double.class;
-
-    public static final String PROPERTY_FOOTER_FONT_SIZE_KEY = PROPERTY_FOOTER_FORMAT_ROOT_KEY + ".size";
-    public static final String PROPERTY_FOOTER_FONT_SIZE_LABEL = "Font Size";
-    public static final String PROPERTY_FOOTER_FONT_SIZE_TOOLTIP = "Set size of the footer text";
-    private static final String PROPERTY_FOOTER_FONT_SIZE_ALIAS =  PROPERTY_FOOTER_FORMAT_ROOT_ALIAS + "Size";
-    public static final int PROPERTY_FOOTER_FONT_SIZE_DEFAULT = 15;
-    public static final Class PROPERTY_FOOTER_FONT_SIZE_TYPE = Integer.class;
-    public static final int PROPERTY_FOOTER_FONT_SIZE_MIN = 6;
-    public static final int PROPERTY_FOOTER_FONT_SIZE_MAX = 70;
-    public static final String PROPERTY_FOOTER_FONT_SIZE_INTERVAL = "[" + PROPERTY_FOOTER_FONT_SIZE_MIN + "," + PROPERTY_FOOTER_FONT_SIZE_MAX + "]";
-
-    public static final String PROPERTY_FOOTER_FONT_COLOR_KEY = PROPERTY_FOOTER_FORMAT_ROOT_KEY + ".font.color";
-    public static final String PROPERTY_FOOTER_FONT_COLOR_LABEL = "Font Color";
-    public static final String PROPERTY_FOOTER_FONT_COLOR_TOOLTIP = "Set color of the footer text";
-    private static final String PROPERTY_FOOTER_FONT_COLOR_ALIAS = PROPERTY_FOOTER_FORMAT_ROOT_ALIAS + "FontColor";
-    public static final Color PROPERTY_FOOTER_FONT_COLOR_DEFAULT = Color.BLACK;
-    public static final Class PROPERTY_FOOTER_FONT_COLOR_TYPE = Color.class;
-
-    public static final String PROPERTY_FOOTER_FONT_STYLE_KEY = PROPERTY_FOOTER_FORMAT_ROOT_KEY + ".font.style";
-    public static final String PROPERTY_FOOTER_FONT_STYLE_LABEL = "Font Style";
-    public static final String PROPERTY_FOOTER_FONT_STYLE_TOOLTIP = "Set the font style of the footer";
-    public static final String PROPERTY_FOOTER_FONT_STYLE_ALIAS = PROPERTY_FOOTER_FORMAT_ROOT_ALIAS + "FontName";
-    public static final String PROPERTY_FOOTER_FONT_STYLE_DEFAULT = "SanSerif";
-    public static final Class PROPERTY_FOOTER_FONT_STYLE_TYPE = String.class;
-    public static final Object PROPERTY_FOOTER_FONT_STYLE_VALUE_SET[] = {PROPERTY_FONT_STYLE_1, PROPERTY_FONT_STYLE_2, PROPERTY_FONT_STYLE_3, PROPERTY_FONT_STYLE_4};
-
-    public static final String PROPERTY_FOOTER_FONT_ITALIC_KEY = PROPERTY_FOOTER_FORMAT_ROOT_KEY + ".font.italic";
-    public static final String PROPERTY_FOOTER_FONT_ITALIC_LABEL = "Font Italic";
-    public static final String PROPERTY_FOOTER_FONT_ITALIC_TOOLTIP = "Format footer text font in italic";
-    public static final String PROPERTY_FOOTER_FONT_ITALIC_ALIAS = PROPERTY_FOOTER_FORMAT_ROOT_ALIAS + "FontItalic";
-    public static final boolean PROPERTY_FOOTER_FONT_ITALIC_DEFAULT = false;
-    public static final Class PROPERTY_FOOTER_FONT_ITALIC_TYPE = Boolean.class;
-
-    public static final String PROPERTY_FOOTER_FONT_BOLD_KEY = PROPERTY_FOOTER_FORMAT_ROOT_KEY + ".font.bold";
-    public static final String PROPERTY_FOOTER_FONT_BOLD_LABEL = "Font Bold";
-    public static final String PROPERTY_FOOTER_FONT_BOLD_TOOLTIP = "Format footer text font in bold";
-    public static final String PROPERTY_FOOTER_FONT_BOLD_ALIAS = PROPERTY_FOOTER_FORMAT_ROOT_ALIAS + "FontBold";
-    public static final boolean PROPERTY_FOOTER_FONT_BOLD_DEFAULT = false;
-    public static final Class PROPERTY_FOOTER_FONT_BOLD_TYPE = Boolean.class;
-
-
-
 
     // Footer2 Contents
 
     private static final String PROPERTY_FOOTER2_ROOT_KEY = PROPERTY_ROOT_KEY + ".footer2.contents";
-    private static final String PROPERTY_FOOTER2_ROOT_ALIAS = PROPERTY_ROOT_ALIAS + "footer2Contents";
+    private static final String PROPERTY_FOOTER2_ROOT_ALIAS = PROPERTY_ROOT_ALIAS + "Footer2Contents";
 
     public static final String PROPERTY_FOOTER2_SECTION_KEY = PROPERTY_FOOTER2_ROOT_KEY + ".section";
     public static final String PROPERTY_FOOTER2_SECTION_LABEL = "Footer";
@@ -422,28 +428,28 @@ public class MetaDataLayerType extends LayerType {
     public static final String PROPERTY_FOOTER2_TEXTFIELD_KEY = PROPERTY_FOOTER2_ROOT_KEY + ".textfield";
     public static final String PROPERTY_FOOTER2_TEXTFIELD_LABEL = "Footer Text";
     public static final String PROPERTY_FOOTER2_TEXTFIELD_TOOLTIP = "Adds a footer to the Header-Footer Layer";
-    public static final String PROPERTY_FOOTER2_TEXTFIELD_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "FooterTextfield";
+    public static final String PROPERTY_FOOTER2_TEXTFIELD_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "Textfield";
     public static final String PROPERTY_FOOTER2_TEXTFIELD_DEFAULT = "<INFO=file>";
     public static final Class PROPERTY_FOOTER2_TEXTFIELD_TYPE = String.class;
 
     public static final String PROPERTY_FOOTER2_TEXTFIELD2_KEY = PROPERTY_FOOTER2_ROOT_KEY + ".textfield2";
     public static final String PROPERTY_FOOTER2_TEXTFIELD2_LABEL = "Footer Text";
     public static final String PROPERTY_FOOTER2_TEXTFIELD2_TOOLTIP = "Adds a footer to the Header-Footer Layer";
-    public static final String PROPERTY_FOOTER2_TEXTFIELD2_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "FooterTextfield2";
+    public static final String PROPERTY_FOOTER2_TEXTFIELD2_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "Textfield2";
     public static final String PROPERTY_FOOTER2_TEXTFIELD2_DEFAULT = "<meta=id>";
     public static final Class PROPERTY_FOOTER2_TEXTFIELD2_TYPE = String.class;
 
     public static final String PROPERTY_FOOTER2_TEXTFIELD3_KEY = PROPERTY_FOOTER2_ROOT_KEY + ".textfield3";
     public static final String PROPERTY_FOOTER2_TEXTFIELD3_LABEL = "Footer Text";
     public static final String PROPERTY_FOOTER2_TEXTFIELD3_TOOLTIP = "Adds a footer to the Header-Footer Layer";
-    public static final String PROPERTY_FOOTER2_TEXTFIELD3_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "FooterTextfield3";
+    public static final String PROPERTY_FOOTER2_TEXTFIELD3_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "Textfield3";
     public static final String PROPERTY_FOOTER2_TEXTFIELD3_DEFAULT = "<meta=id>";
     public static final Class PROPERTY_FOOTER2_TEXTFIELD3_TYPE = String.class;
 
     public static final String PROPERTY_FOOTER2_TEXTFIELD4_KEY = PROPERTY_FOOTER2_ROOT_KEY + ".textfield4";
     public static final String PROPERTY_FOOTER2_TEXTFIELD4_LABEL = "Footer Text";
     public static final String PROPERTY_FOOTER2_TEXTFIELD4_TOOLTIP = "Adds a footer to the Header-Footer Layer";
-    public static final String PROPERTY_FOOTER2_TEXTFIELD4_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "FooterTextfield4";
+    public static final String PROPERTY_FOOTER2_TEXTFIELD4_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "Textfield4";
     public static final String PROPERTY_FOOTER2_TEXTFIELD4_DEFAULT = "<meta=id>";
     public static final Class PROPERTY_FOOTER2_TEXTFIELD4_TYPE = String.class;
 
@@ -470,7 +476,7 @@ public class MetaDataLayerType extends LayerType {
     public static final String PROPERTY_FOOTER2_LOCATION_KEY = PROPERTY_FOOTER2_FORMAT_ROOT_KEY + ".location";
     public static final String PROPERTY_FOOTER2_LOCATION_LABEL = "Location";
     public static final String PROPERTY_FOOTER2_LOCATION_TOOLTIP = "Where to place the footer on the image";
-    private static final String PROPERTY_FOOTER2_LOCATION_ALIAS = PROPERTY_FOOTER2_FORMAT_ROOT_ALIAS + "Footer2Location";
+    private static final String PROPERTY_FOOTER2_LOCATION_ALIAS = PROPERTY_FOOTER2_FORMAT_ROOT_ALIAS + "Location";
     public static final String PROPERTY_FOOTER2_LOCATION_DEFAULT = LOCATION_BOTTOM_LEFT;
     public static final Class PROPERTY_FOOTER2_LOCATION_TYPE = String.class;
 
@@ -481,7 +487,7 @@ public class MetaDataLayerType extends LayerType {
     public static final Double PROPERTY_FOOTER2_GAP_DEFAULT = 6.0;
     public static final double PROPERTY_FOOTER2_GAP_MIN = -100;
     public static final double PROPERTY_FOOTER2_GAP_MAX = 100;
-    public static final String PROPERTY_FOOTER2_GAP_INTERVAL = "[" + MetaDataLayerType.PROPERTY_FOOTER_GAP_MIN + "," + MetaDataLayerType.PROPERTY_FOOTER_GAP_MAX + "]";
+    public static final String PROPERTY_FOOTER2_GAP_INTERVAL = "[" + MetaDataLayerType.PROPERTY_MARGIN_GAP_MIN + "," + MetaDataLayerType.PROPERTY_MARGIN_GAP_MAX + "]";
     public static final Class PROPERTY_FOOTER2_GAP_TYPE = Double.class;
 
 
@@ -635,66 +641,66 @@ public class MetaDataLayerType extends LayerType {
 
 
 
-        final Property footerParametersSectionModel = Property.create(PROPERTY_FOOTER_SECTION_KEY, Boolean.class, true, true);
-        footerParametersSectionModel.getDescriptor().setAlias(PROPERTY_FOOTER_SECTION_ALIAS);
+        final Property footerParametersSectionModel = Property.create(PROPERTY_MARGIN_SECTION_KEY, Boolean.class, true, true);
+        footerParametersSectionModel.getDescriptor().setAlias(PROPERTY_MARGIN_SECTION_ALIAS);
         vc.addProperty(footerParametersSectionModel);
 
-        final Property footerShowModel = Property.create(PROPERTY_FOOTER_SHOW_KEY, PROPERTY_FOOTER_SHOW_TYPE, true, true);
-        footerShowModel.getDescriptor().setAlias(PROPERTY_FOOTER_SHOW_ALIAS);
+        final Property footerShowModel = Property.create(PROPERTY_MARGIN_SHOW_KEY, PROPERTY_MARGIN_SHOW_TYPE, true, true);
+        footerShowModel.getDescriptor().setAlias(PROPERTY_MARGIN_SHOW_ALIAS);
         vc.addProperty(footerShowModel);
 
-        final Property displayAllMetadataModel = Property.create(PROPERTY_FOOTER_METADATA_SHOW_ALL_KEY, PROPERTY_FOOTER_METADATA_SHOW_ALL_TYPE, true, true);
-        displayAllMetadataModel.getDescriptor().setAlias(PROPERTY_FOOTER_METADATA_SHOW_ALL_ALIAS);
+        final Property displayAllMetadataModel = Property.create(PROPERTY_MARGIN_METADATA_SHOW_ALL_KEY, PROPERTY_MARGIN_METADATA_SHOW_ALL_TYPE, true, true);
+        displayAllMetadataModel.getDescriptor().setAlias(PROPERTY_MARGIN_METADATA_SHOW_ALL_ALIAS);
         vc.addProperty(displayAllMetadataModel);
 
-        final Property displayAllMetadataProcessControlParamsModel = Property.create(PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_KEY, PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_TYPE, true, true);
-        displayAllMetadataProcessControlParamsModel.getDescriptor().setAlias(PROPERTY_FOOTER_METADATA_PROCESS_CONTROL_SHOW_ALL_ALIAS);
+        final Property displayAllMetadataProcessControlParamsModel = Property.create(PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_KEY, PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_TYPE, true, true);
+        displayAllMetadataProcessControlParamsModel.getDescriptor().setAlias(PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_ALIAS);
         vc.addProperty(displayAllMetadataProcessControlParamsModel);
 
-        final Property displayAllBandMetadataModel = Property.create(PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_KEY, PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_TYPE, true, true);
-        displayAllBandMetadataModel.getDescriptor().setAlias(PROPERTY_FOOTER_BAND_METADATA_SHOW_ALL_ALIAS);
+        final Property displayAllBandMetadataModel = Property.create(PROPERTY_MARGIN_BAND_METADATA_SHOW_ALL_KEY, PROPERTY_MARGIN_BAND_METADATA_SHOW_ALL_TYPE, true, true);
+        displayAllBandMetadataModel.getDescriptor().setAlias(PROPERTY_MARGIN_BAND_METADATA_SHOW_ALL_ALIAS);
         vc.addProperty(displayAllBandMetadataModel);
 
 
-        final Property footerModel = Property.create(PROPERTY_FOOTER_TEXTFIELD_KEY, PROPERTY_FOOTER_TEXTFIELD_TYPE, true, true);
-        footerModel.getDescriptor().setAlias(PROPERTY_FOOTER_TEXTFIELD_ALIAS);
+        final Property footerModel = Property.create(PROPERTY_MARGIN_TEXTFIELD_KEY, PROPERTY_MARGIN_TEXTFIELD_TYPE, true, true);
+        footerModel.getDescriptor().setAlias(PROPERTY_MARGIN_TEXTFIELD_ALIAS);
         vc.addProperty(footerModel);
 
-        final Property footer2Model = Property.create(PROPERTY_FOOTER_TEXTFIELD2_KEY, PROPERTY_FOOTER_TEXTFIELD2_TYPE, true, true);
-        footer2Model.getDescriptor().setAlias(PROPERTY_FOOTER_TEXTFIELD2_ALIAS);
+        final Property footer2Model = Property.create(PROPERTY_MARGIN_TEXTFIELD2_KEY, PROPERTY_MARGIN_TEXTFIELD2_TYPE, true, true);
+        footer2Model.getDescriptor().setAlias(PROPERTY_MARGIN_TEXTFIELD2_ALIAS);
         vc.addProperty(footer2Model);
 
-        final Property footerMetadataModel = Property.create(PROPERTY_FOOTER_METADATA_KEY, PROPERTY_FOOTER_METADATA_TYPE, true, true);
-        footerMetadataModel.getDescriptor().setAlias(PROPERTY_FOOTER_METADATA_ALIAS);
+        final Property footerMetadataModel = Property.create(PROPERTY_MARGIN_METADATA_KEY, PROPERTY_MARGIN_METADATA_TYPE, true, true);
+        footerMetadataModel.getDescriptor().setAlias(PROPERTY_MARGIN_METADATA_ALIAS);
         vc.addProperty(footerMetadataModel);
 
-        final Property footerMetadata2Model = Property.create(PROPERTY_FOOTER_METADATA2_KEY, PROPERTY_FOOTER_METADATA2_TYPE, true, true);
-        footerMetadata2Model.getDescriptor().setAlias(PROPERTY_FOOTER_METADATA2_ALIAS);
+        final Property footerMetadata2Model = Property.create(PROPERTY_MARGIN_METADATA2_KEY, PROPERTY_MARGIN_METADATA2_TYPE, true, true);
+        footerMetadata2Model.getDescriptor().setAlias(PROPERTY_MARGIN_METADATA2_ALIAS);
         vc.addProperty(footerMetadata2Model);
 
-        final Property footerMetadata3Model = Property.create(PROPERTY_FOOTER_METADATA3_KEY, PROPERTY_FOOTER_METADATA3_TYPE, true, true);
-        footerMetadata3Model.getDescriptor().setAlias(PROPERTY_FOOTER_METADATA3_ALIAS);
+        final Property footerMetadata3Model = Property.create(PROPERTY_MARGIN_METADATA3_KEY, PROPERTY_MARGIN_METADATA3_TYPE, true, true);
+        footerMetadata3Model.getDescriptor().setAlias(PROPERTY_MARGIN_METADATA3_ALIAS);
         vc.addProperty(footerMetadata3Model);
 
-        final Property footerMetadata4Model = Property.create(PROPERTY_FOOTER_METADATA4_KEY, PROPERTY_FOOTER_METADATA4_TYPE, true, true);
-        footerMetadata4Model.getDescriptor().setAlias(PROPERTY_FOOTER_METADATA4_ALIAS);
+        final Property footerMetadata4Model = Property.create(PROPERTY_MARGIN_METADATA4_KEY, PROPERTY_MARGIN_METADATA4_TYPE, true, true);
+        footerMetadata4Model.getDescriptor().setAlias(PROPERTY_MARGIN_METADATA4_ALIAS);
         vc.addProperty(footerMetadata4Model);
 
-        final Property footerMetadata5Model = Property.create(PROPERTY_FOOTER_METADATA5_KEY, PROPERTY_FOOTER_METADATA5_TYPE, true, true);
-        footerMetadata5Model.getDescriptor().setAlias(PROPERTY_FOOTER_METADATA5_ALIAS);
+        final Property footerMetadata5Model = Property.create(PROPERTY_MARGIN_METADATA5_KEY, PROPERTY_MARGIN_METADATA5_TYPE, true, true);
+        footerMetadata5Model.getDescriptor().setAlias(PROPERTY_MARGIN_METADATA5_ALIAS);
         vc.addProperty(footerMetadata5Model);
 
-        final Property footerMetadataKeysShowModel = Property.create(PROPERTY_FOOTER_METADATA_KEYS_SHOW_KEY, PROPERTY_FOOTER_METADATA_KEYS_SHOW_TYPE, true, true);
-        footerMetadataKeysShowModel.getDescriptor().setAlias(PROPERTY_FOOTER_METADATA_KEYS_SHOW_ALIAS);
+        final Property footerMetadataKeysShowModel = Property.create(PROPERTY_MARGIN_METADATA_KEYS_SHOW_KEY, PROPERTY_MARGIN_METADATA_KEYS_SHOW_TYPE, true, true);
+        footerMetadataKeysShowModel.getDescriptor().setAlias(PROPERTY_MARGIN_METADATA_KEYS_SHOW_ALIAS);
         vc.addProperty(footerMetadataKeysShowModel);
 
-        final Property footerInfoKeysShowAllModel = Property.create(PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_KEY, PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_TYPE, true, true);
-        footerInfoKeysShowAllModel.getDescriptor().setAlias(PROPERTY_FOOTER_INFO_KEYS_SHOW_ALL_ALIAS);
+        final Property footerInfoKeysShowAllModel = Property.create(PROPERTY_MARGIN_INFO_KEYS_SHOW_ALL_KEY, PROPERTY_MARGIN_INFO_KEYS_SHOW_ALL_TYPE, true, true);
+        footerInfoKeysShowAllModel.getDescriptor().setAlias(PROPERTY_MARGIN_INFO_KEYS_SHOW_ALL_ALIAS);
         vc.addProperty(footerInfoKeysShowAllModel);
 
 
-        final Property footerMetadataDelimiterModel = Property.create(PROPERTY_FOOTER_METADATA_DELIMITER_KEY, PROPERTY_FOOTER_METADATA_DELIMITER_TYPE, true, true);
-        footerMetadataDelimiterModel.getDescriptor().setAlias(PROPERTY_FOOTER_METADATA_DELIMITER_ALIAS);
+        final Property footerMetadataDelimiterModel = Property.create(PROPERTY_MARGIN_METADATA_DELIMITER_KEY, PROPERTY_MARGIN_METADATA_DELIMITER_TYPE, true, true);
+        footerMetadataDelimiterModel.getDescriptor().setAlias(PROPERTY_MARGIN_METADATA_DELIMITER_ALIAS);
         vc.addProperty(footerMetadataDelimiterModel);
 
 
@@ -774,36 +780,36 @@ public class MetaDataLayerType extends LayerType {
 
         // Footer Formatting Section
 
-        final Property locationSectionModel = Property.create(PROPERTY_FOOTER_FORMATTING_SECTION_KEY, Boolean.class, true, true);
-        locationSectionModel.getDescriptor().setAlias(PROPERTY_FOOTER_FORMATTING_SECTION_ALIAS);
+        final Property locationSectionModel = Property.create(PROPERTY_MARGIN_FORMATTING_SECTION_KEY, Boolean.class, true, true);
+        locationSectionModel.getDescriptor().setAlias(PROPERTY_MARGIN_FORMATTING_SECTION_ALIAS);
         vc.addProperty(locationSectionModel);
 
-        final Property footerLocationModel = Property.create(PROPERTY_FOOTER_LOCATION_KEY, PROPERTY_FOOTER_LOCATION_TYPE, true, true);
-        footerLocationModel.getDescriptor().setAlias(PROPERTY_FOOTER_LOCATION_ALIAS);
+        final Property footerLocationModel = Property.create(PROPERTY_MARGIN_LOCATION_KEY, PROPERTY_MARGIN_LOCATION_TYPE, true, true);
+        footerLocationModel.getDescriptor().setAlias(PROPERTY_MARGIN_LOCATION_ALIAS);
         vc.addProperty(footerLocationModel);
 
-        final Property footerGapFactorModel = Property.create(PROPERTY_FOOTER_GAP_KEY, PROPERTY_FOOTER_GAP_TYPE, true, true);
-        footerGapFactorModel.getDescriptor().setAlias(PROPERTY_FOOTER_GAP_ALIAS);
+        final Property footerGapFactorModel = Property.create(PROPERTY_MARGIN_GAP_KEY, PROPERTY_MARGIN_GAP_TYPE, true, true);
+        footerGapFactorModel.getDescriptor().setAlias(PROPERTY_MARGIN_GAP_ALIAS);
         vc.addProperty(footerGapFactorModel);
 
-        final Property footerFontSizeModel = Property.create(PROPERTY_FOOTER_FONT_SIZE_KEY, Integer.class, PROPERTY_FOOTER_FONT_SIZE_DEFAULT, true);
-        footerFontSizeModel.getDescriptor().setAlias(PROPERTY_FOOTER_FONT_SIZE_ALIAS);
+        final Property footerFontSizeModel = Property.create(PROPERTY_MARGIN_FONT_SIZE_KEY, Integer.class, PROPERTY_MARGIN_FONT_SIZE_DEFAULT, true);
+        footerFontSizeModel.getDescriptor().setAlias(PROPERTY_MARGIN_FONT_SIZE_ALIAS);
         vc.addProperty(footerFontSizeModel);
 
-        final Property footerFontColorModel = Property.create(PROPERTY_FOOTER_FONT_COLOR_KEY, Color.class, PROPERTY_FOOTER_FONT_COLOR_DEFAULT, true);
-        footerFontColorModel.getDescriptor().setAlias(PROPERTY_FOOTER_FONT_COLOR_ALIAS);
+        final Property footerFontColorModel = Property.create(PROPERTY_MARGIN_FONT_COLOR_KEY, Color.class, PROPERTY_MARGIN_FONT_COLOR_DEFAULT, true);
+        footerFontColorModel.getDescriptor().setAlias(PROPERTY_MARGIN_FONT_COLOR_ALIAS);
         vc.addProperty(footerFontColorModel);
 
-        final Property footerFontStyleModel = Property.create(PROPERTY_FOOTER_FONT_STYLE_KEY, String.class, PROPERTY_FOOTER_FONT_STYLE_DEFAULT, true);
-        footerFontStyleModel.getDescriptor().setAlias(PROPERTY_FOOTER_FONT_STYLE_ALIAS);
+        final Property footerFontStyleModel = Property.create(PROPERTY_MARGIN_FONT_STYLE_KEY, String.class, PROPERTY_MARGIN_FONT_STYLE_DEFAULT, true);
+        footerFontStyleModel.getDescriptor().setAlias(PROPERTY_MARGIN_FONT_STYLE_ALIAS);
         vc.addProperty(footerFontStyleModel);
 
-        final Property footerFontItalicModel = Property.create(PROPERTY_FOOTER_FONT_ITALIC_KEY, Boolean.class, PROPERTY_FOOTER_FONT_ITALIC_DEFAULT, true);
-        footerFontItalicModel.getDescriptor().setAlias(PROPERTY_FOOTER_FONT_ITALIC_ALIAS);
+        final Property footerFontItalicModel = Property.create(PROPERTY_MARGIN_FONT_ITALIC_KEY, Boolean.class, PROPERTY_MARGIN_FONT_ITALIC_DEFAULT, true);
+        footerFontItalicModel.getDescriptor().setAlias(PROPERTY_MARGIN_FONT_ITALIC_ALIAS);
         vc.addProperty(footerFontItalicModel);
 
-        final Property footerFontBoldModel = Property.create(PROPERTY_FOOTER_FONT_BOLD_KEY, Boolean.class, PROPERTY_FOOTER_FONT_BOLD_DEFAULT, true);
-        footerFontBoldModel.getDescriptor().setAlias(PROPERTY_FOOTER_FONT_BOLD_ALIAS);
+        final Property footerFontBoldModel = Property.create(PROPERTY_MARGIN_FONT_BOLD_KEY, Boolean.class, PROPERTY_MARGIN_FONT_BOLD_DEFAULT, true);
+        footerFontBoldModel.getDescriptor().setAlias(PROPERTY_MARGIN_FONT_BOLD_ALIAS);
         vc.addProperty(footerFontBoldModel);
 
 
