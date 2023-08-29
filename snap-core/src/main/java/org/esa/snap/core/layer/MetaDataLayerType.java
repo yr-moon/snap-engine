@@ -115,7 +115,7 @@ public class MetaDataLayerType extends LayerType {
     public static final String PROPERTY_MARGIN_GAP_LABEL = "Location Gap";
     public static final String PROPERTY_MARGIN_GAP_TOOLTIP = "Percentage of scene size to place metadata away from the edge of the scene image";
     private static final String PROPERTY_MARGIN_GAP_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Offset";
-    public static final Double PROPERTY_MARGIN_GAP_DEFAULT = 40.0;
+    public static final Double PROPERTY_MARGIN_GAP_DEFAULT = 35.0;
     public static final double PROPERTY_MARGIN_GAP_MIN = -100;
     public static final double PROPERTY_MARGIN_GAP_MAX = 100;
     public static final String PROPERTY_MARGIN_GAP_INTERVAL = "[" + MetaDataLayerType.PROPERTY_MARGIN_GAP_MIN + "," + MetaDataLayerType.PROPERTY_MARGIN_GAP_MAX + "]";
@@ -141,7 +141,7 @@ public class MetaDataLayerType extends LayerType {
     public static final String PROPERTY_MARGIN_METADATA_LABEL = "INFO Key(s)";
     public static final String PROPERTY_MARGIN_METADATA_TOOLTIP = "Adds information properties";
     public static final String PROPERTY_MARGIN_METADATA_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "Metadata";
-    public static final String PROPERTY_MARGIN_METADATA_DEFAULT = "File,Sensor,Platform,Product_Type";
+    public static final String PROPERTY_MARGIN_METADATA_DEFAULT = "File,Product_Type";
     public static final Class PROPERTY_MARGIN_METADATA_TYPE = String.class;
 
     public static final String PROPERTY_MARGIN_METADATA2_KEY = PROPERTY_MARGIN_ROOT_KEY + ".metadata2";
@@ -199,7 +199,7 @@ public class MetaDataLayerType extends LayerType {
     public static final String PROPERTY_MARGIN_METADATA_SHOW_ALL_LABEL = "Show All Metadata*";
     public static final String PROPERTY_MARGIN_METADATA_SHOW_ALL_TOOLTIP = "Display all metadata keys (does NOT include all processing control params)";
     public static final String PROPERTY_MARGIN_METADATA_SHOW_ALL_ALIAS = PROPERTY_MARGIN_ROOT_ALIAS + "MetadataShowAll";
-    public static final boolean PROPERTY_MARGIN_METADATA_SHOW_ALL_DEFAULT = false;
+    public static final boolean PROPERTY_MARGIN_METADATA_SHOW_ALL_DEFAULT = true;
     public static final Class PROPERTY_MARGIN_METADATA_SHOW_ALL_TYPE = Boolean.class;
 
     public static final String PROPERTY_MARGIN_METADATA_PROCESS_CONTROL_SHOW_ALL_KEY = PROPERTY_MARGIN_ROOT_KEY + ".metadata.process.control.show.all";
@@ -429,28 +429,28 @@ public class MetaDataLayerType extends LayerType {
     public static final String PROPERTY_FOOTER2_TEXTFIELD_LABEL = "Footer Text";
     public static final String PROPERTY_FOOTER2_TEXTFIELD_TOOLTIP = "Adds a footer to the Header-Footer Layer";
     public static final String PROPERTY_FOOTER2_TEXTFIELD_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "Textfield";
-    public static final String PROPERTY_FOOTER2_TEXTFIELD_DEFAULT = "<INFO=file>";
+    public static final String PROPERTY_FOOTER2_TEXTFIELD_DEFAULT = "File: <INFO=file>";
     public static final Class PROPERTY_FOOTER2_TEXTFIELD_TYPE = String.class;
 
     public static final String PROPERTY_FOOTER2_TEXTFIELD2_KEY = PROPERTY_FOOTER2_ROOT_KEY + ".textfield2";
     public static final String PROPERTY_FOOTER2_TEXTFIELD2_LABEL = "Footer Text";
     public static final String PROPERTY_FOOTER2_TEXTFIELD2_TOOLTIP = "Adds a footer to the Header-Footer Layer";
     public static final String PROPERTY_FOOTER2_TEXTFIELD2_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "Textfield2";
-    public static final String PROPERTY_FOOTER2_TEXTFIELD2_DEFAULT = "<meta=id>";
+    public static final String PROPERTY_FOOTER2_TEXTFIELD2_DEFAULT = "";
     public static final Class PROPERTY_FOOTER2_TEXTFIELD2_TYPE = String.class;
 
     public static final String PROPERTY_FOOTER2_TEXTFIELD3_KEY = PROPERTY_FOOTER2_ROOT_KEY + ".textfield3";
     public static final String PROPERTY_FOOTER2_TEXTFIELD3_LABEL = "Footer Text";
     public static final String PROPERTY_FOOTER2_TEXTFIELD3_TOOLTIP = "Adds a footer to the Header-Footer Layer";
     public static final String PROPERTY_FOOTER2_TEXTFIELD3_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "Textfield3";
-    public static final String PROPERTY_FOOTER2_TEXTFIELD3_DEFAULT = "<meta=id>";
+    public static final String PROPERTY_FOOTER2_TEXTFIELD3_DEFAULT = "";
     public static final Class PROPERTY_FOOTER2_TEXTFIELD3_TYPE = String.class;
 
     public static final String PROPERTY_FOOTER2_TEXTFIELD4_KEY = PROPERTY_FOOTER2_ROOT_KEY + ".textfield4";
     public static final String PROPERTY_FOOTER2_TEXTFIELD4_LABEL = "Footer Text";
     public static final String PROPERTY_FOOTER2_TEXTFIELD4_TOOLTIP = "Adds a footer to the Header-Footer Layer";
     public static final String PROPERTY_FOOTER2_TEXTFIELD4_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "Textfield4";
-    public static final String PROPERTY_FOOTER2_TEXTFIELD4_DEFAULT = "<meta=id>";
+    public static final String PROPERTY_FOOTER2_TEXTFIELD4_DEFAULT = "";
     public static final Class PROPERTY_FOOTER2_TEXTFIELD4_TYPE = String.class;
 
 
@@ -458,7 +458,7 @@ public class MetaDataLayerType extends LayerType {
     public static final String PROPERTY_FOOTER2_MY_INFO_SHOW_LABEL = "Show My Info";
     public static final String PROPERTY_FOOTER2_MY_INFO_SHOW_TOOLTIP = "Show my_info";
     public static final String PROPERTY_FOOTER2_MY_INFO_SHOW_ALIAS = PROPERTY_FOOTER2_ROOT_ALIAS + "ShowMyInfo";
-    public static final boolean PROPERTY_FOOTER2_MY_INFO_SHOW_DEFAULT = true;
+    public static final boolean PROPERTY_FOOTER2_MY_INFO_SHOW_DEFAULT = false;
     public static final Class PROPERTY_FOOTER2_MY_INFO_SHOW_TYPE = Boolean.class;
 
 
@@ -545,28 +545,28 @@ public class MetaDataLayerType extends LayerType {
     public static final String PROPERTY_MY_INFO_TEXTFIELD1_LABEL = "MY_INFO1";
     public static final String PROPERTY_MY_INFO_TEXTFIELD1_TOOLTIP = "First line of MY_INFO";
     public static final String PROPERTY_MY_INFO_TEXTFIELD1_ALIAS = PROPERTY_MY_INFO_ROOT_ALIAS + "HeaderTextfield1";
-    public static final String PROPERTY_MY_INFO_TEXTFIELD1_DEFAULT = "Name: ";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD1_DEFAULT = "{Add user info in Preferences > Layer > Annotation}";
     public static final Class PROPERTY_MY_INFO_TEXTFIELD1_TYPE = String.class;
 
     public static final String PROPERTY_MY_INFO_TEXTFIELD2_KEY = PROPERTY_MY_INFO_ROOT_KEY + ".textfield2";
     public static final String PROPERTY_MY_INFO_TEXTFIELD2_LABEL = "MY_INFO2";
     public static final String PROPERTY_MY_INFO_TEXTFIELD2_TOOLTIP = "Second line of MY_INFO";
     public static final String PROPERTY_MY_INFO_TEXTFIELD2_ALIAS = PROPERTY_MY_INFO_ROOT_ALIAS + "HeaderTextfield2";
-    public static final String PROPERTY_MY_INFO_TEXTFIELD2_DEFAULT = "Address: ";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD2_DEFAULT = "";
     public static final Class PROPERTY_MY_INFO_TEXTFIELD2_TYPE = String.class;
 
     public static final String PROPERTY_MY_INFO_TEXTFIELD3_KEY = PROPERTY_MY_INFO_ROOT_KEY + ".textfield3";
     public static final String PROPERTY_MY_INFO_TEXTFIELD3_LABEL = "MY_INFO3";
     public static final String PROPERTY_MY_INFO_TEXTFIELD3_TOOLTIP = "Third line of MY_INFO";
     public static final String PROPERTY_MY_INFO_TEXTFIELD3_ALIAS = PROPERTY_MY_INFO_ROOT_ALIAS + "HeaderTextfield3";
-    public static final String PROPERTY_MY_INFO_TEXTFIELD3_DEFAULT = "Address2: ";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD3_DEFAULT = "";
     public static final Class PROPERTY_MY_INFO_TEXTFIELD3_TYPE = String.class;
 
     public static final String PROPERTY_MY_INFO_TEXTFIELD4_KEY = PROPERTY_MY_INFO_ROOT_KEY + ".textfield4";
     public static final String PROPERTY_MY_INFO_TEXTFIELD4_LABEL = "MY_INFO4";
     public static final String PROPERTY_MY_INFO_TEXTFIELD4_TOOLTIP = "Fourth line of MY_INFO";
     public static final String PROPERTY_MY_INFO_TEXTFIELD4_ALIAS = PROPERTY_MY_INFO_ROOT_ALIAS + "HeaderTextfield4";
-    public static final String PROPERTY_MY_INFO_TEXTFIELD4_DEFAULT = "Phone: ";
+    public static final String PROPERTY_MY_INFO_TEXTFIELD4_DEFAULT = "";
     public static final Class PROPERTY_MY_INFO_TEXTFIELD4_TYPE = String.class;
 
 

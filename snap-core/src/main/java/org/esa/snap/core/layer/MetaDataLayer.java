@@ -134,7 +134,7 @@ public class MetaDataLayer extends Layer {
 
     public MetaDataLayer(MetaDataLayerType type, RasterDataNode raster, PropertySet configuration) {
         super(type, configuration);
-        setName("Metadata Annotation Layer");
+        setName("Annotation Metadata Layer");
         this.raster = raster;
 
         productNodeHandler = new ProductNodeHandler();
@@ -163,7 +163,7 @@ public class MetaDataLayer extends Layer {
 
         if (headerFooter == null) {
             final List<String> headerList = new ArrayList<String>();
-            final List<String> footerList = new ArrayList<String>();
+            final List<String> marginList = new ArrayList<String>();
             final List<String> footer2List = new ArrayList<String>();
 
 
@@ -192,31 +192,31 @@ public class MetaDataLayer extends Layer {
 
 
             for (String curr : getHeaderFooterLinesArray(getMarginTextfield1())) {
-                footerList.add(curr);
+                marginList.add(curr);
             }
 
             for (String curr : getHeaderFooterLinesArray(getMarginTextfield2())) {
-                footerList.add(curr);
+                marginList.add(curr);
             }
 
 
-            ArrayList<String> footerMetadataCombinedArrayList = new ArrayList<String>();
-            ArrayList<String> footerBandMetadataCombinedArrayList = new ArrayList<String>();
-            ArrayList<String> footerInfoCombinedArrayList = new ArrayList<String>();
+            ArrayList<String> marginMetadataCombinedArrayList = new ArrayList<String>();
+            ArrayList<String> marginBandMetadataCombinedArrayList = new ArrayList<String>();
+            ArrayList<String> marginInfoCombinedArrayList = new ArrayList<String>();
 
             for (String curr : getMetadataArrayList(getMarginMetadata1())) {
-                footerInfoCombinedArrayList.add(curr);
+                marginInfoCombinedArrayList.add(curr);
             }
 
             for (String curr : getMetadataArrayList(getMarginMetadata2())) {
-                footerInfoCombinedArrayList.add(curr);
+                marginInfoCombinedArrayList.add(curr);
             }
 
 
             for (String curr : getMetadataArrayList(getMarginMetadata3())) {
                 for (String key : getAllPossibleRelatedKeys(curr)) {
                     if (ProductUtils.isMetadataKeyExists(raster.getProduct(), key)) {
-                        footerMetadataCombinedArrayList.add(key);
+                        marginMetadataCombinedArrayList.add(key);
                     }
                 }
             }
@@ -224,19 +224,19 @@ public class MetaDataLayer extends Layer {
             for (String curr : getMetadataArrayList(getMarginMetadata4())) {
                 for (String key : getAllPossibleRelatedKeys(curr)) {
                     if (ProductUtils.isMetadataKeyExists(raster.getProduct(), key)) {
-                        footerMetadataCombinedArrayList.add(key);
+                        marginMetadataCombinedArrayList.add(key);
                     }
                 }
             }
 
             for (String curr : getMetadataArrayList(getMarginMetadata5())) {
-                footerBandMetadataCombinedArrayList.add(curr);
+                marginBandMetadataCombinedArrayList.add(curr);
             }
 
             if (displayAllInfo()) {
-                footerInfoCombinedArrayList.clear();
+                marginInfoCombinedArrayList.clear();
                 for (String infoField : INFO_PARAMS) {
-                    footerInfoCombinedArrayList.add(infoField.toLowerCase());
+                    marginInfoCombinedArrayList.add(infoField.toLowerCase());
                 }
             }
 
@@ -244,25 +244,25 @@ public class MetaDataLayer extends Layer {
             if (displayAllMetadata() || displayAllMetadataProcessControlParams()) {
                 try {
                     String[] allAttributes = getProduct().getMetadataRoot().getElement("Global_Attributes").getAttributeNames();
-                    footerMetadataCombinedArrayList.clear();
+                    marginMetadataCombinedArrayList.clear();
                     for (String curr : allAttributes) {
                         if (curr != null) {
                             if (displayAllMetadata() && displayAllMetadataProcessControlParams()) {
-                                footerMetadataCombinedArrayList.add(curr);
+                                marginMetadataCombinedArrayList.add(curr);
                             } else if (displayAllMetadata() && !displayAllMetadataProcessControlParams()) {
                                 if (curr.startsWith("processing_control")) {
                                     if (curr.equals("processing_control_software_name") ||
                                             curr.equals("processing_control_software_version") ||
                                             curr.equals("processing_control_mask_names")
                                     ) {
-                                        footerMetadataCombinedArrayList.add(curr);
+                                        marginMetadataCombinedArrayList.add(curr);
                                     }
                                 } else {
-                                    footerMetadataCombinedArrayList.add(curr);
+                                    marginMetadataCombinedArrayList.add(curr);
                                 }
                             } else if (!displayAllMetadata() && displayAllMetadataProcessControlParams()) {
                                 if (curr.startsWith("processing_control")) {
-                                    footerMetadataCombinedArrayList.add(curr);
+                                    marginMetadataCombinedArrayList.add(curr);
                                 }
                             }
                         }
@@ -274,26 +274,35 @@ public class MetaDataLayer extends Layer {
             if (displayAllBandMetadata()) {
                 try {
                     String[] allAttributes = getProduct().getMetadataRoot().getElement("Band_Attributes").getElement(raster.getName()).getAttributeNames();
-                    footerBandMetadataCombinedArrayList.clear();
+                    marginBandMetadataCombinedArrayList.clear();
                     for (String curr : allAttributes) {
-                        footerBandMetadataCombinedArrayList.add(curr);
+                        marginBandMetadataCombinedArrayList.add(curr);
                     }
                 } catch (Exception ignore) {
                 }
 
             }
 
-            footerList.add("");
-            footerList.add("File-Band Info:");
-            addFromMetadataList(footerInfoCombinedArrayList, footerList, false, false);
+            if (marginList.size() > 0) {
+                marginList.add("");
+            }
+            if (marginInfoCombinedArrayList.size() > 0) {
+                marginList.add("File-Band Info:");
+                addFromMetadataList(marginInfoCombinedArrayList, marginList, false, false);
+                marginList.add("");
+            }
 
-            footerList.add("");
-            footerList.add("File Metadata: (Global_Attributes)");
-            addFromMetadataList(footerMetadataCombinedArrayList, footerList, true, true);
+            if (marginMetadataCombinedArrayList.size() > 0) {
+                marginList.add("File Metadata: (Global_Attributes)");
+                addFromMetadataList(marginMetadataCombinedArrayList, marginList, true, true);
+                marginList.add("");
+            }
 
-            footerList.add("");
-            footerList.add("Band Metadata '" + raster.getName() + "' (Band_Attributes):");
-            addFromMetadataList(footerBandMetadataCombinedArrayList, footerList, true, false);
+            if (marginBandMetadataCombinedArrayList.size() > 0) {
+                marginList.add("Band Metadata '" + raster.getName() + "' (Band_Attributes):");
+                addFromMetadataList(marginBandMetadataCombinedArrayList, marginList, true, false);
+                marginList.add("");
+            }
 
 
             for (String curr : getHeaderFooterLinesArray(getFooter2Textfield())) {
@@ -328,7 +337,7 @@ public class MetaDataLayer extends Layer {
             }
 
 
-            headerFooter = MetaDataOnImage.create(raster, headerList, footerList, footer2List);
+            headerFooter = MetaDataOnImage.create(raster, headerList, marginList, footer2List);
         }
         if (headerFooter != null) {
 
