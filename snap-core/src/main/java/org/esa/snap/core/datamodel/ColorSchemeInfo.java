@@ -247,7 +247,7 @@ public class ColorSchemeInfo {
     }
 
 
-    public static String getColorBarTitle(String colorBarTitle, String bandname, String description, float wavelength, String units, boolean allowWavelengthZero) {
+    public static String getColorBarTitle(String colorBarTitle, String bandname,  String description, float wavelength, float angle, String units, boolean allowWavelengthZero) {
         
         String wavelengthString = "";
         if (wavelength > 0.0) {
@@ -257,6 +257,9 @@ public class ColorSchemeInfo {
                 wavelengthString = String.valueOf(wavelength);
             }
         }
+        wavelengthString = String.valueOf(wavelength);
+        String angleString = String.valueOf(angle);
+
 
         if (units == null) {
             units = "";
@@ -339,6 +342,15 @@ public class ColorSchemeInfo {
                         colorBarTitle = "";
                     }
                 }
+            }
+
+            if (colorBarTitle.contains("[ANGLE]") || colorBarTitle.contains("<ANGLE>")) {
+                    while (colorBarTitle.contains("[ANGLE]")) {
+                        colorBarTitle = colorBarTitle.replace("[ANGLE]", angleString);
+                    }
+                    while (colorBarTitle.contains("<ANGLE>")) {
+                        colorBarTitle = colorBarTitle.replace("<ANGLE>", angleString);
+                    }
             }
         }
 
