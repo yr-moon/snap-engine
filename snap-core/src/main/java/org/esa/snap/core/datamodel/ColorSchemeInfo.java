@@ -357,7 +357,7 @@ public class ColorSchemeInfo {
         return  colorBarTitle;
     }
 
-    public static ColorSchemeInfo getColorPaletteInfoByBandNameLookup(String bandName) {
+    public static ColorSchemeInfo getColorPaletteInfoByBandNameLookup(String bandName, String mission) {
 
         ColorSchemeManager colorSchemeManager = ColorSchemeManager.getDefault();
         if (colorSchemeManager != null) {
@@ -368,7 +368,7 @@ public class ColorSchemeInfo {
 
             ArrayList<ColorSchemeLookupInfo> colorSchemeLookupInfos = colorSchemeManager.getColorSchemeLookupInfos();
             for (ColorSchemeLookupInfo colorSchemeLookupInfo : colorSchemeLookupInfos) {
-                if (colorSchemeLookupInfo.isMatch(bandName)) {
+                if (colorSchemeLookupInfo.isMatch(bandName, mission)) {
                     return colorSchemeManager.getColorSchemeInfoBySchemeId(colorSchemeLookupInfo.getScheme_id());
                 }
             }

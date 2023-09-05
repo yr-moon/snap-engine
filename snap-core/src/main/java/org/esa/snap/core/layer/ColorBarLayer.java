@@ -179,7 +179,7 @@ public class ColorBarLayer extends Layer {
 
 
             if (!imageLegendInitialized || (isAutoApplySchemes() || isSchemeLabelsApply())) {
-                schemeInfo = ColorSchemeInfo.getColorPaletteInfoByBandNameLookup(raster.getName());
+                schemeInfo = ColorSchemeInfo.getColorPaletteInfoByBandNameLookup(raster.getName(), getProduct().getProductType());
             }
 
 

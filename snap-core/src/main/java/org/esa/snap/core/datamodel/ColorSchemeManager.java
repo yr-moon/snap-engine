@@ -548,6 +548,7 @@ public class ColorSchemeManager {
             String regex = schemeElement.getAttribute("REGEX");
             String schemeId = getTextValue(schemeElement, "SCHEME_ID");
             String description = getTextValue(schemeElement, "DESCRIPTION");
+            String mission = getTextValue(schemeElement, "MISSION");
 
 
             if (regex == null || regex.length() == 0) {
@@ -568,7 +569,7 @@ public class ColorSchemeManager {
             }
 
             if (checksOut) {
-                ColorSchemeLookupInfo colorSchemeLookupInfo = new ColorSchemeLookupInfo(regex, schemeId, description, colorSchemeInfo);
+                ColorSchemeLookupInfo colorSchemeLookupInfo = new ColorSchemeLookupInfo(regex, schemeId, description, mission, colorSchemeInfo);
 
                 if (colorSchemeLookupInfo != null) {
                     colorSchemeLookupInfos.add(colorSchemeLookupInfo);
