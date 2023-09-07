@@ -1643,6 +1643,7 @@ public class DimapProductHelpers {
                 setUnit(element, band);
                 setSpectralWaveLength(element, band);
                 setSpectralBandWidth(element, band);
+                setAngularValue(element, band);
                 setSolarFlux(element, band);
                 setSpectralBandIndex(element, band);
                 setScaling(element, band);
@@ -1824,6 +1825,13 @@ public class DimapProductHelpers {
             final String bandWidth = element.getChildTextTrim(DimapProductConstants.TAG_BANDWIDTH);
             if (bandWidth != null) {
                 band.setSpectralBandwidth(Float.parseFloat(bandWidth));
+            }
+        }
+
+        private static void setAngularValue(final Element element, final Band band) {
+            final String angularValue = element.getChildTextTrim(DimapProductConstants.TAG_BAND_ANGULAR_VALUE);
+            if (angularValue != null) {
+                band.setAngularValue(Float.parseFloat(angularValue));
             }
         }
 

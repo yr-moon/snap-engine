@@ -220,6 +220,7 @@ public final class DimapHeaderWriter extends XmlWriter {
                                   band.getSpectralBandIndex());
                     }
                     printLine(indent + 2, DimapProductConstants.TAG_BAND_WAVELEN, band.getSpectralWavelength());
+                    printLine(indent + 2, DimapProductConstants.TAG_BAND_ANGULAR_VALUE, band.getAngularValue());
                     printLine(indent + 2, DimapProductConstants.TAG_BANDWIDTH, band.getSpectralBandwidth());
                     final FlagCoding flagCoding = band.getFlagCoding();
                     if (flagCoding != null) {
